@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Set the Rotation of a Transform based on a Bow's draw percentage
     /// </summary>
-    public class BowArm : MonoBehaviour {
+    public class BowArm : MonoBehaviour
+    {
 
         public Bow BowItem;
 
@@ -25,28 +27,35 @@ namespace BNG {
         public bool RotateX = true;
         public bool RotateZ = false;
 
-        void Start() {
+        void Start()
+        {
             _startRotation = Quaternion.Euler(transform.localEulerAngles);
 
-            if(RotateX) {
+            if (RotateX)
+            {
                 _endRotation = Quaternion.Euler(new Vector3(_startRotation.x + RotateDegrees, transform.localEulerAngles.y, transform.localEulerAngles.z));
             }
 
-            if (RotateZ) {
+            if (RotateZ)
+            {
                 _endRotation = Quaternion.Euler(new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z + RotateDegrees));
             }
         }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
 
-            if (BowItem.DrawPercent >= BowPercentStart) {
+            if (BowItem.DrawPercent >= BowPercentStart)
+            {
                 transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _endRotation, Speed * Time.deltaTime);
             }
-            else if(BowItem.DrawPercent < BowPercentStart && BowItem.DrawPercent > 5) {
+            else if (BowItem.DrawPercent < BowPercentStart && BowItem.DrawPercent > 5)
+            {
                 transform.localRotation = Quaternion.RotateTowards(transform.localRotation, _startRotation, Speed * Time.deltaTime);
             }
-            else {
+            else
+            {
                 transform.localRotation = _startRotation;
             }
         }

@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace BNG {
+namespace BNG
+{
 
-    public class VRUISystem : BaseInputModule {
+    public class VRUISystem : BaseInputModule
+    {
 
         [Header("XR Controller Options : ")]
         [Tooltip("This setting determines if LeftPointerTransform or RightPointerTransform will be used as a forward vector for World Space UI events")]
@@ -40,23 +42,28 @@ namespace BNG {
         public PointerEventData EventData { get; private set; }
 
         Camera cameraCaster;
-        
+
         private GameObject _initialPressObject;
         private bool _lastInputDown;
         bool inputDown;
 
         private static VRUISystem _instance;
-        public static VRUISystem Instance {
-            get {
-                if (_instance == null) {
+        public static VRUISystem Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
                     _instance = GameObject.FindObjectOfType<VRUISystem>();
 
-                    if (_instance == null) {
+                    if (_instance == null)
+                    {
                         // Check for existing event system
                         EventSystem eventSystem = EventSystem.current;
-                        if(eventSystem == null) {
+                        if (eventSystem == null)
+                        {
                             eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>(); ;
-                        }                        
+                        }
 
                         _instance = eventSystem.gameObject.AddComponent<VRUISystem>();
                     }
@@ -66,7 +73,8 @@ namespace BNG {
             }
         }
 
-        protected override void Awake() {
+        protected override void Awake()
+        {
 
             UpdateControllerHand(SelectedHand);
 
@@ -74,10 +82,12 @@ namespace BNG {
             EventData.position = new Vector2(cameraCaster.pixelWidth / 2, cameraCaster.pixelHeight / 2);
 
             AssignCameraToAllCanvases(cameraCaster);
-        }       
+        }
 
-        void init() {
-            if(cameraCaster == null) {
+        void init()
+        {
+            if (cameraCaster == null)
+            {
 
                 // Create the camera required for the caster.
                 // We can reduce the fov and disable the camera component for performance
@@ -90,16 +100,19 @@ namespace BNG {
                 cameraCaster.enabled = false;
 
                 // Add PhysicsRaycaster so other objects can subscribe to IPointer events
-                if(AddPhysicsRaycaster) {
+                if (AddPhysicsRaycaster)
+                {
                     var pr = go.AddComponent<PhysicsRaycaster>();
                     pr.eventMask = PhysicsRaycasterEventMask;
                 }
             }
         }
 
-        public override void Process() {
+        public override void Process()
+        {
 
-            if(EventData == null) {
+            if (EventData == null)
+            {
                 return;
             }
 
@@ -117,53 +130,64 @@ namespace BNG {
             ExecuteEvents.Execute(EventData.pointerDrag, EventData, ExecuteEvents.dragHandler);
 
             // Handle scroll
-            if(RightThumbstickScroll) {
+            if (RightThumbstickScroll)
+            {
                 EventData.scrollDelta = InputBridge.Instance.RightThumbstickAxis;
-                if (!Mathf.Approximately(EventData.scrollDelta.sqrMagnitude, 0)) {
+                if (!Mathf.Approximately(EventData.scrollDelta.sqrMagnitude, 0))
+                {
                     ExecuteEvents.Execute(ExecuteEvents.GetEventHandler<IScrollHandler>(EventData.pointerCurrentRaycast.gameObject), EventData, ExecuteEvents.scrollHandler);
                 }
             }
-            
+
             // Press Events
             inputDown = InputReady();
 
             // On Trigger Down > TriggerDownValue this frame but not last
-            if (inputDown && _lastInputDown == false) {
+            if (inputDown && _lastInputDown == false)
+            {
                 PressDown();
             }
             // On Held Down
-            else if(inputDown) {
+            else if (inputDown)
+            {
                 Press();
             }
             // On Release
-            else {
+            else
+            {
                 Release();
             }
 
             _lastInputDown = inputDown;
         }
 
-        public virtual bool InputReady() {
+        public virtual bool InputReady()
+        {
             // Check for bound controller button
-            for (int x = 0; x < ControllerInput.Count; x++) {
-                if (InputBridge.Instance.GetControllerBindingValue(ControllerInput[x])) {
+            for (int x = 0; x < ControllerInput.Count; x++)
+            {
+                if (InputBridge.Instance.GetControllerBindingValue(ControllerInput[x]))
+                {
                     return true;
                 }
             }
 
             // Keyboard input
-            if (AllowMouseInput && Input.GetMouseButton(0)) {
+            if (AllowMouseInput && Input.GetMouseButton(0))
+            {
                 return true;
             }
 
             return false;
         }
 
-        public virtual void PressDown() {
+        public virtual void PressDown()
+        {
             EventData.pointerPressRaycast = EventData.pointerCurrentRaycast;
 
             // Deselect if selection changed
-            if(_initialPressObject != null) {
+            if (_initialPressObject != null)
+            {
                 // ExecuteEvents.Execute(_initialPressObject, EventData, ExecuteEvents.deselectHandler);
                 _initialPressObject = null;
             }
@@ -179,7 +203,8 @@ namespace BNG {
             ExecuteEvents.Execute(EventData.pointerDrag, EventData, ExecuteEvents.beginDragHandler);
         }
 
-        public virtual void Press() {
+        public virtual void Press()
+        {
             EventData.pointerPressRaycast = EventData.pointerCurrentRaycast;
 
             // Set Press Objects and Events
@@ -191,12 +216,14 @@ namespace BNG {
             ExecuteEvents.Execute(EventData.pointerDrag, EventData, ExecuteEvents.beginDragHandler);
         }
 
-        public virtual void Release() {
+        public virtual void Release()
+        {
 
             SetReleasingObject(ExecuteEvents.GetEventHandler<IPointerClickHandler>(EventData.pointerCurrentRaycast.gameObject));
 
             // Considered a click event if released after an initial click
-            if (EventData.pointerPress == ReleasingObject) {
+            if (EventData.pointerPress == ReleasingObject)
+            {
                 ExecuteEvents.Execute(EventData.pointerPress, EventData, ExecuteEvents.pointerClickHandler);
             }
 
@@ -207,56 +234,67 @@ namespace BNG {
             // ExecuteEvents.Execute(ReleasingObject, EventData, ExecuteEvents.deselectHandler);
 
             ClearAll();
-        }        
+        }
 
-        public virtual void ClearAll() {
+        public virtual void ClearAll()
+        {
             SetPressingObject(null);
             SetDraggingObject(null);
 
             EventData.pointerCurrentRaycast.Clear();
         }
 
-        public virtual void SetPressingObject(GameObject pressing) {
+        public virtual void SetPressingObject(GameObject pressing)
+        {
             EventData.pointerPress = pressing;
             PressingObject = pressing;
         }
 
-        public virtual void SetDraggingObject(GameObject dragging) {
+        public virtual void SetDraggingObject(GameObject dragging)
+        {
             EventData.pointerDrag = dragging;
             DraggingObject = dragging;
         }
 
-        public virtual void SetReleasingObject(GameObject releasing) {
+        public virtual void SetReleasingObject(GameObject releasing)
+        {
             ReleasingObject = releasing;
         }
 
-        public virtual void AssignCameraToAllCanvases(Camera cam) {
+        public virtual void AssignCameraToAllCanvases(Camera cam)
+        {
             Canvas[] allCanvas = FindObjectsOfType<Canvas>();
-            for (int x = 0; x < allCanvas.Length; x++) {
+            for (int x = 0; x < allCanvas.Length; x++)
+            {
                 AddCanvasToCamera(allCanvas[x], cam);
             }
         }
 
-        public virtual void AddCanvas(Canvas canvas) {
+        public virtual void AddCanvas(Canvas canvas)
+        {
             AddCanvasToCamera(canvas, cameraCaster);
         }
 
-        public virtual void AddCanvasToCamera(Canvas canvas, Camera cam) {
+        public virtual void AddCanvasToCamera(Canvas canvas, Camera cam)
+        {
             canvas.worldCamera = cam;
         }
 
-        public virtual void UpdateControllerHand(ControllerHand hand) {
-            
+        public virtual void UpdateControllerHand(ControllerHand hand)
+        {
+
             // Make sure variables exist
             init();
 
             // Setup the Transform
-            if (hand == ControllerHand.Left && LeftPointerTransform != null) {
+            if (hand == ControllerHand.Left && LeftPointerTransform != null)
+            {
                 cameraCaster.transform.parent = LeftPointerTransform;
                 cameraCaster.transform.localPosition = Vector3.zero;
                 cameraCaster.transform.localEulerAngles = Vector3.zero;
             }
-            else if (hand == ControllerHand.Right && RightPointerTransform != null) {
+            else if (hand == ControllerHand.Right && RightPointerTransform != null)
+            {
                 cameraCaster.transform.parent = RightPointerTransform;
                 cameraCaster.transform.localPosition = Vector3.zero;
                 cameraCaster.transform.localEulerAngles = Vector3.zero;

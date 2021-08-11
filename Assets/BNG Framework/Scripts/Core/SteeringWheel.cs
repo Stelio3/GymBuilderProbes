@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
-    public class SteeringWheel : GrabbableEvents {
+namespace BNG
+{
+    public class SteeringWheel : GrabbableEvents
+    {
 
         [Header("Rotation Limits")]
         [Tooltip("Maximum Z value in Local Euler Angles. Can be < -360. Ex : -450")]
@@ -47,8 +49,10 @@ namespace BNG {
         /// <summary>
         /// Returns the angle of the rotation, taking RotationSpeed into account
         /// </summary>
-        public float Angle {
-            get {
+        public float Angle
+        {
+            get
+            {
                 return Mathf.Clamp(smoothedAngle, MinAngle, MaxAngle);
             }
         }
@@ -56,37 +60,49 @@ namespace BNG {
         /// <summary>
         /// Always returns the target angle, not taking RotationSpeed into account
         /// </summary>
-        public float RawAngle {
-            get {
+        public float RawAngle
+        {
+            get
+            {
                 return targetAngle;
             }
         }
 
-        public float ScaleValue {
-            get {
+        public float ScaleValue
+        {
+            get
+            {
                 return GetScaledValue(Angle, MinAngle, MaxAngle);
             }
         }
 
-        public float ScaleValueInverted {
-            get {
+        public float ScaleValueInverted
+        {
+            get
+            {
                 return ScaleValue * -1;
             }
         }
 
-        public float AngleInverted {
-            get {
+        public float AngleInverted
+        {
+            get
+            {
                 return Angle * -1;
             }
         }
 
-        public Grabber PrimaryGrabber {
-            get {
+        public Grabber PrimaryGrabber
+        {
+            get
+            {
                 return GetPrimaryGrabber();
             }
         }
-        public Grabber SecondaryGrabber {
-            get {
+        public Grabber SecondaryGrabber
+        {
+            get
+            {
                 return GetSecondaryGrabber();
             }
         }
@@ -103,13 +119,16 @@ namespace BNG {
         /// </summary>
         protected float smoothedAngle;
 
-        void Update() {
+        void Update()
+        {
 
             // Calculate rotation if being held or returning to center
-            if (grab.BeingHeld) {
+            if (grab.BeingHeld)
+            {
                 UpdateAngleCalculations();
             }
-            else if (ReturnToCenter) {
+            else if (ReturnToCenter)
+            {
                 ReturnToCenterAngle();
             }
 
@@ -123,25 +142,28 @@ namespace BNG {
 
             // Update the angle so we can compare it next frame
             UpdatePreviousAngle(targetAngle);
-        }        
+        }
 
-        public virtual void UpdateAngleCalculations() {
+        public virtual void UpdateAngleCalculations()
+        {
 
             float angleAdjustment = 0f;
 
             // Add first Grabber
-            if (PrimaryGrabber) {
+            if (PrimaryGrabber)
+            {
                 rotatePosition = transform.InverseTransformPoint(PrimaryGrabber.transform.position);
                 rotatePosition = new Vector3(rotatePosition.x, rotatePosition.y, 0);
 
                 // Add in the angles to turn
-                angleAdjustment += GetRelativeAngle(rotatePosition, previousPrimaryPosition); 
+                angleAdjustment += GetRelativeAngle(rotatePosition, previousPrimaryPosition);
 
                 previousPrimaryPosition = rotatePosition;
             }
 
             // Add second Grabber
-            if (AllowTwoHanded && SecondaryGrabber != null) {
+            if (AllowTwoHanded && SecondaryGrabber != null)
+            {
                 rotatePosition = transform.InverseTransformPoint(SecondaryGrabber.transform.position);
                 rotatePosition = new Vector3(rotatePosition.x, rotatePosition.y, 0);
 
@@ -152,7 +174,8 @@ namespace BNG {
             }
 
             // Divide by two if being held by two hands
-            if(PrimaryGrabber != null && SecondaryGrabber != null) {
+            if (PrimaryGrabber != null && SecondaryGrabber != null)
+            {
                 angleAdjustment *= 0.5f;
             }
 
@@ -161,91 +184,114 @@ namespace BNG {
 
             // Update Smooth Angle
             // Instant Rotation
-            if(RotationSpeed == 0) {
+            if (RotationSpeed == 0)
+            {
                 smoothedAngle = targetAngle;
             }
             // Apply smoothing based on RotationSpeed
-            else {
+            else
+            {
                 smoothedAngle = Mathf.Lerp(smoothedAngle, targetAngle, Time.deltaTime * RotationSpeed);
             }
 
             // Scrub the final results
-            if (MinAngle != 0 && MaxAngle != 0) {
+            if (MinAngle != 0 && MaxAngle != 0)
+            {
                 targetAngle = Mathf.Clamp(targetAngle, MinAngle, MaxAngle);
                 smoothedAngle = Mathf.Clamp(smoothedAngle, MinAngle, MaxAngle);
             }
         }
 
-        public float GetRelativeAngle(Vector3 position1, Vector3 position2) {
+        public float GetRelativeAngle(Vector3 position1, Vector3 position2)
+        {
 
             // Are we turning left or right?
-            if (Vector3.Cross(position1, position2).z < 0) {
+            if (Vector3.Cross(position1, position2).z < 0)
+            {
                 return -Vector3.Angle(position1, position2);
             }
 
             return Vector3.Angle(position1, position2);
         }
 
-        public virtual void ApplyAngleToSteeringWheel(float angle) {
+        public virtual void ApplyAngleToSteeringWheel(float angle)
+        {
             RotatorObject.localEulerAngles = new Vector3(0, 0, angle);
         }
 
-        public virtual void UpdatePreviewText() {
-            if (DebugText) {
+        public virtual void UpdatePreviewText()
+        {
+            if (DebugText)
+            {
                 // Invert the values for display. Inverted values are easier to read (i.e 5 = clockwise rotation of 5 degrees). 
                 DebugText.text = String.Format("{0}\n{1}", (int)AngleInverted, (ScaleValueInverted).ToString("F2"));
             }
         }
 
-        public virtual void CallEvents() {
+        public virtual void CallEvents()
+        {
             // Call events
-            if (targetAngle != previousTargetAngle) {
+            if (targetAngle != previousTargetAngle)
+            {
                 onAngleChange.Invoke(targetAngle);
             }
 
             onValueChange.Invoke(ScaleValue);
         }
 
-        public override void OnGrab(Grabber grabber) {
+        public override void OnGrab(Grabber grabber)
+        {
             // Primary or secondary that grabbed us?
-            if(grabber == SecondaryGrabber) {
+            if (grabber == SecondaryGrabber)
+            {
                 previousSecondaryPosition = transform.InverseTransformPoint(SecondaryGrabber.transform.position);
             }
-            else {
+            else
+            {
                 previousPrimaryPosition = transform.InverseTransformPoint(PrimaryGrabber.transform.position);
             }
         }
 
-        public virtual void ReturnToCenterAngle() {
+        public virtual void ReturnToCenterAngle()
+        {
 
             bool wasUnderZero = smoothedAngle < 0;
 
-            if (smoothedAngle > 0) {
+            if (smoothedAngle > 0)
+            {
                 smoothedAngle -= Time.deltaTime * ReturnToCenterSpeed;
             }
-            else if (smoothedAngle < 0) {
+            else if (smoothedAngle < 0)
+            {
                 smoothedAngle += Time.deltaTime * ReturnToCenterSpeed;
             }
 
             // Overshot
-            if (wasUnderZero && smoothedAngle > 0) {
+            if (wasUnderZero && smoothedAngle > 0)
+            {
                 smoothedAngle = 0;
             }
-            else if (!wasUnderZero && smoothedAngle < 0) {
+            else if (!wasUnderZero && smoothedAngle < 0)
+            {
                 smoothedAngle = 0;
             }
 
             // Snap if very close
-            if (smoothedAngle < 0.02f && smoothedAngle > -0.02f) {
+            if (smoothedAngle < 0.02f && smoothedAngle > -0.02f)
+            {
                 smoothedAngle = 0;
             }
         }
 
-        public Grabber GetPrimaryGrabber() {
-            if (grab.HeldByGrabbers != null) {
-                for (int x = 0; x < grab.HeldByGrabbers.Count; x++) {
+        public Grabber GetPrimaryGrabber()
+        {
+            if (grab.HeldByGrabbers != null)
+            {
+                for (int x = 0; x < grab.HeldByGrabbers.Count; x++)
+                {
                     Grabber g = grab.HeldByGrabbers[x];
-                    if (g.HandSide == ControllerHand.Right) {
+                    if (g.HandSide == ControllerHand.Right)
+                    {
                         return g;
                     }
                 }
@@ -254,11 +300,15 @@ namespace BNG {
             return null;
         }
 
-        public Grabber GetSecondaryGrabber() {
-            if (grab.HeldByGrabbers != null) {
-                for (int x = 0; x < grab.HeldByGrabbers.Count; x++) {
+        public Grabber GetSecondaryGrabber()
+        {
+            if (grab.HeldByGrabbers != null)
+            {
+                for (int x = 0; x < grab.HeldByGrabbers.Count; x++)
+                {
                     Grabber g = grab.HeldByGrabbers[x];
-                    if (g.HandSide == ControllerHand.Left) {
+                    if (g.HandSide == ControllerHand.Left)
+                    {
                         return g;
                     }
                 }
@@ -267,7 +317,8 @@ namespace BNG {
             return null;
         }
 
-        public virtual void UpdatePreviousAngle(float angle) {
+        public virtual void UpdatePreviousAngle(float angle)
+        {
             previousTargetAngle = angle;
         }
 
@@ -278,16 +329,19 @@ namespace BNG {
         /// <param name="min">Minimum value of range used for conversion. </param>
         /// <param name="max">Maximum value of range used for conversion. Must be greater then min</param>
         /// <returns>Value between -1 and 1</returns>
-        public virtual float GetScaledValue(float value, float min, float max) {
+        public virtual float GetScaledValue(float value, float min, float max)
+        {
             float range = (max - min) / 2f;
             float returnValue = ((value - min) / range) - 1;
 
             return returnValue;
-        }                
+        }
 
 #if UNITY_EDITOR
-        public void OnDrawGizmosSelected() {
-            if (ShowEditorGizmos && !Application.isPlaying) {
+        public void OnDrawGizmosSelected()
+        {
+            if (ShowEditorGizmos && !Application.isPlaying)
+            {
 
                 Vector3 origin = transform.position;
                 float rotationDifference = MaxAngle - MinAngle;
@@ -310,13 +364,15 @@ namespace BNG {
                 Debug.DrawLine(transform.position, origin + Quaternion.AngleAxis(0, transform.up) * transform.up * lineLength, Color.magenta);
 
                 // Fix for exactly 180
-                if (rotationDifference == 180) {
+                if (rotationDifference == 180)
+                {
                     minPosition = origin + Quaternion.AngleAxis(MinAngle + 0.01f, transform.up) * transform.up * lineLength;
                 }
 
                 // Draw the arc
                 Vector3 cross = Vector3.Cross(minPosition - origin, maxPosition - origin);
-                if (rotationDifference > 180) {
+                if (rotationDifference > 180)
+                {
                     cross = Vector3.Cross(maxPosition - origin, minPosition - origin);
                 }
 

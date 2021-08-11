@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// A simple decal with random scale and rotation
     /// </summary>
-    public class BulletHole : MonoBehaviour {
+    public class BulletHole : MonoBehaviour
+    {
         public Transform BulletHoleDecal;
 
         public float MaxScale = 1f;
@@ -18,10 +20,12 @@ namespace BNG {
         public float DestroyTime = 10f;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             transform.localScale = Vector3.one * Random.Range(0.75f, 1.5f);
 
-            if (BulletHoleDecal != null && RandomYRotation) {
+            if (BulletHoleDecal != null && RandomYRotation)
+            {
                 Vector3 currentRotation = BulletHoleDecal.transform.localEulerAngles;
                 BulletHoleDecal.transform.localEulerAngles = new Vector3(currentRotation.x, currentRotation.y, Random.Range(0, 90f));
             }
@@ -33,29 +37,35 @@ namespace BNG {
             Invoke("DestroySelf", DestroyTime);
         }
 
-        public void TryAttachTo(Collider col) {
-            if (transformIsEqualScale(col.transform)) {
+        public void TryAttachTo(Collider col)
+        {
+            if (transformIsEqualScale(col.transform))
+            {
                 BulletHoleDecal.parent = col.transform;
                 GameObject.Destroy(BulletHoleDecal.gameObject, DestroyTime);
             }
             // No need to parent if static collider
-            else if (col.gameObject.isStatic) {
+            else if (col.gameObject.isStatic)
+            {
                 GameObject.Destroy(BulletHoleDecal.gameObject, DestroyTime);
             }
             // Malformed collider (non-equal proportions)
             // Just destroy the decal quickly
-            else {
+            else
+            {
                 // BulletHoleDecal.parent = col.transform;
                 GameObject.Destroy(BulletHoleDecal.gameObject, 0.1f);
             }
         }
 
         // Are all scales equal? Ex : 1, 1, 1
-        bool transformIsEqualScale(Transform theTransform) {
+        bool transformIsEqualScale(Transform theTransform)
+        {
             return theTransform.localScale.x == theTransform.localScale.y && theTransform.localScale.x == theTransform.localScale.z;
         }
 
-        void DestroySelf() {
+        void DestroySelf()
+        {
             transform.parent = null;
             GameObject.Destroy(this.gameObject);
         }

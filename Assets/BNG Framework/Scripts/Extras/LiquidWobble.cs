@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     // This is a wobble effect based on Minions Art Tutorial found : https://www.patreon.com/posts/quick-game-art-18245226
-    public class LiquidWobble : MonoBehaviour {
+    public class LiquidWobble : MonoBehaviour
+    {
         Renderer rend;
         Vector3 lastPos;
         Vector3 velocity;
@@ -21,10 +23,12 @@ namespace BNG {
         float pulse;
         float time = 0.5f;
 
-        void Start() {
+        void Start()
+        {
             rend = GetComponent<Renderer>();
         }
-        private void Update() {
+        private void Update()
+        {
             time += Time.deltaTime;
             // decrease wobble over time
             wobbleAmountToAddX = Mathf.Lerp(wobbleAmountToAddX, 0, Time.deltaTime * (Recovery));

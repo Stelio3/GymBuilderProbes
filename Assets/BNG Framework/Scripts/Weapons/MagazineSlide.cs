@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Constrain a magazine when it enters this area. Attaches the magazine in place if close enough.
     /// </summary>
-    public class MagazineSlide : MonoBehaviour {
+    public class MagazineSlide : MonoBehaviour
+    {
 
         /// <summary>
         /// Clip transform name must contain this to be considered valid
@@ -45,26 +47,31 @@ namespace BNG {
 
         float lastEjectTime;
 
-        void Start() {
+        void Start()
+        {
             grabClipArea = GetComponentInChildren<GrabberArea>();
 
-            if (transform.parent != null) {
+            if (transform.parent != null)
+            {
                 parentWeapon = transform.parent.GetComponent<RaycastWeapon>();
             }
-        }        
+        }
 
-        void LateUpdate() {
+        void LateUpdate()
+        {
 
             // Are we trying to grab the clip from the weapon
             CheckGrabClipInput();
 
             // There is a magazine inside the slide. Position it properly
-            if(HeldMagazine != null) {
-               
+            if (HeldMagazine != null)
+            {
+
                 HeldMagazine.transform.parent = transform;
 
                 // Lock in place immediately
-                if (lockedInPlace) {
+                if (lockedInPlace)
+                {
                     HeldMagazine.transform.localPosition = Vector3.zero;
                     HeldMagazine.transform.localEulerAngles = Vector3.zero;
                     return;
@@ -77,63 +84,76 @@ namespace BNG {
 
                 // Only allow Y translation. Don't allow to go up and through clip area
                 float localY = localPos.y;
-                if(localY > 0) {
+                if (localY > 0)
+                {
                     localY = 0;
                 }
 
                 moveMagazine(new Vector3(0, localY, 0));
 
                 MagazineDistance = Vector3.Distance(transform.position, HeldMagazine.transform.position);
-               
+
                 bool clipRecentlyGrabbed = Time.time - HeldMagazine.LastGrabTime < 1f;
 
                 // Snap Magazine In Place
-                if (MagazineDistance < ClipSnapDistance) {
+                if (MagazineDistance < ClipSnapDistance)
+                {
 
                     // Snap in place
-                    if(!magazineInPlace && !recentlyEjected() && !clipRecentlyGrabbed) {
+                    if (!magazineInPlace && !recentlyEjected() && !clipRecentlyGrabbed)
+                    {
                         attachMagazine();
                     }
 
                     // Make sure magazine stays in place if not being grabbed
-                    if(!HeldMagazine.BeingHeld) {
+                    if (!HeldMagazine.BeingHeld)
+                    {
                         moveMagazine(Vector3.zero);
                     }
                 }
                 // Stop aligning clip with slide if we exceed this distance
-                else if(MagazineDistance >= ClipUnsnapDistance && !recentlyEjected()) {
+                else if (MagazineDistance >= ClipUnsnapDistance && !recentlyEjected())
+                {
                     detachMagazine();
                 }
             }
         }
 
-        bool recentlyEjected() {
+        bool recentlyEjected()
+        {
             return Time.time - lastEjectTime < 0.1f;
         }
 
-        void moveMagazine(Vector3 localPosition) {
+        void moveMagazine(Vector3 localPosition)
+        {
             HeldMagazine.transform.localPosition = localPosition;
         }
 
-        public void CheckGrabClipInput() {
+        public void CheckGrabClipInput()
+        {
 
             // No need to check for grabbing a clip out if none exists
-            if(HeldMagazine == null || grabClipArea == null) {
+            if (HeldMagazine == null || grabClipArea == null)
+            {
                 return;
             }
 
             // Don't grab clip if the weapon isn't being held
-            if(AttachedWeapon != null && !AttachedWeapon.BeingHeld) {
+            if (AttachedWeapon != null && !AttachedWeapon.BeingHeld)
+            {
                 return;
             }
 
             Grabber nearestGrabber = grabClipArea.GetOpenGrabber();
-            if (grabClipArea != null && nearestGrabber != null) {
-                if (nearestGrabber.HandSide == ControllerHand.Left && InputBridge.Instance.LeftGripDown) {
+            if (grabClipArea != null && nearestGrabber != null)
+            {
+                if (nearestGrabber.HandSide == ControllerHand.Left && InputBridge.Instance.LeftGripDown)
+                {
                     // grab clip
                     OnGrabClipArea(nearestGrabber);
                 }
-                else if (nearestGrabber.HandSide == ControllerHand.Right && InputBridge.Instance.RightGripDown) {
+                else if (nearestGrabber.HandSide == ControllerHand.Right && InputBridge.Instance.RightGripDown)
+                {
                     OnGrabClipArea(nearestGrabber);
                 }
             }
@@ -164,7 +184,8 @@ namespace BNG {
                 }
 
                 // If attached to a Raycast weapon, let it know we attached something
-                if (parentWeapon) {
+                if (parentWeapon)
+                {
                     parentWeapon.OnAttachedAmmo();
                 }
             }
@@ -181,22 +202,27 @@ namespace BNG {
         /// Detach Magazine from it's parent. Removes joint, re-enables collider, and calls events
         /// </summary>
         /// <returns>Returns the magazine that was ejected or null if no magazine was attached</returns>
-        Grabbable detachMagazine() {
+        Grabbable detachMagazine()
+        {
 
-            if(HeldMagazine == null) {
+            if (HeldMagazine == null)
+            {
                 return null;
             }
 
             VRUtils.Instance.PlaySpatialClipAt(ClipDetachSound, transform.position, 1f, 0.9f);
-            
+
             HeldMagazine.transform.parent = null;
 
             // Remove fixed joint
-            if (transform.parent != null) {
+            if (transform.parent != null)
+            {
                 Rigidbody parentRB = transform.parent.GetComponent<Rigidbody>();
-                if (parentRB) {
+                if (parentRB)
+                {
                     FixedJoint fj = HeldMagazine.gameObject.GetComponent<FixedJoint>();
-                    if (fj) {
+                    if (fj)
+                    {
                         fj.connectedBody = null;
                         Destroy(fj);
                     }
@@ -204,13 +230,15 @@ namespace BNG {
             }
 
             // Reset Collider
-            if (HeldCollider != null) {
+            if (HeldCollider != null)
+            {
                 HeldCollider.enabled = true;
                 HeldCollider = null;
             }
 
             // Let wep know we detached something
-            if (parentWeapon) {
+            if (parentWeapon)
+            {
                 parentWeapon.OnDetachedAmmo();
             }
 
@@ -226,16 +254,19 @@ namespace BNG {
             return returnGrab;
         }
 
-        public void EjectMagazine() {
+        public void EjectMagazine()
+        {
             Grabbable ejectedMag = detachMagazine();
             lastEjectTime = Time.time;
 
             StartCoroutine(EjectMagRoutine(ejectedMag));
         }
 
-        IEnumerator EjectMagRoutine(Grabbable ejectedMag) {
+        IEnumerator EjectMagRoutine(Grabbable ejectedMag)
+        {
 
-            if (ejectedMag != null && ejectedMag.GetComponent<Rigidbody>() != null) {
+            if (ejectedMag != null && ejectedMag.GetComponent<Rigidbody>() != null)
+            {
 
                 Rigidbody ejectRigid = ejectedMag.GetComponent<Rigidbody>();
 
@@ -244,7 +275,8 @@ namespace BNG {
                 // Move clip down before we eject it
                 ejectedMag.transform.parent = transform;
 
-                if(ejectedMag.transform.localPosition.y > -ClipSnapDistance) {
+                if (ejectedMag.transform.localPosition.y > -ClipSnapDistance)
+                {
                     ejectedMag.transform.localPosition = new Vector3(0, -0.1f, 0);
                 }
 
@@ -281,16 +313,19 @@ namespace BNG {
             }
         }
 
-        void OnTriggerEnter(Collider other) {
+        void OnTriggerEnter(Collider other)
+        {
             Grabbable grab = other.GetComponent<Grabbable>();
-            if (HeldMagazine == null && grab != null && grab.transform.name.Contains(AcceptableMagazineName)) {
+            if (HeldMagazine == null && grab != null && grab.transform.name.Contains(AcceptableMagazineName))
+            {
                 HeldMagazine = grab;
                 HeldMagazine.transform.parent = transform;
 
                 HeldCollider = other;
-                
+
                 // Disable the collider while we're sliding it in to the weapon
-                if(HeldCollider != null) {
+                if (HeldCollider != null)
+                {
                     HeldCollider.enabled = false;
                 }
             }

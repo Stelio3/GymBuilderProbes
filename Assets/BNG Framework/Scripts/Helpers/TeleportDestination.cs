@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// A marker for valid teleport destinations
     /// </summary>
-    public class TeleportDestination : MonoBehaviour {
+    public class TeleportDestination : MonoBehaviour
+    {
 
         /// <summary>
         /// Where the player will be teleported to

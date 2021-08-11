@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace BNG {
+namespace BNG
+{
 
-    public enum RotationMechanic {
+    public enum RotationMechanic
+    {
         Snap,
         Smooth
     }
-    public class PlayerRotation : MonoBehaviour {
+    public class PlayerRotation : MonoBehaviour
+    {
 
         [Header("Input")]
         [Tooltip("Set to false to skip Update")]
@@ -40,7 +43,7 @@ namespace BNG {
         [Tooltip("Thumbstick X axis must be >= this amount to be considered an input event")]
         public float SmoothTurnMinInput = 0.1f;
 
-        float recentSnapTurnTime;        
+        float recentSnapTurnTime;
 
         /// <summary>
         /// How much to rotate this frame
@@ -58,19 +61,23 @@ namespace BNG {
         public static event OnAfterRotateAction OnAfterRotate;
         #endregion
 
-        void Update() {
+        void Update()
+        {
 
-            if(!AllowInput) {
+            if (!AllowInput)
+            {
                 return;
             }
 
             xAxis = GetAxisInput();
 
-            if (RotationType == RotationMechanic.Snap) {
+            if (RotationType == RotationMechanic.Snap)
+            {
                 DoSnapRotation(xAxis);
             }
 
-            else if (RotationType == RotationMechanic.Smooth) {
+            else if (RotationType == RotationMechanic.Smooth)
+            {
                 DoSmoothRotation(xAxis);
             }
 
@@ -82,34 +89,42 @@ namespace BNG {
         /// Return a float between -1 and 1 to determine which direction to turn the character
         /// </summary>
         /// <returns></returns>
-        public virtual float GetAxisInput() {
+        public virtual float GetAxisInput()
+        {
 
             // Use the largest, non-zero value we find in our input list
             float lastVal = 0;
 
             // Check Raw Input
-            if(inputAxis != null) {
-                for (int i = 0; i < inputAxis.Count; i++) {
+            if (inputAxis != null)
+            {
+                for (int i = 0; i < inputAxis.Count; i++)
+                {
                     float axisVal = InputBridge.Instance.GetInputAxisValue(inputAxis[i]).x;
 
                     // Always take this value if our last entry was 0. 
-                    if (lastVal == 0) {
+                    if (lastVal == 0)
+                    {
                         lastVal = axisVal;
                     }
-                    else if (axisVal != 0 && axisVal > lastVal) {
+                    else if (axisVal != 0 && axisVal > lastVal)
+                    {
                         lastVal = axisVal;
                     }
                 }
             }
 
             // Check Unity Input Action
-            if(RotateAction != null) {
+            if (RotateAction != null)
+            {
                 float axisVal = RotateAction.action.ReadValue<Vector2>().x;
                 // Always take this value if our last entry was 0. 
-                if (lastVal == 0) {
+                if (lastVal == 0)
+                {
                     lastVal = axisVal;
                 }
-                else if (axisVal != 0 && axisVal > lastVal) {
+                else if (axisVal != 0 && axisVal > lastVal)
+                {
                     lastVal = axisVal;
                 }
             }
@@ -117,21 +132,25 @@ namespace BNG {
             return lastVal;
         }
 
-        public virtual void DoSnapRotation(float xInput) {
+        public virtual void DoSnapRotation(float xInput)
+        {
 
             // Reset rotation amount before retrieving inputs
             rotationAmount = 0;
 
             // Snap Right
-            if (xInput >= 0.1f && previousXInput < 0.1f) {
+            if (xInput >= 0.1f && previousXInput < 0.1f)
+            {
                 rotationAmount += SnapRotationAmount;
             }
             // Snap Left
-            else if (xInput <= -0.1f && previousXInput > -0.1f) {
+            else if (xInput <= -0.1f && previousXInput > -0.1f)
+            {
                 rotationAmount -= SnapRotationAmount;
             }
 
-            if(Math.Abs(rotationAmount) > 0) {
+            if (Math.Abs(rotationAmount) > 0)
+            {
 
                 // Call any Before Rotation Events
                 OnBeforeRotate?.Invoke();
@@ -146,21 +165,25 @@ namespace BNG {
             }
         }
 
-        public virtual bool RecentlySnapTurned() {
+        public virtual bool RecentlySnapTurned()
+        {
             return Time.time - recentSnapTurnTime <= 0.1f;
         }
 
-        public virtual void DoSmoothRotation(float xInput) {
+        public virtual void DoSmoothRotation(float xInput)
+        {
 
             // Reset rotation amount before retrieving inputs
             rotationAmount = 0;
 
             // Smooth Rotate Right
-            if (xInput >= SmoothTurnMinInput) {
+            if (xInput >= SmoothTurnMinInput)
+            {
                 rotationAmount += xInput * SmoothTurnSpeed * Time.deltaTime;
             }
             // Smooth Rotate Left
-            else if (xInput <= -SmoothTurnMinInput) {
+            else if (xInput <= -SmoothTurnMinInput)
+            {
                 rotationAmount += xInput * SmoothTurnSpeed * Time.deltaTime;
             }
 

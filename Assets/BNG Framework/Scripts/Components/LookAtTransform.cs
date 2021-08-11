@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// Rotate this object to point it's transform.forward at an object
     /// </summary>
-    public class LookAtTransform : MonoBehaviour {
+    public class LookAtTransform : MonoBehaviour
+    {
 
         /// <summary>
         /// The object to look at
@@ -26,28 +28,36 @@ namespace BNG {
         public bool UseUpdate = false;
         public bool UseLateUpdate = true;
 
-        void Update() {
-            if (UseUpdate) {
+        void Update()
+        {
+            if (UseUpdate)
+            {
                 lookAt();
             }
         }
 
-        void LateUpdate() {
-            if (UseLateUpdate) {
+        void LateUpdate()
+        {
+            if (UseLateUpdate)
+            {
                 lookAt();
             }
         }
 
-        void lookAt() {
+        void lookAt()
+        {
 
-            if (LookAt != null) {
+            if (LookAt != null)
+            {
 
-                if (UseLerp) {
+                if (UseLerp)
+                {
                     Quaternion rot = Quaternion.LookRotation(LookAt.position - transform.position);
 
                     transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * Speed);
                 }
-                else {
+                else
+                {
                     transform.LookAt(LookAt, transform.forward);
                 }
             }

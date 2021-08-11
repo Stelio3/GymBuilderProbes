@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// This collider will Damage a Damageable object on impact
     /// </summary>
-    public class DamageCollider : MonoBehaviour {
+    public class DamageCollider : MonoBehaviour
+    {
 
         /// <summary>
         /// How much damage to apply to the Damageable object
@@ -44,36 +46,44 @@ namespace BNG {
 
         Damageable thisDamageable;
 
-        private void Start() {
-            if (ColliderRigidbody == null) {
+        private void Start()
+        {
+            if (ColliderRigidbody == null)
+            {
                 ColliderRigidbody = GetComponent<Rigidbody>();
             }
 
             thisDamageable = GetComponent<Damageable>();
         }
 
-        private void OnCollisionEnter(Collision collision) {
+        private void OnCollisionEnter(Collision collision)
+        {
 
-            if(!this.isActiveAndEnabled) {
+            if (!this.isActiveAndEnabled)
+            {
                 return;
             }
 
             OnCollisionEvent(collision);
         }
 
-        public virtual void OnCollisionEvent(Collision collision) {
+        public virtual void OnCollisionEvent(Collision collision)
+        {
             LastDamageForce = collision.impulse.magnitude;
             LastRelativeVelocity = collision.relativeVelocity.magnitude;
 
-            if (LastDamageForce >= MinForce) {
+            if (LastDamageForce >= MinForce)
+            {
 
                 // Can we damage what we hit?
                 Damageable d = collision.gameObject.GetComponent<Damageable>();
-                if (d) {
+                if (d)
+                {
                     d.DealDamage(Damage, collision.GetContact(0).point, collision.GetContact(0).normal, true, gameObject, collision.gameObject);
                 }
                 // Otherwise, can we take damage ourselves from this collision?
-                else if (TakeCollisionDamage && thisDamageable != null) {
+                else if (TakeCollisionDamage && thisDamageable != null)
+                {
                     thisDamageable.DealDamage(CollisionDamage, collision.GetContact(0).point, collision.GetContact(0).normal, true, gameObject, collision.gameObject);
                 }
             }

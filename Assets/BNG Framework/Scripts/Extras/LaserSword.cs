@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// An example Grabbable that adds lots of particles and changes audio pitch on collision.
     /// Press X to activate while in hand
     /// </summary>
-    public class LaserSword : GrabbableEvents {
+    public class LaserSword : GrabbableEvents
+    {
 
         Grabbable grabbable;
 
@@ -17,7 +19,7 @@ namespace BNG {
         public Transform BladeTransform;
         public Transform RaycastTransform;
         public LayerMask LaserCollision;
-        public ParticleSystem CollisionParticle;        
+        public ParticleSystem CollisionParticle;
 
         public bool BladeEnabled = false;
 
@@ -30,26 +32,32 @@ namespace BNG {
         public bool Colliding = false;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             grabbable = GetComponent<Grabbable>();
 
-            if(CollisionParticle != null) {
+            if (CollisionParticle != null)
+            {
                 CollisionParticle.Stop();
-            }            
+            }
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Toggle Saber
-            if (grabbable.BeingHeld && input.BButtonDown) {
+            if (grabbable.BeingHeld && input.BButtonDown)
+            {
                 SaberSwitchOn = !SaberSwitchOn;
             }
 
             // Sheath / Unsheath
-            if (BladeEnabled || SaberSwitchOn) {
+            if (BladeEnabled || SaberSwitchOn)
+            {
                 BladeTransform.localScale = Vector3.Lerp(BladeTransform.localScale, Vector3.one, Time.deltaTime * LaserActivateSpeed);
             }
-            else {
+            else
+            {
                 BladeTransform.localScale = Vector3.Lerp(BladeTransform.localScale, new Vector3(1, 0, 1), Time.deltaTime * LaserActivateSpeed);
             }
 
@@ -58,26 +66,31 @@ namespace BNG {
             checkCollision();
 
             // Raise pitch on collision
-            if(Colliding) {
+            if (Colliding)
+            {
                 CollisionAudio.pitch = 2f;
             }
-            else {
+            else
+            {
                 CollisionAudio.pitch = 1f;
             }
         }
 
-        public override void OnTrigger(float triggerValue) {
+        public override void OnTrigger(float triggerValue)
+        {
 
             BladeEnabled = triggerValue > 0.2f;
 
             base.OnTrigger(triggerValue);
         }
 
-        void checkCollision() {
+        void checkCollision()
+        {
 
             Colliding = false;
 
-            if (BladeEnabled == false && !SaberSwitchOn) {
+            if (BladeEnabled == false && !SaberSwitchOn)
+            {
                 CollisionParticle.Pause();
                 return;
             }
@@ -85,8 +98,10 @@ namespace BNG {
             RaycastHit hit;
             Physics.Raycast(RaycastTransform.position, RaycastTransform.up, out hit, LaserLength, LaserCollision, QueryTriggerInteraction.Ignore);
 
-            if(hit.collider != null) {
-                if (CollisionParticle != null) {
+            if (hit.collider != null)
+            {
+                if (CollisionParticle != null)
+                {
 
                     float distance = Vector3.Distance(hit.point, RaycastTransform.transform.position);
                     float percentage = distance / LaserLength;
@@ -95,7 +110,8 @@ namespace BNG {
                     // Allow collision particle to play
                     CollisionParticle.transform.parent.position = hit.point;
                     CollisionParticle.transform.parent.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-                    if(!CollisionParticle.isPlaying) {
+                    if (!CollisionParticle.isPlaying)
+                    {
                         CollisionParticle.Play();
                     }
 
@@ -105,15 +121,19 @@ namespace BNG {
                     Colliding = true;
                 }
             }
-            else {
-                if (CollisionParticle != null) {
+            else
+            {
+                if (CollisionParticle != null)
+                {
                     CollisionParticle.Pause();
                 }
             }
         }
 
-        void OnDrawGizmosSelected() {
-            if (RaycastTransform != null) {
+        void OnDrawGizmosSelected()
+        {
+            if (RaycastTransform != null)
+            {
                 // Draws a blue line from this transform to the target
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(RaycastTransform.position, RaycastTransform.position + RaycastTransform.up * LaserLength);

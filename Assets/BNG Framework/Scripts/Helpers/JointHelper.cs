@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// Lock joints in place to help with physics handling and parent scaling
     /// </summary>
-    public class JointHelper : MonoBehaviour {        
+    public class JointHelper : MonoBehaviour
+    {
 
         public bool LockXPosition = false;
         public bool LockYPosition = false;
@@ -29,34 +31,41 @@ namespace BNG {
         Vector3 currentScale;
         Vector3 currentRotation;
 
-        void Start() {
+        void Start()
+        {
             initialPosition = transform.localPosition;
             initialRotation = transform.localEulerAngles;
             initialScale = transform.localScale;
         }
 
-        void lockPosition() {
-            if (LockXPosition || LockYPosition || LockZPosition) {
+        void lockPosition()
+        {
+            if (LockXPosition || LockYPosition || LockZPosition)
+            {
                 currentPosition = transform.localPosition;
                 transform.localPosition = new Vector3(LockXPosition ? initialPosition.x : currentPosition.x, LockYPosition ? initialPosition.y : currentPosition.y, LockZPosition ? initialPosition.z : currentPosition.z);
             }
 
-            if (LockXScale || LockYScale || LockZScale) {
+            if (LockXScale || LockYScale || LockZScale)
+            {
                 currentScale = transform.localScale;
                 transform.localScale = new Vector3(LockXScale ? initialScale.x : currentScale.x, LockYScale ? initialScale.y : currentScale.y, LockZScale ? initialScale.z : currentScale.z);
             }
 
-            if (LockXRotation || LockYRotation || LockZRotation) {
+            if (LockXRotation || LockYRotation || LockZRotation)
+            {
                 currentRotation = transform.localEulerAngles;
                 transform.localEulerAngles = new Vector3(LockXRotation ? initialRotation.x : currentRotation.x, LockYRotation ? initialRotation.y : currentRotation.y, LockZRotation ? initialRotation.z : currentRotation.z);
             }
         }
 
-        void LateUpdate() {
+        void LateUpdate()
+        {
             lockPosition();
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
             lockPosition();
         }
     }

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Constrain the rotation based on localEulaerAngles
     /// </summary>
-    public class HandleGFXHelper : MonoBehaviour {
+    public class HandleGFXHelper : MonoBehaviour
+    {
 
         public Transform LookAt;
 
@@ -23,14 +25,17 @@ namespace BNG {
 
         Vector3 initialRot;
 
-        void Start() {
+        void Start()
+        {
             initialRot = transform.localEulerAngles;
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Something is holding the handle. Point at the Grabber
-            if(HandleGrabbable != null && HandleGrabbable.BeingHeld) {
+            if (HandleGrabbable != null && HandleGrabbable.BeingHeld)
+            {
                 Quaternion rot = Quaternion.LookRotation(HandleGrabbable.GetPrimaryGrabber().transform.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * 10);
 
@@ -40,7 +45,8 @@ namespace BNG {
                 transform.localEulerAngles = new Vector3(initialRot.x, constrainedY, initialRot.z);
             }
             // Point at the LookAt Transform
-            else {
+            else
+            {
                 Quaternion rot = Quaternion.LookRotation(LookAt.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime * Speed);
 

@@ -4,8 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace BNG {
-    public class ControllerOffsetHelper : MonoBehaviour {
+namespace BNG
+{
+    public class ControllerOffsetHelper : MonoBehaviour
+    {
 
         public ControllerHand ControllerHand = ControllerHand.Right;
 
@@ -25,17 +27,21 @@ namespace BNG {
 
         public List<ControllerOffset> ControllerOffsets;
 
-        void Start() {
-            if(ControllerOffsets == null) {
+        void Start()
+        {
+            if (ControllerOffsets == null)
+            {
                 ControllerOffsets = new List<ControllerOffset>();
             }
 
             StartCoroutine(checkForController());
         }
 
-        IEnumerator checkForController() {
+        IEnumerator checkForController()
+        {
 
-            while(string.IsNullOrEmpty(thisControllerModel)) {
+            while (string.IsNullOrEmpty(thisControllerModel))
+            {
 
                 thisControllerModel = InputBridge.Instance.GetControllerName();
 
@@ -45,22 +51,26 @@ namespace BNG {
             OnControllerFound();
         }
 
-        public virtual void OnControllerFound() {
+        public virtual void OnControllerFound()
+        {
             // Debug.Log("Controller found : " + thisControllerModel);
 
             DefineControllerOffsets();
 
             thisOffset = GetControllerOffset(thisControllerModel);
 
-            if(thisOffset != null) {
-                if(ControllerHand == ControllerHand.Left) {
+            if (thisOffset != null)
+            {
+                if (ControllerHand == ControllerHand.Left)
+                {
                     OffsetPosition = thisOffset.LeftControllerPositionOffset;
                     OffsetRotation = thisOffset.LeftControllerRotationOffset;
 
                     transform.localPosition += OffsetPosition;
                     transform.localEulerAngles += OffsetRotation;
                 }
-                else if (ControllerHand == ControllerHand.Right) {
+                else if (ControllerHand == ControllerHand.Right)
+                {
                     OffsetPosition = thisOffset.RightControllerPositionOffset;
                     OffsetRotation = thisOffset.RightControlleRotationOffset;
 
@@ -70,11 +80,13 @@ namespace BNG {
             }
         }
 
-        public virtual ControllerOffset GetControllerOffset(string controllerName) {
+        public virtual ControllerOffset GetControllerOffset(string controllerName)
+        {
             return ControllerOffsets.FirstOrDefault(x => thisControllerModel.StartsWith(x.ControllerName));
         }
 
-        public virtual void DefineControllerOffsets() {
+        public virtual void DefineControllerOffsets()
+        {
             ControllerOffsets = new List<ControllerOffset>();
 
             // Sample Offsets :
@@ -86,12 +98,14 @@ namespace BNG {
 
             // Oculus Touch on Oculus SDK is at correct orientation by default
             // Example  : "Oculus Touch Controller - Right"
-            ControllerOffsets.Add(new ControllerOffset() { 
+            ControllerOffsets.Add(new ControllerOffset()
+            {
                 ControllerName = "Oculus Touch Controller",
             });
 
             // Oculus Quest Example : 
-            ControllerOffsets.Add(new ControllerOffset() {
+            ControllerOffsets.Add(new ControllerOffset()
+            {
                 ControllerName = "OpenVR Controller(Oculus Quest",
                 LeftControllerPositionOffset = new Vector3(0.0075f, -0.005f, -0.0525f),
                 RightControllerPositionOffset = new Vector3(-0.0075f, -0.005f, -0.0525f),
@@ -100,18 +114,20 @@ namespace BNG {
             });
 
             // Default all other OpenVR Controllers to about a 40 degree angle
-            ControllerOffsets.Add(new ControllerOffset() {
+            ControllerOffsets.Add(new ControllerOffset()
+            {
                 ControllerName = "OpenVR Controller",
                 LeftControllerPositionOffset = new Vector3(0.0075f, -0.005f, -0.0525f),
                 RightControllerPositionOffset = new Vector3(-0.0075f, -0.005f, -0.0525f),
                 LeftControllerRotationOffset = new Vector3(40.0f, 0.0f, 0.0f),
                 RightControlleRotationOffset = new Vector3(40.0f, 0.0f, 0.0f)
             });
-            
+
         }
     }
 
-    public class ControllerOffset {
+    public class ControllerOffset
+    {
         public string ControllerName { get; set; }
         public Vector3 LeftControllerPositionOffset { get; set; }
         public Vector3 RightControllerPositionOffset { get; set; }

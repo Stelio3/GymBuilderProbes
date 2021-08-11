@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Only show this Hand Transform if it's distance from "OtherHandTransform" is >= "DistanceToShow"
     /// </summary>
-    public class HandRepresentationHelper : MonoBehaviour {
+    public class HandRepresentationHelper : MonoBehaviour
+    {
 
         [Tooltip("The GameObject to be shown or hidden depending on Distance from OtherHandTransform")]
         public Transform HandToToggle;
@@ -19,12 +21,15 @@ namespace BNG {
         [Tooltip("Distance required to show this Transform in meters")]
         public float DistanceToShow = 0.1f;
 
-        void Update() {
+        void Update()
+        {
 
-            if(Vector3.Distance(HandToToggle.position, OtherHandTransform.position) >= DistanceToShow) {
+            if (Vector3.Distance(HandToToggle.position, OtherHandTransform.position) >= DistanceToShow)
+            {
                 HandToToggle.gameObject.SetActive(true);
             }
-            else {
+            else
+            {
                 HandToToggle.gameObject.SetActive(false);
             }
         }

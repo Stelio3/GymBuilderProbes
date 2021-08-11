@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class DetachableLimb : MonoBehaviour {
+namespace BNG
+{
+    public class DetachableLimb : MonoBehaviour
+    {
 
         public Transform ShrinkBone;
 
@@ -11,14 +13,18 @@ namespace BNG {
 
         public GameObject EnableOnDetach;
 
-        public void DoDismemberment(Grabber grabbedBy) {
+        public void DoDismemberment(Grabber grabbedBy)
+        {
 
-            if (ReplaceGrabbableWith && grabbedBy != null) {
-                if (grabbedBy.HeldGrabbable) {
+            if (ReplaceGrabbableWith && grabbedBy != null)
+            {
+                if (grabbedBy.HeldGrabbable)
+                {
                     grabbedBy.HeldGrabbable.DropItem(grabbedBy, true, true);
                 }
 
-                if (ReplaceGrabbableWith) {
+                if (ReplaceGrabbableWith)
+                {
                     ReplaceGrabbableWith.SetActive(true);
                     Grabbable g = ReplaceGrabbableWith.GetComponent<Grabbable>();
                     g.transform.parent = null;
@@ -29,23 +35,28 @@ namespace BNG {
                 }
             }
 
-            if (ShrinkBone) {
+            if (ShrinkBone)
+            {
                 ShrinkBone.localScale = Vector3.zero;
                 ShrinkBone.gameObject.SetActive(false);
             }
 
-            if (EnableOnDetach) {
+            if (EnableOnDetach)
+            {
                 EnableOnDetach.SetActive(true);
             }
         }
 
-        public void ReverseDismemberment() {
-            if (ShrinkBone) {
+        public void ReverseDismemberment()
+        {
+            if (ShrinkBone)
+            {
                 ShrinkBone.gameObject.SetActive(true);
                 ShrinkBone.localScale = Vector3.one;
             }
 
-            if (EnableOnDetach) {
+            if (EnableOnDetach)
+            {
                 EnableOnDetach.SetActive(false);
             }
         }

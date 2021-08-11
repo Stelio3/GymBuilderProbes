@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
-    public class SnapZoneRingHelper : MonoBehaviour {
+namespace BNG
+{
+    public class SnapZoneRingHelper : MonoBehaviour
+    {
 
         /// <summary>
         /// The Snap Zone to respond to. Change size and color of ring if there is a valid grabbable within
@@ -13,7 +15,7 @@ namespace BNG {
 
         public Color RestingColor = Color.gray;
         public Color ValidSnapColor = Color.white;
-       
+
 
         /// <summary>
         /// Scale in Dynamic Pixels Per Unit
@@ -33,14 +35,16 @@ namespace BNG {
 
         public float ScaleSpeed = 50f;
 
-        void Start() {
+        void Start()
+        {
             ringCanvas = GetComponent<CanvasScaler>();
             ringText = GetComponent<Text>();
             nearbyGrabbables = Snap.GetComponent<GrabbablesInTrigger>();
         }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
 
             validSnap = checkIsValidSnap();
 
@@ -52,16 +56,20 @@ namespace BNG {
             ringText.color = validSnap ? ValidSnapColor : RestingColor;
         }
 
-        bool checkIsValidSnap() {
-            if(nearbyGrabbables != null) {
+        bool checkIsValidSnap()
+        {
+            if (nearbyGrabbables != null)
+            {
 
                 // Invalid if we are already  holding something
-                if(Snap.HeldItem != null) {
+                if (Snap.HeldItem != null)
+                {
                     return false;
                 }
 
                 // Can snap if there is a held object inside our trigger
-                if (Snap.ClosestGrabbable != null) {
+                if (Snap.ClosestGrabbable != null)
+                {
                     return true;
                 }
             }

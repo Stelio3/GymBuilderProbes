@@ -6,11 +6,13 @@ using UnityEngine.Events;
 using Invector;
 #endif
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// A basic damage implementation. Call a function on death. Allow for respawning.
     /// </summary>
-    public class Damageable : MonoBehaviour {
+    public class Damageable : MonoBehaviour
+    {
 
         public float Health = 100;
         private float _startingHealth;
@@ -82,21 +84,26 @@ namespace BNG {
         Rigidbody rigid;
         bool initialWasKinematic;
 
-        private void Start() {
+        private void Start()
+        {
             _startingHealth = Health;
             rigid = GetComponent<Rigidbody>();
-            if (rigid) {
+            if (rigid)
+            {
                 initialWasKinematic = rigid.isKinematic;
             }
         }
 
-        public virtual void DealDamage(float damageAmount) {
+        public virtual void DealDamage(float damageAmount)
+        {
             DealDamage(damageAmount, transform.position);
         }
 
-        public virtual void DealDamage(float damageAmount, Vector3? hitPosition = null, Vector3? hitNormal = null, bool reactToHit = true, GameObject sender = null, GameObject receiver = null) {
+        public virtual void DealDamage(float damageAmount, Vector3? hitPosition = null, Vector3? hitNormal = null, bool reactToHit = true, GameObject sender = null, GameObject receiver = null)
+        {
 
-            if (destroyed) {
+            if (destroyed)
+            {
                 return;
             }
 
@@ -117,75 +124,90 @@ namespace BNG {
             }
 #endif
 
-            if (Health <= 0) {
+            if (Health <= 0)
+            {
                 DestroyThis();
             }
         }
 
-        public virtual void DestroyThis() {
+        public virtual void DestroyThis()
+        {
             Health = 0;
             destroyed = true;
 
             // Activate
-            foreach (var go in ActivateGameObjectsOnDeath) {
+            foreach (var go in ActivateGameObjectsOnDeath)
+            {
                 go.SetActive(true);
             }
 
             // Deactivate
-            foreach (var go in DeactivateGameObjectsOnDeath) {
+            foreach (var go in DeactivateGameObjectsOnDeath)
+            {
                 go.SetActive(false);
             }
 
             // Colliders
-            foreach (var col in DeactivateCollidersOnDeath) {
+            foreach (var col in DeactivateCollidersOnDeath)
+            {
                 col.enabled = false;
             }
 
             // Spawn object
-            if (SpawnOnDeath != null) {
+            if (SpawnOnDeath != null)
+            {
                 var go = GameObject.Instantiate(SpawnOnDeath);
                 go.transform.position = transform.position;
                 go.transform.rotation = transform.rotation;
             }
 
             // Force to kinematic if rigid present
-            if (rigid) {
+            if (rigid)
+            {
                 rigid.isKinematic = true;
             }
 
             // Invoke Callback Event
-            if (onDestroyed != null) {
+            if (onDestroyed != null)
+            {
                 onDestroyed.Invoke();
             }
 
-            if (DestroyOnDeath) {
+            if (DestroyOnDeath)
+            {
                 Destroy(this.gameObject, DestroyDelay);
             }
-            else if (Respawn) {
+            else if (Respawn)
+            {
                 StartCoroutine(RespawnRoutine(RespawnTime));
             }
 
             // Drop this if the player is holding it
             Grabbable grab = GetComponent<Grabbable>();
-            if (DropOnDeath && grab != null && grab.BeingHeld) {
+            if (DropOnDeath && grab != null && grab.BeingHeld)
+            {
                 grab.DropItem(false, true);
             }
 
             // Remove an decals that may have been parented to this object
-            if (RemoveBulletHolesOnDeath) {
+            if (RemoveBulletHolesOnDeath)
+            {
                 BulletHole[] holes = GetComponentsInChildren<BulletHole>();
-                foreach (var hole in holes) {
+                foreach (var hole in holes)
+                {
                     GameObject.Destroy(hole.gameObject);
                 }
 
                 Transform decal = transform.Find("Decal");
-                if (decal) {
+                if (decal)
+                {
                     GameObject.Destroy(decal.gameObject);
                 }
             }
         }
 
-        IEnumerator RespawnRoutine(float seconds) {
+        IEnumerator RespawnRoutine(float seconds)
+        {
 
             yield return new WaitForSeconds(seconds);
 
@@ -193,25 +215,30 @@ namespace BNG {
             destroyed = false;
 
             // Deactivate
-            foreach (var go in ActivateGameObjectsOnDeath) {
+            foreach (var go in ActivateGameObjectsOnDeath)
+            {
                 go.SetActive(false);
             }
 
             // Re-Activate
-            foreach (var go in DeactivateGameObjectsOnDeath) {
+            foreach (var go in DeactivateGameObjectsOnDeath)
+            {
                 go.SetActive(true);
             }
-            foreach (var col in DeactivateCollidersOnDeath) {
+            foreach (var col in DeactivateCollidersOnDeath)
+            {
                 col.enabled = true;
             }
 
             // Reset kinematic property if applicable
-            if (rigid) {
+            if (rigid)
+            {
                 rigid.isKinematic = initialWasKinematic;
             }
 
             // Call events
-            if (onRespawn != null) {
+            if (onRespawn != null)
+            {
                 onRespawn.Invoke();
             }
         }

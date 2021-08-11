@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class IKDummy : MonoBehaviour {
+namespace BNG
+{
+    public class IKDummy : MonoBehaviour
+    {
 
         public Transform ThisEyeBone;
 
@@ -34,12 +36,14 @@ namespace BNG {
         Transform cam;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             cam = Camera.main.transform;
             animator = GetComponent<Animator>();
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
 
-            if (PlayerTransform == null) {
+            if (PlayerTransform == null)
+            {
                 PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
                 HeadFollow = GameObject.Find("CenterEyeAnchor").transform;
                 LeftHandFollow = GameObject.Find("LeftControllerAnchor").transform;
@@ -55,7 +59,8 @@ namespace BNG {
             lookatDummy = SetParentAndLocalPosRot("lookatDummy", transform);
         }
 
-        public Transform SetParentAndLocalPosRot(string transformName, Transform parentToSet) {
+        public Transform SetParentAndLocalPosRot(string transformName, Transform parentToSet)
+        {
             Transform theTransform = new GameObject(transformName).transform;
             theTransform.parent = parentToSet;
             theTransform.localPosition = Vector3.zero;
@@ -68,9 +73,11 @@ namespace BNG {
         Quaternion leftHandLocalRot, rightHandLocalRot;
 
         // Update is called once per frame
-        void LateUpdate() {
+        void LateUpdate()
+        {
 
-            if(HeadFollow == null || PlayerTransform == null) {
+            if (HeadFollow == null || PlayerTransform == null)
+            {
                 return;
             }
 
@@ -106,7 +113,8 @@ namespace BNG {
         public Vector3 LeftHandsOffset = Vector3.zero;
         public Vector3 RightHandsOffset = Vector3.zero;
 
-        void OnAnimatorIK() {
+        void OnAnimatorIK()
+        {
             // Set weights for all IK goals
             animator.SetLookAtWeight(1);
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
@@ -116,7 +124,7 @@ namespace BNG {
 
             animator.SetLookAtPosition(cam.position);
 
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, ThisEyeBone.TransformPoint(leftHandLocalPos + LeftHandsOffset)) ;
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, ThisEyeBone.TransformPoint(leftHandLocalPos + LeftHandsOffset));
             animator.SetIKRotation(AvatarIKGoal.LeftHand, transform.rotation * leftHandDummy.localRotation);
 
             animator.SetIKPosition(AvatarIKGoal.RightHand, ThisEyeBone.TransformPoint(rightHandLocalPos + RightHandsOffset));

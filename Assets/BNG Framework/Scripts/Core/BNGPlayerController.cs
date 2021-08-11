@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
-    public enum LocomotionType {
+    public enum LocomotionType
+    {
         Teleport,
         SmoothLocomotion,
         None
@@ -14,7 +16,8 @@ namespace BNG {
     /// <summary>
     /// The BNGPlayerController handles basic player movement
     /// </summary>
-    public class BNGPlayerController : MonoBehaviour {
+    public class BNGPlayerController : MonoBehaviour
+    {
 
         [Header("Camera Options : ")]
 
@@ -56,7 +59,7 @@ namespace BNG {
         /// Maximum Height our Player's capsule collider can be (in meters)
         /// </summary>
         [Tooltip("Maximum Height our Player's capsule collider can be (in meters)")]
-        public float MaximumCapsuleHeight = 3f;        
+        public float MaximumCapsuleHeight = 3f;
 
         [HideInInspector]
         public float LastTeleportTime;
@@ -74,7 +77,7 @@ namespace BNG {
         [HideInInspector]
         public float CameraHeight;
 
-        [Header("Misc : ")]                
+        [Header("Misc : ")]
 
         [Tooltip("If true the Camera will be offset by ElevateCameraHeight if no HMD is active or connected. This prevents the camera from falling to the floor and can allow you to use keyboard controls.")]
         public bool ElevateCameraIfNoHMDPresent = true;
@@ -114,29 +117,34 @@ namespace BNG {
 
         private Vector3 _initialPosition;
 
-        void Start() {
+        void Start()
+        {
             characterController = GetComponentInChildren<CharacterController>();
             smoothLocomotion = GetComponentInChildren<SmoothLocomotion>();
 
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
-            if (characterController) {
+            if (characterController)
+            {
                 _initialPosition = characterController.transform.position;
             }
-            else {
+            else
+            {
                 _initialPosition = transform.position;
             }
 
             playerClimbing = GetComponentInChildren<PlayerClimbing>();
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Sanity check for camera
-            if (mainCamera == null && Camera.main != null) {
+            if (mainCamera == null && Camera.main != null)
+            {
                 mainCamera = Camera.main.transform;
             }
-            
+
             // Update the Character Controller's Capsule Height to match our Camera position
             UpdateCharacterHeight();
 
@@ -148,16 +156,19 @@ namespace BNG {
 
             CheckCharacterCollisionMove();
 
-            if (characterController) {
+            if (characterController)
+            {
 
                 // Align TrackingSpace with Camera
-                if (RotateCharacterWithCamera) {
+                if (RotateCharacterWithCamera)
+                {
                     RotateTrackingSpaceToCamera();
                 }
             }
         }
-       
-        void FixedUpdate() {
+
+        void FixedUpdate()
+        {
 
             UpdateDistanceFromGround();
 
@@ -169,24 +180,30 @@ namespace BNG {
         /// Player should never go above or below 6000 units as physics can start to jitter due to floating point precision
         /// Maybe they clipped through a floor, touched a set "lava" height, etc.
         /// </summary>
-        public virtual void CheckPlayerElevationRespawn() {
+        public virtual void CheckPlayerElevationRespawn()
+        {
 
             // No need for elevation checks
-            if(MinElevation == 0 && MaxElevation == 0) {
+            if (MinElevation == 0 && MaxElevation == 0)
+            {
                 return;
             }
 
             // Check Elevation based on Character Controller height
-            if(characterController != null && (characterController.transform.position.y < MinElevation || characterController.transform.position.y > MaxElevation)) {
+            if (characterController != null && (characterController.transform.position.y < MinElevation || characterController.transform.position.y > MaxElevation))
+            {
                 Debug.Log("Player out of bounds; Returning to initial position.");
                 characterController.transform.position = _initialPosition;
             }
         }
 
-        public virtual void UpdateDistanceFromGround() {
+        public virtual void UpdateDistanceFromGround()
+        {
 
-            if(characterController) {
-                if (Physics.Raycast(characterController.transform.position, -characterController.transform.up, out groundHit, 20, GroundedLayers, QueryTriggerInteraction.Ignore)) {
+            if (characterController)
+            {
+                if (Physics.Raycast(characterController.transform.position, -characterController.transform.up, out groundHit, 20, GroundedLayers, QueryTriggerInteraction.Ignore))
+                {
                     DistanceFromGround = Vector3.Distance(characterController.transform.position, groundHit.point);
                     DistanceFromGround += characterController.center.y;
                     DistanceFromGround -= (characterController.height * 0.5f) + characterController.skinWidth;
@@ -194,24 +211,29 @@ namespace BNG {
                     // Round to nearest thousandth
                     DistanceFromGround = (float)Math.Round(DistanceFromGround * 1000f) / 1000f;
                 }
-                else {
+                else
+                {
                     DistanceFromGround = 9999f;
                 }
             }
             // No CharacterController found. Update Distance based on current transform position
-            else {
-                if (Physics.Raycast(transform.position, transform.up, out groundHit, 20, GroundedLayers, QueryTriggerInteraction.Ignore)) {
+            else
+            {
+                if (Physics.Raycast(transform.position, transform.up, out groundHit, 20, GroundedLayers, QueryTriggerInteraction.Ignore))
+                {
                     DistanceFromGround = Vector3.Distance(transform.position, groundHit.point);
                     // Round to nearest thousandth
                     DistanceFromGround = (float)Math.Round(DistanceFromGround * 1000f) / 1000f;
                 }
-                else {
+                else
+                {
                     DistanceFromGround = 9999f;
                 }
             }
         }
 
-        public virtual void RotateTrackingSpaceToCamera() {
+        public virtual void RotateTrackingSpaceToCamera()
+        {
             Vector3 initialPosition = TrackingSpace.position;
             Quaternion initialRotation = TrackingSpace.rotation;
 
@@ -223,53 +245,64 @@ namespace BNG {
             TrackingSpace.rotation = initialRotation;
         }
 
-        public virtual void UpdateCameraRigPosition() {
+        public virtual void UpdateCameraRigPosition()
+        {
 
             float yPos = CharacterControllerYOffset;
 
             // Get character controller position based on the height and center of the capsule
-            if (characterController != null) {
+            if (characterController != null)
+            {
                 yPos = -(0.5f * characterController.height) + characterController.center.y + CharacterControllerYOffset;
             }
-            
+
             // Offset the capsule a bit while climbing. This allows the player to more easily hoist themselves onto a ledge / platform.
-            if (playerClimbing != null && playerClimbing.GrippingAtLeastOneClimbable()) {
+            if (playerClimbing != null && playerClimbing.GrippingAtLeastOneClimbable())
+            {
                 yPos -= 0.25f;
             }
 
             // If no HMD is active, bump our rig up a bit so it doesn't sit on the floor
-            if(!InputBridge.Instance.HMDActive && ElevateCameraIfNoHMDPresent) {
+            if (!InputBridge.Instance.HMDActive && ElevateCameraIfNoHMDPresent)
+            {
                 yPos += ElevateCameraHeight;
             }
 
             CameraRig.transform.localPosition = new Vector3(CameraRig.transform.localPosition.x, yPos, CameraRig.transform.localPosition.z);
         }
 
-        public virtual void UpdateCharacterHeight() {
+        public virtual void UpdateCharacterHeight()
+        {
             float minHeight = MinimumCapsuleHeight;
             // Increase Min Height if no HMD is present. This prevents our character from being really small
-            if(!InputBridge.Instance.HMDActive && minHeight < 1f) {
+            if (!InputBridge.Instance.HMDActive && minHeight < 1f)
+            {
                 minHeight = 1f;
             }
 
             // Update Character Height based on Camera Height.
-            if(characterController) {
+            if (characterController)
+            {
                 characterController.height = Mathf.Clamp(CameraHeight + CharacterControllerYOffset - characterController.skinWidth, minHeight, MaximumCapsuleHeight);
 
                 // If we are climbing set the capsule center upwards
-                if (playerClimbing != null && playerClimbing.GrippingAtLeastOneClimbable()) {
+                if (playerClimbing != null && playerClimbing.GrippingAtLeastOneClimbable())
+                {
                     characterController.height = playerClimbing.ClimbingCapsuleHeight;
                     characterController.center = new Vector3(0, playerClimbing.ClimbingCapsuleCenter, 0);
                 }
-                else {
+                else
+                {
                     characterController.center = new Vector3(0, -0.25f, 0);
                 }
             }
         }
 
-        public virtual void UpdateCameraHeight() {
+        public virtual void UpdateCameraHeight()
+        {
             // update camera height
-            if (CenterEyeAnchor) {
+            if (CenterEyeAnchor)
+            {
                 CameraHeight = CenterEyeAnchor.localPosition.y;
             }
         }
@@ -277,26 +310,31 @@ namespace BNG {
         /// <summary>
         /// Move the character controller to new camera position
         /// </summary>
-        public virtual void CheckCharacterCollisionMove() {
+        public virtual void CheckCharacterCollisionMove()
+        {
 
-            if(!MoveCharacterWithCamera || characterController == null) {
+            if (!MoveCharacterWithCamera || characterController == null)
+            {
                 return;
             }
-            
+
             Vector3 initialCameraRigPosition = CameraRig.transform.position;
             Vector3 cameraPosition = CenterEyeAnchor.position;
             Vector3 delta = cameraPosition - characterController.transform.position;
-            
+
             // Ignore Y position
             delta.y = 0;
 
             // Move Character Controller and Camera Rig to Camera's delta
-            if (delta.magnitude > 0.0f) {
+            if (delta.magnitude > 0.0f)
+            {
 
-                if(smoothLocomotion) {
+                if (smoothLocomotion)
+                {
                     smoothLocomotion.MoveCharacter(delta);
                 }
-                else if(characterController) {
+                else if (characterController)
+                {
                     characterController.Move(delta);
                 }
 
@@ -305,11 +343,14 @@ namespace BNG {
             }
         }
 
-        public bool IsGrounded() {
+        public bool IsGrounded()
+        {
 
             // Immediately check for a positive from a CharacterController if it's present
-            if(characterController != null) {
-                if(characterController.isGrounded) {
+            if (characterController != null)
+            {
+                if (characterController.isGrounded)
+                {
                     return true;
                 }
             }

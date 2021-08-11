@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Apply Gravity to a CharacterController or RigidBody
     /// </summary>
-    public class PlayerGravity : MonoBehaviour {
+    public class PlayerGravity : MonoBehaviour
+    {
 
         [Tooltip("If true, will apply gravity to the CharacterController component, or RigidBody if no CC is present.")]
 
@@ -27,7 +29,8 @@ namespace BNG {
         // Save us a null check in FixedUpdate
         private bool _validRigidBody = false;
 
-        void Start() {
+        void Start()
+        {
             characterController = GetComponent<CharacterController>();
             smoothLocomotion = GetComponentInChildren<SmoothLocomotion>();
             playerRigidbody = GetComponent<Rigidbody>();
@@ -38,43 +41,53 @@ namespace BNG {
         }
 
         // Apply Gravity in LateUpdate to ensure it gets applied after any character movement is applied in Update
-        void LateUpdate() {
+        void LateUpdate()
+        {
 
             // Apply Gravity to Character Controller
-            if (GravityEnabled && characterController != null && characterController.enabled) {
+            if (GravityEnabled && characterController != null && characterController.enabled)
+            {
                 _movementY += Gravity.y * Time.deltaTime;
 
                 // Default to smooth locomotion
-                if(smoothLocomotion) {
+                if (smoothLocomotion)
+                {
                     smoothLocomotion.MoveCharacter(new Vector3(0, _movementY, 0) * Time.deltaTime);
                 }
                 // Fallback to character controller
-                else if(characterController) {
+                else if (characterController)
+                {
                     characterController.Move(new Vector3(0, _movementY, 0) * Time.deltaTime);
                 }
-                
+
                 // Reset Y movement if we are grounded
-                if (characterController.isGrounded) {
+                if (characterController.isGrounded)
+                {
                     _movementY = 0;
                 }
             }
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
             // Apply Gravity to Rigidbody Controller
-            if (_validRigidBody && GravityEnabled) {
+            if (_validRigidBody && GravityEnabled)
+            {
                 playerRigidbody.AddForce(Gravity * (playerRigidbody.mass * playerRigidbody.mass));
             }
         }
 
-        public void ToggleGravity(bool gravityOn) {
+        public void ToggleGravity(bool gravityOn)
+        {
 
             GravityEnabled = gravityOn;
 
-            if (gravityOn) {
+            if (gravityOn)
+            {
                 Gravity = _initialGravityModifier;
             }
-            else {
+            else
+            {
                 Gravity = Vector3.zero;
             }
         }

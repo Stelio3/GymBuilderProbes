@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace BNG {
+namespace BNG
+{
 
-    public class HandPhysics : MonoBehaviour {
+    public class HandPhysics : MonoBehaviour
+    {
 
         /// <summary>
         /// This is the object our physical hand should try to follow / match
@@ -40,8 +42,10 @@ namespace BNG {
         public Transform HandModel;
         public Transform HandModelOffset;
 
-        public bool HoldingObject {
-            get {
+        public bool HoldingObject
+        {
+            get
+            {
                 return ThisGrabber != null && ThisGrabber.HeldGrabbable != null;
             }
         }
@@ -60,18 +64,20 @@ namespace BNG {
 
         bool wasHoldingObject = false;
 
-        void Start() {
+        void Start()
+        {
 
             rigid = GetComponent<Rigidbody>();
             configJoint = GetComponent<ConfigurableJoint>();
             line = GetComponent<LineRenderer>();
 
             // Create Attach Point based on current position and rotation
-            if(AttachTo == null) {
+            if (AttachTo == null)
+            {
                 AttachTo = new GameObject().transform;
                 AttachTo.name = "AttachToTransform";
             }
-            
+
             AttachTo.parent = transform.parent;
             AttachTo.SetPositionAndRotation(transform.position, transform.rotation);
 
@@ -93,7 +99,8 @@ namespace BNG {
             transform.parent = null;
         }
 
-        void Update() {
+        void Update()
+        {
             updateHandGraphics();
 
             // Line indicating our object is far away
@@ -103,7 +110,8 @@ namespace BNG {
             checkBreakDistance();
 
             // Our root object is disabled
-            if (!AttachTo.gameObject.activeSelf) {
+            if (!AttachTo.gameObject.activeSelf)
+            {
                 transform.parent = AttachTo;
                 transform.localPosition = Vector3.zero;
                 transform.localRotation = Quaternion.identity;
@@ -111,10 +119,12 @@ namespace BNG {
             }
 
             // If we are holding something, move the hands in Update, ignoring physics. 
-            if (HoldingObject) {
+            if (HoldingObject)
+            {
 
                 // Call On Grabbed Event if our first grab
-                if (!wasHoldingObject) {
+                if (!wasHoldingObject)
+                {
                     OnGrabbedObject(ThisGrabber.HeldGrabbable);
                 }
 
@@ -122,8 +132,10 @@ namespace BNG {
                 //transform.position = AttachTo.position;
                 //transform.rotation = AttachTo.rotation;
             }
-            else {
-                if (wasHoldingObject) {
+            else
+            {
+                if (wasHoldingObject)
+                {
                     OnReleasedObject(heldGrabbable);
                 }
             }
@@ -131,14 +143,17 @@ namespace BNG {
             wasHoldingObject = HoldingObject;
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
 
             // Move object directly to our hand since the hand joint is controlling movement now
-            if (HoldingObject && ThisGrabber.HeldGrabbable.DidParentHands) {
+            if (HoldingObject && ThisGrabber.HeldGrabbable.DidParentHands)
+            {
                 rigid.MovePosition(AttachTo.position);
                 rigid.MoveRotation(AttachTo.rotation);
             }
-            else {
+            else
+            {
                 // Move using Velocity
                 Vector3 positionDelta = AttachTo.position - transform.position;
                 rigid.velocity = Vector3.MoveTowards(rigid.velocity, (positionDelta * HandVelocity) * Time.fixedDeltaTime, 5f);
@@ -150,11 +165,13 @@ namespace BNG {
                 rotationDelta.ToAngleAxis(out angle, out axis);
 
                 // Fix rotation angle
-                if (angle > 180) {
+                if (angle > 180)
+                {
                     angle -= 360;
                 }
 
-                if (angle != 0) {
+                if (angle != 0)
+                {
                     Vector3 angularTarget = angle * axis;
                     angularTarget = (angularTarget * 60f) * Time.fixedDeltaTime;
                     rigid.angularVelocity = Vector3.MoveTowards(rigid.angularVelocity, angularTarget, 20f);
@@ -165,15 +182,19 @@ namespace BNG {
             collisions = new List<Collider>();
         }
 
-        void initHandColliders() {
+        void initHandColliders()
+        {
             handColliders = new List<Collider>();
 
             // Only accept non-trigger colliders.
             var tempColliders = GetComponentsInChildren<Collider>(false);
-            for (int x = 0; x < tempColliders.Length; x++) {
+            for (int x = 0; x < tempColliders.Length; x++)
+            {
                 Collider c = tempColliders[x];
-                if (!c.isTrigger && c.enabled) {
-                    if (ColliderMaterial) {
+                if (!c.isTrigger && c.enabled)
+                {
+                    if (ColliderMaterial)
+                    {
                         c.material = ColliderMaterial;
                     }
 
@@ -182,40 +203,51 @@ namespace BNG {
             }
 
             // Ignore all other hand collider
-            for (int x = 0; x < handColliders.Count; x++) {
+            for (int x = 0; x < handColliders.Count; x++)
+            {
                 Collider thisCollider = handColliders[x];
 
-                for (int y = 0; y < handColliders.Count; y++) {
+                for (int y = 0; y < handColliders.Count; y++)
+                {
                     Physics.IgnoreCollision(thisCollider, handColliders[y], true);
                 }
             }
         }
 
         // Line indicating our object is far away
-        void drawDistanceLine() {
-            if (line) {
-                if (Vector3.Distance(transform.position, AttachTo.position) > 0.05f) {
+        void drawDistanceLine()
+        {
+            if (line)
+            {
+                if (Vector3.Distance(transform.position, AttachTo.position) > 0.05f)
+                {
                     line.enabled = true;
                     line.SetPosition(0, transform.position);
                     line.SetPosition(1, AttachTo.position);
                 }
-                else {
+                else
+                {
                     line.enabled = false;
                 }
             }
-        }        
+        }
 
-        void checkBreakDistance() {
-            if (SnapBackDistance > 0 && Vector3.Distance(transform.position, AttachTo.position) > SnapBackDistance) {
+        void checkBreakDistance()
+        {
+            if (SnapBackDistance > 0 && Vector3.Distance(transform.position, AttachTo.position) > SnapBackDistance)
+            {
                 transform.position = AttachTo.position;
             }
         }
 
-        void updateHandGraphics() {
+        void updateHandGraphics()
+        {
 
             bool holdingObject = ThisGrabber.HeldGrabbable != null;
-            if (!holdingObject) {
-                if (HandModelOffset) {
+            if (!holdingObject)
+            {
+                if (HandModelOffset)
+                {
                     HandModelOffset.parent = HandModel;
                     HandModelOffset.localPosition = Vector3.zero;
                     HandModelOffset.localEulerAngles = Vector3.zero;
@@ -225,14 +257,16 @@ namespace BNG {
             }
 
             // Position Hand Model
-            if (HandModelOffset && ThisGrabber.HandsGraphics) {
+            if (HandModelOffset && ThisGrabber.HandsGraphics)
+            {
                 HandModelOffset.parent = ThisGrabber.HandsGraphics;
                 HandModelOffset.localPosition = localHandOffset;
                 HandModelOffset.localEulerAngles = localHandOffsetRotation;
             }
         }
 
-        IEnumerator UnignoreAllCollisions() {
+        IEnumerator UnignoreAllCollisions()
+        {
 
             var thisGrabbable = heldGrabbable;
             heldGrabbable = null;
@@ -243,44 +277,56 @@ namespace BNG {
             IgnoreGrabbableCollisions(thisGrabbable, false);
         }
 
-        public void IgnoreGrabbableCollisions(Grabbable grab, bool ignorePhysics) {
+        public void IgnoreGrabbableCollisions(Grabbable grab, bool ignorePhysics)
+        {
 
             var grabColliders = grab.GetComponentsInChildren<Collider>();
 
             // Ignore all other hand collider
-            for (int x = 0; x < grabColliders.Length; x++) {
+            for (int x = 0; x < grabColliders.Length; x++)
+            {
                 Collider thisGrabCollider = grabColliders[x];
 
-                for (int y = 0; y < handColliders.Count; y++) {
+                for (int y = 0; y < handColliders.Count; y++)
+                {
                     Physics.IgnoreCollision(thisGrabCollider, handColliders[y], ignorePhysics);
                 }
             }
         }
 
-        public void DisableHandColliders() {
-            for (int x = 0; x < handColliders.Count; x++) {
-                if(handColliders[x] != null && handColliders[x].enabled) {
+        public void DisableHandColliders()
+        {
+            for (int x = 0; x < handColliders.Count; x++)
+            {
+                if (handColliders[x] != null && handColliders[x].enabled)
+                {
                     handColliders[x].enabled = false;
                 }
             }
         }
 
-        public void EnableHandColliders() {
-            for (int x = 0; x < handColliders.Count; x++) {
-                if (handColliders[x] != null && handColliders[x].enabled == false) {
+        public void EnableHandColliders()
+        {
+            for (int x = 0; x < handColliders.Count; x++)
+            {
+                if (handColliders[x] != null && handColliders[x].enabled == false)
+                {
                     handColliders[x].enabled = true;
                 }
             }
         }
 
-        public virtual void OnGrabbedObject(Grabbable grabbedObject) {
+        public virtual void OnGrabbedObject(Grabbable grabbedObject)
+        {
             heldGrabbable = grabbedObject;
 
-            if (DisableHandCollidersOnGrab) {
+            if (DisableHandCollidersOnGrab)
+            {
                 DisableHandColliders();
             }
             // Make the hand ignore the grabbable's colliders
-            else {
+            else
+            {
 
                 IgnoreGrabbableCollisions(heldGrabbable, true);
             }
@@ -288,24 +334,30 @@ namespace BNG {
 
         Transform _priorParent;
 
-        public virtual void LockLocalPosition() {
+        public virtual void LockLocalPosition()
+        {
             _priorParent = transform.parent;
             transform.parent = AttachTo;
         }
 
-        public virtual void UnlockLocalPosition() {
+        public virtual void UnlockLocalPosition()
+        {
             transform.parent = _priorParent;
         }
 
-        public virtual void OnReleasedObject(Grabbable grabbedObject) {
+        public virtual void OnReleasedObject(Grabbable grabbedObject)
+        {
 
-            if (heldGrabbable != null) {
+            if (heldGrabbable != null)
+            {
                 // Make sure hand colliders come back
-                if (DisableHandCollidersOnGrab) {
+                if (DisableHandCollidersOnGrab)
+                {
                     EnableHandColliders();
                 }
                 // Unignore the grabbable's colliders
-                else {
+                else
+                {
                     StartCoroutine(UnignoreAllCollisions());
                 }
             }
@@ -313,11 +365,13 @@ namespace BNG {
             heldGrabbable = null;
         }
 
-        void OnEnable() {
+        void OnEnable()
+        {
             ThisGrabber.enabled = true;
             DisableGrabber.enabled = false;
 
-            if (ThisRemoteGrabber) {
+            if (ThisRemoteGrabber)
+            {
                 ThisRemoteGrabber.enabled = true;
                 DisableRemoteGrabber.enabled = false;
             }
@@ -335,33 +389,41 @@ namespace BNG {
 
         Vector3 _priorLocalOffsetPosition;
 
-        public virtual void LockOffset() {
+        public virtual void LockOffset()
+        {
             _priorLocalOffsetPosition = AttachTo.InverseTransformPoint(transform.position);
         }
 
-        public virtual void UnlockOffset() {
+        public virtual void UnlockOffset()
+        {
             Vector3 dest = AttachTo.TransformPoint(_priorLocalOffsetPosition);
             float dist = Vector3.Distance(transform.position, dest);
             // Only move if gone far enough
-            if (dist > 0.0005f) {
+            if (dist > 0.0005f)
+            {
                 transform.position = dest;
             }
         }
 
-        void OnDisable() {
-            if (ThisGrabber) {
+        void OnDisable()
+        {
+            if (ThisGrabber)
+            {
                 ThisGrabber.enabled = false;
             }
 
-            if (DisableGrabber) {
+            if (DisableGrabber)
+            {
                 DisableGrabber.enabled = true;
             }
 
-            if (ThisRemoteGrabber) {
+            if (ThisRemoteGrabber)
+            {
                 ThisRemoteGrabber.enabled = false;
             }
 
-            if (DisableRemoteGrabber) {
+            if (DisableRemoteGrabber)
+            {
                 DisableRemoteGrabber.enabled = true;
             }
 
@@ -376,17 +438,21 @@ namespace BNG {
             SmoothLocomotion.OnAfterMove -= UnlockOffset;
         }
 
-        void OnCollisionStay(Collision collision) {
-            for (int x = 0; x < collision.contacts.Length; x++) {
+        void OnCollisionStay(Collision collision)
+        {
+            for (int x = 0; x < collision.contacts.Length; x++)
+            {
                 ContactPoint contact = collision.contacts[x];
                 // Keep track of how many objects we are colliding with
-                if (IsValidCollision(contact.otherCollider) && !collisions.Contains(contact.otherCollider)) {
+                if (IsValidCollision(contact.otherCollider) && !collisions.Contains(contact.otherCollider))
+                {
                     collisions.Add(contact.otherCollider);
                 }
             }
         }
 
-        public bool IsValidCollision(Collider col) {
+        public bool IsValidCollision(Collider col)
+        {
             return true;
         }
     }

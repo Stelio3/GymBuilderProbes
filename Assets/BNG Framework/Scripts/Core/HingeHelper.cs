@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
-    public class HingeHelper : GrabbableEvents {
+namespace BNG
+{
+    public class HingeHelper : GrabbableEvents
+    {
 
         [Tooltip("If True the SnapGraphics tranfsorm will have its local Y rotation snapped to the nearest degrees specified in SnapDegrees")]
         public bool SnapToDegrees = false;
@@ -35,17 +37,20 @@ namespace BNG {
         private float _lastDegrees = 0;
         private float _lastSnapDegrees = 0;
 
-        void Start() {
+        void Start()
+        {
             rigid = GetComponent<Rigidbody>();
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Update degrees our transform is representing
             float degrees = getSmoothedValue(transform.localEulerAngles.y);
 
             // Call event if necessary
-            if(degrees != _lastDegrees) {
+            if (degrees != _lastDegrees)
+            {
                 OnHingeChange(degrees);
             }
 
@@ -55,61 +60,75 @@ namespace BNG {
             float nearestSnap = getSmoothedValue(Mathf.Round(degrees / SnapDegrees) * SnapDegrees);
 
             // If snapping update graphics and call events
-            if (SnapToDegrees) {
+            if (SnapToDegrees)
+            {
 
                 // Check for snap event
-                if (nearestSnap != _lastSnapDegrees) {
+                if (nearestSnap != _lastSnapDegrees)
+                {
                     OnSnapChange(nearestSnap);
                 }
                 _lastSnapDegrees = nearestSnap;
             }
 
             // Update label used for display or debugging
-            if (LabelToUpdate) {
+            if (LabelToUpdate)
+            {
                 float val = getSmoothedValue(SnapToDegrees ? nearestSnap : degrees);
                 LabelToUpdate.text = val.ToString("n0");
             }
         }
 
-        public void OnSnapChange(float yAngle) {
+        public void OnSnapChange(float yAngle)
+        {
 
-            if(SnapGraphics) {
+            if (SnapGraphics)
+            {
                 SnapGraphics.localEulerAngles = new Vector3(SnapGraphics.localEulerAngles.x, yAngle, SnapGraphics.localEulerAngles.z);
             }
 
-            if(SnapSound) {
+            if (SnapSound)
+            {
                 VRUtils.Instance.PlaySpatialClipAt(SnapSound, transform.position, 1f, 1f, RandomizePitch);
             }
 
-            if(grab.BeingHeld && SnapHaptics > 0) {
-                InputBridge.Instance.VibrateController(0.5f, SnapHaptics, 0.01f, thisGrabber.HandSide);                    
+            if (grab.BeingHeld && SnapHaptics > 0)
+            {
+                InputBridge.Instance.VibrateController(0.5f, SnapHaptics, 0.01f, thisGrabber.HandSide);
             }
 
             // Call event
-            if (onHingeSnapChange != null) {
+            if (onHingeSnapChange != null)
+            {
                 onHingeSnapChange.Invoke(yAngle);
             }
         }
 
-        public override void OnRelease() {
+        public override void OnRelease()
+        {
             rigid.velocity = Vector3.zero;
             rigid.angularVelocity = Vector3.zero;
 
             base.OnRelease();
         }
 
-        public void OnHingeChange(float hingeAmount) {
+        public void OnHingeChange(float hingeAmount)
+        {
             // Call event
-            if (onHingeChange != null) {
+            if (onHingeChange != null)
+            {
                 onHingeChange.Invoke(hingeAmount);
             }
         }
 
-        float getSmoothedValue(float val) {
-            if (val < 0) {
+        float getSmoothedValue(float val)
+        {
+            if (val < 0)
+            {
                 val = 360 - val;
             }
-            if (val == 360) {
+            if (val == 360)
+            {
                 val = 0;
             }
 

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class GrappleShot : GrabbableEvents {
+namespace BNG
+{
+    public class GrappleShot : GrabbableEvents
+    {
 
         public float MaxRange = 100f;
         public float GrappleReelForce = 0.5f;
@@ -36,7 +38,7 @@ namespace BNG {
         public float currentGrappleDistance = 0;
 
         bool validTargetFound = false;// Is there something valid to grapple on to
-        
+
         bool isDynamic = false; // Can we reel the object in
         Rigidbody grappleTargetRigid; // Object we're grappling
         Collider grappleTargetCollider; // Collider we're grappling
@@ -48,101 +50,123 @@ namespace BNG {
         public Climbable ClimbHelper;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
 
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player) {
+            if (player)
+            {
                 characterController = player.GetComponentInChildren<CharacterController>();
                 smoothLocomotion = player.GetComponentInChildren<SmoothLocomotion>();
                 playerGravity = player.GetComponentInChildren<PlayerGravity>();
                 playerClimbing = player.GetComponentInChildren<PlayerClimbing>();
             }
-            else {
+            else
+            {
                 Debug.Log("No player object found.");
             }
 
             audioSource = GetComponent<AudioSource>();
-        }      
+        }
 
-        private void LateUpdate() {
+        private void LateUpdate()
+        {
             // Draw Lines in LateUpdate
             // Draw Helper Line
-            if (!grappling && grab.BeingHeld && !requireRelease) {
+            if (!grappling && grab.BeingHeld && !requireRelease)
+            {
                 drawGrappleHelper();
             }
-            else {
+            else
+            {
                 hideGrappleHelper();
             }
 
             // Draw Grappling Line
-            if (grappling && validTargetFound && grab.BeingHeld) {
+            if (grappling && validTargetFound && grab.BeingHeld)
+            {
                 drawGrappleLine();
             }
-            else {
+            else
+            {
                 hideGrappleLine();
             }
         }
 
         // Try to shoot or grapple
-        public override void OnTrigger(float triggerValue) {
+        public override void OnTrigger(float triggerValue)
+        {
 
             updateGrappleDistance();
 
             // Fire gun if possible
-            if (triggerValue >= 0.25f) {
-                if (grappling) {
+            if (triggerValue >= 0.25f)
+            {
+                if (grappling)
+                {
                     reelInGrapple(triggerValue);
                 }
-                else {
+                else
+                {
                     shootGrapple();
                 }
             }
-            else {
+            else
+            {
                 grappling = false;
-                requireRelease = false;                            
+                requireRelease = false;
             }
 
             // User was grappling previous frame, but not now
-            if(!grappling && wasGrappling) {
+            if (!grappling && wasGrappling)
+            {
                 onReleaseGrapple();
             }
 
             base.OnTrigger(triggerValue);
         }
 
-        void updateGrappleDistance() {
+        void updateGrappleDistance()
+        {
             // Update Distance
-            if (grappling) {
+            if (grappling)
+            {
                 currentGrappleDistance = Vector3.Distance(MuzzleTransform.position, HitTargetPrefab.position);
             }
-            else {
+            else
+            {
                 currentGrappleDistance = 0;
             }
         }
 
-        public override void OnGrab(Grabber grabber) {
+        public override void OnGrab(Grabber grabber)
+        {
             base.OnGrab(grabber);
         }
 
-        public override void OnRelease() {
+        public override void OnRelease()
+        {
             onReleaseGrapple();
 
             base.OnRelease();
         }
 
         // Called when grappling previous frame, but not this one
-        void onReleaseGrapple() {
+        void onReleaseGrapple()
+        {
 
             // Reset gravity back to normal
             changeGravity(true);
 
-            if(grappleTargetRigid && isDynamic) {
+            if (grappleTargetRigid && isDynamic)
+            {
                 grappleTargetRigid.useGravity = true;
                 grappleTargetRigid.isKinematic = false;
                 grappleTargetRigid.transform.parent = grappleTargetParent;
 
                 // More reliable method of resetting parent :
-                if(grappleTargetRigid.GetComponent<Grabbable>()) {
+                if (grappleTargetRigid.GetComponent<Grabbable>())
+                {
                     grappleTargetRigid.GetComponent<Grabbable>().ResetParent();
                 }
             }
@@ -159,15 +183,19 @@ namespace BNG {
         }
 
         // Draw area where Grapple will land
-        void drawGrappleHelper() {
+        void drawGrappleHelper()
+        {
 
-            if (HitTargetPrefab) {
+            if (HitTargetPrefab)
+            {
 
                 RaycastHit hit;
-                if (Physics.Raycast(MuzzleTransform.position, MuzzleTransform.forward, out hit, MaxRange, GrappleLayers, QueryTriggerInteraction.Ignore)) {
+                if (Physics.Raycast(MuzzleTransform.position, MuzzleTransform.forward, out hit, MaxRange, GrappleLayers, QueryTriggerInteraction.Ignore))
+                {
 
                     // Ignore other grapple shots
-                    if (hit.transform.name.StartsWith("Grapple")) {
+                    if (hit.transform.name.StartsWith("Grapple"))
+                    {
                         hideGrappleHelper();
                         validTargetFound = false;
                         isDynamic = false;
@@ -183,27 +211,32 @@ namespace BNG {
                     // Parent the helper to the object we hit so it will be moved with it
                     // Only allow uniform scale so it doesn't warp
                     bool isUniformVector = hit.collider.transform.localScale.x == hit.collider.transform.localScale.y;
-                    if (isUniformVector || isDynamic) {
+                    if (isUniformVector || isDynamic)
+                    {
                         HitTargetPrefab.parent = null;
                         HitTargetPrefab.localScale = Vector3.one;
                         HitTargetPrefab.transform.parent = hit.collider.transform;
-                                               
+
                     }
-                    else {
+                    else
+                    {
                         HitTargetPrefab.parent = null;
                         HitTargetPrefab.localScale = Vector3.one;
                     }
 
                     validTargetFound = true;
 
-                    if(isDynamic) {
+                    if (isDynamic)
+                    {
                         grappleTargetParent = grappleTargetRigid.transform.parent;
                     }
-                    else {
+                    else
+                    {
                         grappleTargetParent = null;
                     }
                 }
-                else {
+                else
+                {
                     hideGrappleHelper();
                     validTargetFound = false;
                     isDynamic = false;
@@ -211,19 +244,23 @@ namespace BNG {
             }
         }
 
-        void drawGrappleLine() {
+        void drawGrappleLine()
+        {
             GrappleLine.gameObject.SetActive(true);
             GrappleLine.SetPosition(0, MuzzleTransform.position);
             GrappleLine.SetPosition(1, HitTargetPrefab.position);
         }
 
-        void hideGrappleLine() {            
-            if (GrappleLine && GrappleLine.gameObject.activeSelf) {
+        void hideGrappleLine()
+        {
+            if (GrappleLine && GrappleLine.gameObject.activeSelf)
+            {
                 GrappleLine.gameObject.SetActive(false);
             }
         }
 
-        void showGrappleHelper(Vector3 pos, Quaternion rot) {
+        void showGrappleHelper(Vector3 pos, Quaternion rot)
+        {
 
             HitTargetPrefab.gameObject.SetActive(true);
 
@@ -231,85 +268,102 @@ namespace BNG {
             HitTargetPrefab.rotation = rot;
             HitTargetPrefab.localScale = Vector3.one;
 
-            if (HelperLine) {
+            if (HelperLine)
+            {
                 HelperLine.gameObject.SetActive(true);
                 HelperLine.SetPosition(0, MuzzleTransform.position);
                 HelperLine.SetPosition(1, pos);
             }
         }
 
-        void hideGrappleHelper() {
-            if(HitTargetPrefab && HitTargetPrefab.gameObject.activeSelf) {
+        void hideGrappleHelper()
+        {
+            if (HitTargetPrefab && HitTargetPrefab.gameObject.activeSelf)
+            {
                 HitTargetPrefab.gameObject.SetActive(false);
             }
 
-            if (HelperLine && HelperLine.gameObject.activeSelf) {
+            if (HelperLine && HelperLine.gameObject.activeSelf)
+            {
                 HelperLine.gameObject.SetActive(false);
             }
         }
 
-        void reelInGrapple(float triggerValue) {
+        void reelInGrapple(float triggerValue)
+        {
 
             // Has the collider been destroyed or disabled?
-            if(validTargetFound && grappleTargetCollider != null && !grappleTargetCollider.enabled) {
+            if (validTargetFound && grappleTargetCollider != null && !grappleTargetCollider.enabled)
+            {
                 dropGrapple();
                 return;
             }
 
-            if(validTargetFound && currentGrappleDistance > MinReelDistance) {
-                
+            if (validTargetFound && currentGrappleDistance > MinReelDistance)
+            {
+
                 // Move object towards our hand
-                if(isDynamic) {
+                if (isDynamic)
+                {
                     grappleTargetRigid.isKinematic = false;
                     grappleTargetRigid.transform.parent = grappleTargetParent;
                     grappleTargetRigid.useGravity = false;
                     grappleTargetRigid.AddForce((MuzzleTransform.position - grappleTargetRigid.transform.position) * 0.1f, ForceMode.VelocityChange);
-                                                           
+
                     //r.MovePosition(MuzzleTransform.position * Time.deltaTime);
                 }
                 // Move character towards Hit location
-                else {
+                else
+                {
                     Vector3 moveDirection = (HitTargetPrefab.position - MuzzleTransform.position) * GrappleReelForce;
 
                     // Turn off gravity before we move
                     changeGravity(false);
 
                     // Use smooth loco method if available
-                    if(smoothLocomotion) {
+                    if (smoothLocomotion)
+                    {
                         smoothLocomotion.MoveCharacter(moveDirection * Time.deltaTime * triggerValue);
                     }
                     // Fall back to character controller
-                    else if(characterController) {
+                    else if (characterController)
+                    {
                         characterController.Move(moveDirection * Time.deltaTime * triggerValue);
                     }
                 }
             }
-            else if(validTargetFound && currentGrappleDistance <= MinReelDistance) {
+            else if (validTargetFound && currentGrappleDistance <= MinReelDistance)
+            {
 
-                if (isDynamic) {
+                if (isDynamic)
+                {
                     //grappleTargetRigid.useGravity = true;
                     grappleTargetRigid.velocity = Vector3.zero;
                     grappleTargetRigid.isKinematic = true;
                     grappleTargetRigid.transform.parent = transform;
                 }
 
-                if(!climbing && !isDynamic) {
+                if (!climbing && !isDynamic)
+                {
                     // Add climbable / grabber
                     ClimbHelper.transform.localPosition = Vector3.zero;
                     playerClimbing.AddClimber(ClimbHelper, thisGrabber);
                     climbing = true;
                 }
-                
+
             }
         }
 
         // Shoot the valid out if valid target
-        void shootGrapple() {
-           
-            if(validTargetFound) {
+        void shootGrapple()
+        {
+
+            if (validTargetFound)
+            {
 
                 // Play Grapple Sound
-                if(GrappleShotSound && audioSource) {
+                if (GrappleShotSound && audioSource)
+                {
                     audioSource.clip = GrappleShotSound;
                     audioSource.pitch = Time.timeScale;
                     audioSource.Play();
@@ -321,15 +375,18 @@ namespace BNG {
             }
         }
 
-        void dropGrapple() {
+        void dropGrapple()
+        {
             grappling = false;
             validTargetFound = false;
             isDynamic = false;
             wasGrappling = false;
         }
 
-        void changeGravity(bool gravityOn) {
-            if(playerGravity) {
+        void changeGravity(bool gravityOn)
+        {
+            if (playerGravity)
+            {
                 playerGravity.ToggleGravity(gravityOn);
             }
         }

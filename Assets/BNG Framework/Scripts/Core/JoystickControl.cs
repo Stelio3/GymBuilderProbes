@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Helper for joystick type physical inputs
     /// </summary>
-    public class JoystickControl : MonoBehaviour {
+    public class JoystickControl : MonoBehaviour
+    {
 
         [Header("Deadzone")]
         [Tooltip("Any values below this threshold will not be passed to events")]
@@ -62,18 +64,21 @@ namespace BNG {
         public float angleX;
         public float angleY;
 
-        void Start() {
+        void Start()
+        {
             grab = GetComponent<Grabbable>();
             rb = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
 
             // Update Kinematic Status.
-            if (rb) {
+            if (rb)
+            {
                 rb.isKinematic = KinematicWhileInactive && !grab.BeingHeld;
-            }                        
+            }
 
             // Lock our local position and axis in Update to avoid jitter
             transform.localPosition = Vector3.zero;
@@ -89,18 +94,22 @@ namespace BNG {
             angleY = (angleY > 180) ? angleY - 360 : angleY;
 
             // Cap Angles X
-            if (angleX > MaxDegrees) {
+            if (angleX > MaxDegrees)
+            {
                 transform.localEulerAngles = new Vector3(MaxDegrees, currentRotation.y, currentRotation.z);
             }
-            else if (angleX < MinDegrees) {
+            else if (angleX < MinDegrees)
+            {
                 transform.localEulerAngles = new Vector3(MinDegrees, currentRotation.y, currentRotation.z);
             }
 
             // Cap Angles Z
-            if (angleY > MaxDegrees) {
+            if (angleY > MaxDegrees)
+            {
                 transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, currentRotation.y, MaxDegrees);
             }
-            else if (angleY < MinDegrees) {
+            else if (angleY < MinDegrees)
+            {
                 transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, currentRotation.y, MinDegrees);
             }
 
@@ -116,11 +125,14 @@ namespace BNG {
             float yInput = Mathf.Lerp(-1f, 1f, LeverPercentageY / 100);
 
             // Reset any values that are inside the deadzone
-            if(DeadZone > 0) {
-                if(Mathf.Abs(xInput) < DeadZone) {
+            if (DeadZone > 0)
+            {
+                if (Mathf.Abs(xInput) < DeadZone)
+                {
                     xInput = 0;
                 }
-                if (Mathf.Abs(yInput) < DeadZone) {
+                if (Mathf.Abs(yInput) < DeadZone)
+                {
                     yInput = 0;
                 }
             }
@@ -130,15 +142,18 @@ namespace BNG {
             OnJoystickChange(LeverVector);
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
             // Align lever with Grabber
             doJoystickLook();
         }
 
-        void doJoystickLook() {
+        void doJoystickLook()
+        {
 
             // Do Lever Look
-            if (grab != null && grab.BeingHeld) {
+            if (grab != null && grab.BeingHeld)
+            {
 
                 // Store original rotation to be used with smooth look
                 Quaternion originalRot = transform.rotation;
@@ -151,27 +166,33 @@ namespace BNG {
                 Vector3 targetPosition = transform.TransformPoint(localTargetPosition);
                 transform.LookAt(targetPosition, transform.up);
 
-                if (UseSmoothLook) {
+                if (UseSmoothLook)
+                {
                     Quaternion newRot = transform.rotation;
                     transform.rotation = originalRot;
                     transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * SmoothLookSpeed);
                 }
             }
-            else if (grab != null && !grab.BeingHeld && rb.isKinematic) {
+            else if (grab != null && !grab.BeingHeld && rb.isKinematic)
+            {
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, Time.deltaTime * SmoothLookSpeed);
             }
         }
         // Callback for lever percentage change
-        public virtual void OnJoystickChange(float leverX, float leverY) {
-            if (onJoystickChange != null) {
+        public virtual void OnJoystickChange(float leverX, float leverY)
+        {
+            if (onJoystickChange != null)
+            {
                 onJoystickChange.Invoke(leverX, leverY);
             }
         }
 
-        public virtual void OnJoystickChange(Vector2 joystickVector) {
-            
+        public virtual void OnJoystickChange(Vector2 joystickVector)
+        {
 
-            if (onJoystickVectorChange != null) {
+
+            if (onJoystickVectorChange != null)
+            {
                 onJoystickVectorChange.Invoke(joystickVector);
             }
         }

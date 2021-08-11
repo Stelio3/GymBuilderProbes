@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// This Component allows a generic humanoid rig to follow the Player's controller's and HMD using Unity's IK system
     /// </summary>
-    public class CharacterIK : MonoBehaviour {
-        
+    public class CharacterIK : MonoBehaviour
+    {
+
         /// <summary>
         /// The Left Controller our Left Hand IK should track
         /// </summary>
@@ -37,7 +39,7 @@ namespace BNG {
         /// Should the player's feet follow our given Y axis using IK
         /// </summary>
         public bool IKFeetActive = true;
-        
+
         public bool HideHead = true;
         public bool HideLeftArm = false;
         public bool HideRightArm = false;
@@ -66,7 +68,8 @@ namespace BNG {
         public float HipOffset = 0;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             animator = GetComponent<Animator>();
 
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
@@ -78,60 +81,73 @@ namespace BNG {
 
         public Vector3 hideBoneScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
 
-        void Update() {
+        void Update()
+        {
 
             // Hide Headbone
-            if (headBone != null) {
+            if (headBone != null)
+            {
                 headBone.localScale = HideHead ? Vector3.zero : Vector3.one;
             }
 
             // Hide Left Arm
-            if (leftShoulderJoint != null) {
+            if (leftShoulderJoint != null)
+            {
                 leftShoulderJoint.localScale = HideLeftArm ? hideBoneScale : Vector3.one;
             }
             // Hide Right Arm
-            if (rightShoulderJoint != null) {
+            if (rightShoulderJoint != null)
+            {
                 rightShoulderJoint.localScale = HideRightArm ? hideBoneScale : Vector3.one;
             }
 
             // Hide Left Hand
-            if (leftHandJoint != null) {
+            if (leftHandJoint != null)
+            {
                 leftHandJoint.localScale = HideLeftHand ? Vector3.zero : Vector3.one;
             }
             // Hide Right Hand
-            if (rightHandJoint != null) {
+            if (rightHandJoint != null)
+            {
                 rightHandJoint.localScale = HideRightHand ? Vector3.zero : Vector3.one;
             }
 
             // Hide Legs
-            if(HipsJoint) {
+            if (HipsJoint)
+            {
                 HipsJoint.localScale = HideLegs ? Vector3.zero : Vector3.one;
             }
 
-            Transform hipJoint = animator.GetBoneTransform(HumanBodyBones.RightShoulder);            
+            Transform hipJoint = animator.GetBoneTransform(HumanBodyBones.RightShoulder);
         }
-               
-        void OnAnimatorIK() {
-            if (animator) {                
+
+        void OnAnimatorIK()
+        {
+            if (animator)
+            {
 
                 //if the IK is active, set the position and rotation directly to the goal. 
-                if (IKActive) {
+                if (IKActive)
+                {
 
                     // Head
-                    if (FollowHead != null) {
+                    if (FollowHead != null)
+                    {
                         animator.SetLookAtWeight(1);
                         animator.SetLookAtPosition(FollowHead.position);
                     }
 
                     // Left Hand
-                    if (FollowLeftController != null) {
+                    if (FollowLeftController != null)
+                    {
                         animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
                         animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
                         animator.SetIKPosition(AvatarIKGoal.LeftHand, FollowLeftController.position);
                         animator.SetIKRotation(AvatarIKGoal.LeftHand, FollowLeftController.rotation);
                     }
                     // Right Hand
-                    if (FollowRightController != null) {
+                    if (FollowRightController != null)
+                    {
                         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                         animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
                         animator.SetIKPosition(AvatarIKGoal.RightHand, FollowRightController.position);
@@ -139,35 +155,42 @@ namespace BNG {
                     }
 
                     // Left Foot
-                    if(IKFeetActive) {
+                    if (IKFeetActive)
+                    {
                         // Left Foot
-                        if (FollowLeftFoot != null) {
-                            animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);                            
+                        if (FollowLeftFoot != null)
+                        {
+                            animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
                             animator.SetIKPosition(AvatarIKGoal.LeftFoot, new Vector3(FollowLeftFoot.position.x, FootYPosition, FollowLeftFoot.position.z));
                         }
 
                         // Right Foot
-                        if (FollowRightFoot != null) {
+                        if (FollowRightFoot != null)
+                        {
                             animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
                             animator.SetIKPosition(AvatarIKGoal.RightFoot, new Vector3(FollowRightFoot.position.x, FootYPosition, FollowRightFoot.position.z));
                         }
                         // Testing body IK
                         //animator.bodyPosition = new Vector3(animator.bodyPosition.x, animator.bodyPosition.y + HipOffset + FollowPlayer.height, animator.bodyPosition.z);
                     }
-                    else {
+                    else
+                    {
                         // Left Foot
-                        if (FollowLeftFoot != null) {
+                        if (FollowLeftFoot != null)
+                        {
                             animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 0);
                         }
 
                         // Right Foot
-                        if (FollowRightFoot != null) {
+                        if (FollowRightFoot != null)
+                        {
                             animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 0);
                         }
                     }
                 }
                 // IK not active, release weight for hands / head
-                else {
+                else
+                {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
 

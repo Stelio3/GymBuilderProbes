@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// Designates a collider as invalid for teleportation
     /// </summary>

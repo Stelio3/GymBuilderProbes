@@ -5,12 +5,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// An example bow item. Configurable force and damage.
     /// </summary>
-    public class Bow : GrabbableEvents {
+    public class Bow : GrabbableEvents
+    {
 
 
         [Header("Bow Settings")]
@@ -24,7 +26,7 @@ namespace BNG {
         public bool AlignBowToArrow = true;
 
         [Tooltip("If AlignBowToArrow is true this transform will align itself with the grabber holding the arrow")]
-        public Transform BowModel; 
+        public Transform BowModel;
 
         [Header("Arrow Settings")]
         [Tooltip("Arrow will rotate around this if bow is held in left hand or ArrowRestLeftHanded is null")]
@@ -84,7 +86,8 @@ namespace BNG {
 
         AudioSource audioSource;
 
-        void Start() {
+        void Start()
+        {
             initialKnockPosition = ArrowKnock.localPosition;
             bowGrabbable = GetComponent<Grabbable>();
             audioSource = GetComponent<AudioSource>();
@@ -102,17 +105,20 @@ namespace BNG {
             };
         }
 
-        void Update() {
+        void Update()
+        {
 
             updateDrawDistance();
 
             checkBowHaptics();
 
             // Dropped bow. Make sure arrow has been fired
-            if (!bowGrabbable.BeingHeld) {
+            if (!bowGrabbable.BeingHeld)
+            {
 
                 // Dropped bow; release arrow
-                if(holdingArrow) {
+                if (holdingArrow)
+                {
                     ReleaseArrow();
                 }
 
@@ -123,7 +129,8 @@ namespace BNG {
             holdingArrow = GrabbedArrow != null;
 
             // Grab an arrow by holding trigger in grab area
-            if (canGrabArrowFromKnock()) {
+            if (canGrabArrowFromKnock())
+            {
 
                 GameObject arrow = Instantiate(Resources.Load(ArrowPrefabName, typeof(GameObject))) as GameObject;
                 arrow.transform.position = ArrowKnock.transform.position;
@@ -132,7 +139,7 @@ namespace BNG {
                 // Use trigger when grabbing from knock
                 Grabbable g = arrow.GetComponent<Grabbable>();
                 g.GrabButton = GrabButton.Trigger;
-                
+
                 // We will apply our own velocity on drop
                 g.AddControllerVelocityOnDrop = false;
 
@@ -140,19 +147,23 @@ namespace BNG {
             }
 
             // No arrow, lerp knock back to start
-            if (GrabbedArrow == null) {
-                resetStringPosition();                
+            if (GrabbedArrow == null)
+            {
+                resetStringPosition();
             }
 
-            if(arrowGrabber != null) {
+            if (arrowGrabber != null)
+            {
                 StringDistance = Vector3.Distance(transform.position, arrowGrabber.transform.position);
             }
-            else {
+            else
+            {
                 StringDistance = 0;
             }
-            
+
             // Move arrow knock, align the arrow
-            if(holdingArrow) {
+            if (holdingArrow)
+            {
                 setKnockPosition();
                 alignArrow();
                 alignBow();
@@ -161,25 +172,30 @@ namespace BNG {
                 checkBowHaptics();
 
                 // Let Go of Trigger, shoot arrow                
-                if (getGrabArrowInput() <= 0.2f) {
+                if (getGrabArrowInput() <= 0.2f)
+                {
                     ReleaseArrow();
                 }
             }
         }
 
-        Transform getArrowRest() {
+        Transform getArrowRest()
+        {
 
-            if(bowGrabbable.GetPrimaryGrabber() != null && bowGrabbable.GetPrimaryGrabber().HandSide == ControllerHand.Right && ArrowRestLeftHanded != null) {
+            if (bowGrabbable.GetPrimaryGrabber() != null && bowGrabbable.GetPrimaryGrabber().HandSide == ControllerHand.Right && ArrowRestLeftHanded != null)
+            {
                 return ArrowRestLeftHanded;
             }
-            
+
             return ArrowRest;
         }
 
-        bool canGrabArrowFromKnock() {
+        bool canGrabArrowFromKnock()
+        {
 
             // Setting override
-            if(!CanGrabArrowFromKnock) {
+            if (!CanGrabArrowFromKnock)
+            {
                 return false;
             }
 
@@ -189,18 +205,22 @@ namespace BNG {
             return CanGrabArrow && getTriggerInput(hand) > 0.75f && !holdingArrow;
         }
 
-        float getGrabArrowInput() {
+        float getGrabArrowInput()
+        {
             // If we are holding an arrow, check the arrow details for input
-            if (arrowGrabber != null && arrowGrabbable != null) {
+            if (arrowGrabber != null && arrowGrabbable != null)
+            {
 
                 GrabButton grabButton = arrowGrabber.GetGrabButton(arrowGrabbable);
 
                 // Grip Controls
-                if (grabButton == GrabButton.Grip) {
+                if (grabButton == GrabButton.Grip)
+                {
                     return getGripInput(arrowGrabber.HandSide);
                 }
                 // Trigger
-                else if (grabButton == GrabButton.Trigger) {
+                else if (grabButton == GrabButton.Trigger)
+                {
                     return getTriggerInput(arrowGrabber.HandSide);
                 }
             }
@@ -208,91 +228,112 @@ namespace BNG {
             return 0;
         }
 
-        float getGripInput(ControllerHand handSide) {
-            if (handSide == ControllerHand.Left) {
+        float getGripInput(ControllerHand handSide)
+        {
+            if (handSide == ControllerHand.Left)
+            {
                 return input.LeftGrip;
             }
-            else if (handSide == ControllerHand.Right) {
+            else if (handSide == ControllerHand.Right)
+            {
                 return input.RightGrip;
             }
 
             return 0;
         }
 
-        float getTriggerInput(ControllerHand handSide) {
-            if (handSide == ControllerHand.Left) {
+        float getTriggerInput(ControllerHand handSide)
+        {
+            if (handSide == ControllerHand.Left)
+            {
                 return input.LeftTrigger;
             }
-            else if (handSide == ControllerHand.Right) {
+            else if (handSide == ControllerHand.Right)
+            {
                 return input.RightTrigger;
             }
 
             return 0;
         }
 
-        void setKnockPosition() {
+        void setKnockPosition()
+        {
 
             // Set knock to hand if within range
-            if(StringDistance <= MaxStringDistance) {
+            if (StringDistance <= MaxStringDistance)
+            {
                 ArrowKnock.position = arrowGrabber.transform.position;
             }
-            else {
+            else
+            {
                 ArrowKnock.localPosition = initialKnockPosition;
                 ArrowKnock.LookAt(arrowGrabber.transform, ArrowKnock.forward);
                 ArrowKnock.position += ArrowKnock.forward * (MaxStringDistance * 0.65f);
             }
 
             // Constrain position
-            if (IgnoreXPosition) {
+            if (IgnoreXPosition)
+            {
                 ArrowKnock.localPosition = new Vector3(getArrowRest().localPosition.x, ArrowKnock.localPosition.y, ArrowKnock.localPosition.z);
             }
-            if (IgnoreYPosition) {
+            if (IgnoreYPosition)
+            {
                 ArrowKnock.localPosition = new Vector3(ArrowKnock.localPosition.x, 0, ArrowKnock.localPosition.z);
             }
 
             // Z Position
-            if(!AllowNegativeZ && ArrowKnock.localPosition.z > initialKnockPosition.z) {
+            if (!AllowNegativeZ && ArrowKnock.localPosition.z > initialKnockPosition.z)
+            {
                 ArrowKnock.localPosition = new Vector3(ArrowKnock.localPosition.x, ArrowKnock.localPosition.y, initialKnockPosition.z);
             }
         }
 
-        void checkDrawSound() {
-            if(holdingArrow && !playedDrawSound && DrawPercent > 30f) {
+        void checkDrawSound()
+        {
+            if (holdingArrow && !playedDrawSound && DrawPercent > 30f)
+            {
                 playBowDraw();
                 playedDrawSound = true;
             }
         }
-        
-        void updateDrawDistance() {
+
+        void updateDrawDistance()
+        {
             _lastDrawPercent = DrawPercent;
 
             float knockDistance = Math.Abs(Vector3.Distance(ArrowKnock.localPosition, initialKnockPosition));
             DrawPercent = (knockDistance / MaxStringDistance) * 100;
 
-            if (PercentageUI != null) {                
+            if (PercentageUI != null)
+            {
                 PercentageUI.text = (int)DrawPercent + "%";
             }
         }
 
-        void checkBowHaptics() {
+        void checkBowHaptics()
+        {
 
             // If we aren't pulling back then skip the check
             // Only apply haptics on pull back
-            if (DrawPercent < _lastDrawPercent) {
+            if (DrawPercent < _lastDrawPercent)
+            {
                 return;
             }
 
             // Don't apply haptics if we just applied them recently
-            if(Time.time - _lastDrawHapticTime < 0.11) {
+            if (Time.time - _lastDrawHapticTime < 0.11)
+            {
                 return;
-            }            
+            }
 
-            if(drawDefs == null) {
+            if (drawDefs == null)
+            {
                 return;
             }
 
             DrawDefinition d = drawDefs.FirstOrDefault(x => x.DrawPercentage <= DrawPercent && x.DrawPercentage != _lastDrawHaptic);
-            if(d != null && arrowGrabber != null) {
+            if (d != null && arrowGrabber != null)
+            {
                 input.VibrateController(d.HapticFrequency, d.HapticAmplitude, 0.1f, arrowGrabber.HandSide);
                 _lastDrawHaptic = d.DrawPercentage;
                 _lastDrawHapticTime = Time.time;
@@ -300,11 +341,13 @@ namespace BNG {
 
         }
 
-        void resetStringPosition() {
+        void resetStringPosition()
+        {
             ArrowKnock.localPosition = Vector3.Lerp(ArrowKnock.localPosition, initialKnockPosition, Time.deltaTime * 100);
         }
 
-        protected virtual void alignArrow() {
+        protected virtual void alignArrow()
+        {
             GrabbedArrow.transform.parent = this.transform;
             GrabbedArrow.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Discrete;
             GrabbedArrow.GetComponent<Rigidbody>().isKinematic = true;
@@ -316,17 +359,22 @@ namespace BNG {
         public Vector3 BowUp = Vector3.forward;
 
         public float AlignBowSpeed = 20f;
-        protected virtual void alignBow() {
+        protected virtual void alignBow()
+        {
 
-            if(AlignBowToArrow == false || BowModel == null || !grab.BeingHeld) {
+            if (AlignBowToArrow == false || BowModel == null || !grab.BeingHeld)
+            {
                 return;
             }
 
-            if(AlignBowToArrow && BowModel != null) {
-                if(holdingArrow && GrabbedArrow != null) {
+            if (AlignBowToArrow && BowModel != null)
+            {
+                if (holdingArrow && GrabbedArrow != null)
+                {
                     BowModel.transform.rotation = GrabbedArrow.transform.rotation;
                 }
-                else {
+                else
+                {
                     BowModel.transform.localRotation = Quaternion.Slerp(BowModel.transform.localRotation, Quaternion.identity, Time.deltaTime * AlignBowSpeed);
                 }
             }
@@ -337,13 +385,16 @@ namespace BNG {
             BowModel.transform.localEulerAngles = eulers;
         }
 
-        public virtual void ResetBowAlignment() {
-            if (BowModel != null) {
+        public virtual void ResetBowAlignment()
+        {
+            if (BowModel != null)
+            {
                 BowModel.localEulerAngles = Vector3.zero;
             }
         }
 
-        public void GrabArrow(Arrow arrow) {
+        public void GrabArrow(Arrow arrow)
+        {
 
             arrowGrabber = ClosestGrabber;
 
@@ -353,7 +404,8 @@ namespace BNG {
 
             arrowGrabbable = arrow.GetComponent<Grabbable>();
 
-            if (arrowGrabbable) {
+            if (arrowGrabbable)
+            {
                 arrowGrabbable.GrabItem(arrowGrabber);
                 arrowGrabber.HeldGrabbable = arrowGrabbable;
                 arrowGrabbable.AddControllerVelocityOnDrop = false;
@@ -361,20 +413,23 @@ namespace BNG {
 
 
             Collider playerCollder = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Collider>();
-            if(playerCollder) {
+            if (playerCollder)
+            {
                 Physics.IgnoreCollision(GrabbedArrow.ShaftCollider, playerCollder);
             }
 
             holdingArrow = true;
-        }        
+        }
 
-        public void ReleaseArrow() {
+        public void ReleaseArrow()
+        {
 
             // Start sound immediately
             playBowRelease();
 
             // No longer "holding" the arrow
-            if (arrowGrabbable) {
+            if (arrowGrabbable)
+            {
                 // Reset Arrow Grab to Grip
                 arrowGrabbable.GrabButton = GrabButton.Grip;
 
@@ -394,13 +449,15 @@ namespace BNG {
             resetArrowValues();
         }
 
-        public override void OnRelease() {
+        public override void OnRelease()
+        {
             ResetBowAlignment();
             resetStringPosition();
         }
 
         // Make sure all starting values are reset
-        void resetArrowValues() {
+        void resetArrowValues()
+        {
             GrabbedArrow = null;
             arrowGrabbable = null;
             arrowGrabber = null;
@@ -408,10 +465,13 @@ namespace BNG {
             playedDrawSound = false;
         }
 
-        void playSoundInterval(float fromSeconds, float toSeconds, float volume) {
-            if(audioSource) {
+        void playSoundInterval(float fromSeconds, float toSeconds, float volume)
+        {
+            if (audioSource)
+            {
 
-                if(audioSource.isPlaying) {
+                if (audioSource.isPlaying)
+                {
                     audioSource.Stop();
                 }
 
@@ -423,11 +483,13 @@ namespace BNG {
             }
         }
 
-        void playBowDraw() {
+        void playBowDraw()
+        {
             playSoundInterval(0, 1.66f, 0.4f);
         }
 
-        void playBowRelease() {
+        void playBowRelease()
+        {
             playSoundInterval(1.67f, 2.2f, 0.3f);
         }
     }
@@ -435,7 +497,8 @@ namespace BNG {
     /// <summary>
     /// A list of how and when to play a haptic according to DrawPercentage
     /// </summary>
-    public class DrawDefinition {
+    public class DrawDefinition
+    {
         public float DrawPercentage { get; set; }
         public float HapticAmplitude { get; set; }
         public float HapticFrequency { get; set; }

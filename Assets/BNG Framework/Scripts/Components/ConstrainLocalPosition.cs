@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Constrain a Transform's LocalPosition to a given value.
     /// </summary>
-    public class ConstrainLocalPosition : MonoBehaviour {
+    public class ConstrainLocalPosition : MonoBehaviour
+    {
 
         public bool ConstrainLocalX = false;
         public float LocalXMin = -1f;
@@ -21,13 +23,16 @@ namespace BNG {
         public float LocalZMin = -1f;
         public float LocalZMax = 1f;
 
-        void Update() {
+        void Update()
+        {
             doConstrain();
         }
 
-        void doConstrain() {
+        void doConstrain()
+        {
             // Save a lookup
-            if (!ConstrainLocalX && !ConstrainLocalY && !ConstrainLocalZ) {
+            if (!ConstrainLocalX && !ConstrainLocalY && !ConstrainLocalZ)
+            {
                 return;
             }
 

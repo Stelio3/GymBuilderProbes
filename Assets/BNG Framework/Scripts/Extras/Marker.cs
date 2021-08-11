@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace BNG {
-    public class Marker : GrabbableEvents {
+namespace BNG
+{
+    public class Marker : GrabbableEvents
+    {
 
         public Material DrawMaterial;
         public Color DrawColor = Color.red;
@@ -31,25 +33,32 @@ namespace BNG {
         int renderLifeTime = 0;
 
 
-        public override void OnGrab(Grabber grabber) {
-            if (drawRoutine == null) {
+        public override void OnGrab(Grabber grabber)
+        {
+            if (drawRoutine == null)
+            {
                 drawRoutine = StartCoroutine(WriteRoutine());
             }
 
             base.OnGrab(grabber);
         }
 
-        public override void OnRelease() {
-            if (drawRoutine != null) {
+        public override void OnRelease()
+        {
+            if (drawRoutine != null)
+            {
                 StopCoroutine(drawRoutine);
                 drawRoutine = null;
             }
             base.OnRelease();
         }
 
-        IEnumerator WriteRoutine() {
-            while (true) {
-                if (Physics.Raycast(RaycastStart.position, RaycastStart.up, out RaycastHit hit, RaycastLength, DrawingLayers, QueryTriggerInteraction.Ignore)) {
+        IEnumerator WriteRoutine()
+        {
+            while (true)
+            {
+                if (Physics.Raycast(RaycastStart.position, RaycastStart.up, out RaycastHit hit, RaycastLength, DrawingLayers, QueryTriggerInteraction.Ignore))
+                {
                     float tipDistance = Vector3.Distance(hit.point, RaycastStart.transform.position);
                     float tipDercentage = tipDistance / RaycastLength;
                     Vector3 drawStart = hit.point + (-RaycastStart.up * 0.0005f);
@@ -57,41 +66,51 @@ namespace BNG {
                     float lineWidth = LineWidth * (1 - tipDercentage);
                     InitDraw(drawStart, drawRotation, lineWidth, DrawColor);
                 }
-                else {
+                else
+                {
                     IsNewDraw = true;
                 }
                 yield return new WaitForFixedUpdate();
             }
         }
 
-        void InitDraw(Vector3 position, Quaternion rotation, float lineWidth, Color lineColor) {
-            if (IsNewDraw) {
+        void InitDraw(Vector3 position, Quaternion rotation, float lineWidth, Color lineColor)
+        {
+            if (IsNewDraw)
+            {
                 lastDrawPoint = position;
                 DrawPoint(lastDrawPoint, position, lineWidth, lineColor, rotation);
                 IsNewDraw = false;
             }
-            else {
+            else
+            {
                 float dist = Vector3.Distance(lastDrawPoint, position);
-                if (dist > MinDrawDistance) {
+                if (dist > MinDrawDistance)
+                {
                     lastDrawPoint = DrawPoint(lastDrawPoint, position, lineWidth, DrawColor, rotation);
                 }
             }
         }
 
-        Vector3 DrawPoint(Vector3 lastDrawPoint, Vector3 endPosition, float lineWidth, Color lineColor, Quaternion rotation) {
+        Vector3 DrawPoint(Vector3 lastDrawPoint, Vector3 endPosition, float lineWidth, Color lineColor, Quaternion rotation)
+        {
             var dif = Mathf.Abs(lastLineWidth - lineWidth);
             lastLineWidth = lineWidth;
-            if (dif > ReuseTolerance || renderLifeTime >= 98) {
+            if (dif > ReuseTolerance || renderLifeTime >= 98)
+            {
                 LineRenderer = null;
                 renderLifeTime = 0;
             }
-            else {
+            else
+            {
                 renderLifeTime += 1;
             }
-            if (IsNewDraw || LineRenderer == null) {
+            if (IsNewDraw || LineRenderer == null)
+            {
                 lastTransform = new GameObject().transform;
                 lastTransform.name = "DrawLine";
-                if (root == null) {
+                if (root == null)
+                {
                     root = new GameObject().transform;
                     root.name = "MarkerLineHolder";
                 }
@@ -108,7 +127,8 @@ namespace BNG {
                 curve.AddKey(0, lineWidth);
                 //curve.AddKey(1, lineWidth);
                 LineRenderer.widthCurve = curve;
-                if (DrawMaterial) {
+                if (DrawMaterial)
+                {
                     LineRenderer.material = DrawMaterial;
                 }
                 LineRenderer.numCapVertices = 5;
@@ -117,8 +137,10 @@ namespace BNG {
                 LineRenderer.SetPosition(0, lastDrawPoint);
                 LineRenderer.SetPosition(1, endPosition);
             }
-            else {
-                if (LineRenderer != null) {
+            else
+            {
+                if (LineRenderer != null)
+                {
                     LineRenderer.widthMultiplier = 1;
                     LineRenderer.positionCount += 1;
                     var curve = LineRenderer.widthCurve;
@@ -130,7 +152,8 @@ namespace BNG {
             return endPosition;
         }
 
-        void OnDrawGizmosSelected() {
+        void OnDrawGizmosSelected()
+        {
             // Show Grip Point
             Gizmos.color = Color.green;
             Gizmos.DrawLine(RaycastStart.position, RaycastStart.position + RaycastStart.up * RaycastLength);

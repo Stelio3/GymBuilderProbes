@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// An example hand controller that sets animation values depending on Grabber state
     /// </summary>
-    public class HandController : MonoBehaviour {
+    public class HandController : MonoBehaviour
+    {
 
         [Tooltip("HandController parent will be set to this on Start if specified")]
         public Transform HandAnchor;
@@ -50,52 +52,64 @@ namespace BNG {
         Rigidbody rigid;
         Transform offsetTransform;
 
-        Vector3 offsetPosition {
-            get {
-                if(offset) {
+        Vector3 offsetPosition
+        {
+            get
+            {
+                if (offset)
+                {
                     return offset.OffsetPosition;
                 }
                 return Vector3.zero;
             }
         }
 
-        Vector3 offsetRotation {
-            get {
-                if (offset) {
+        Vector3 offsetRotation
+        {
+            get
+            {
+                if (offset)
+                {
                     return offset.OffsetRotation;
                 }
                 return Vector3.zero;
             }
         }
 
-        void Start() {
+        void Start()
+        {
 
             rigid = GetComponent<Rigidbody>();
             offset = GetComponent<ControllerOffsetHelper>();
             offsetTransform = new GameObject("OffsetHelper").transform;
             offsetTransform.parent = transform;
 
-            if (HandAnchor) {
+            if (HandAnchor)
+            {
                 transform.parent = HandAnchor;
                 offsetTransform.parent = HandAnchor;
 
-                if (ResetHandAnchorPosition) {
+                if (ResetHandAnchorPosition)
+                {
                     transform.localPosition = offsetPosition;
                     transform.localEulerAngles = offsetRotation;
                 }
             }
-            
-            if(grabber == null) {
+
+            if (grabber == null)
+            {
                 grabber = GetComponentInChildren<Grabber>();
             }
-            
+
             input = InputBridge.Instance;
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Grabber may have been deactivated
-            if (grabber == null || !grabber.isActiveAndEnabled) {
+            if (grabber == null || !grabber.isActiveAndEnabled)
+            {
                 grabber = GetComponentInChildren<Grabber>();
                 GripAmount = 0;
                 PointAmount = 0;
@@ -103,52 +117,61 @@ namespace BNG {
                 return;
             }
 
-            if (grabber.HandSide == ControllerHand.Left) {
+            if (grabber.HandSide == ControllerHand.Left)
+            {
                 GripAmount = input.LeftGrip;
                 PointAmount = 1 - input.LeftTrigger; // Range between 0 and 1. 1 == Finger all the way out
                 PointAmount *= InputBridge.Instance.InputSource == XRInputSource.SteamVR ? 0.25F : 0.5F; // Reduce the amount our finger points out if Oculus or XRInput
 
                 // If not near the trigger, point finger all the way out
-                if (input.SupportsIndexTouch && input.LeftTriggerNear == false && PointAmount != 0) {
+                if (input.SupportsIndexTouch && input.LeftTriggerNear == false && PointAmount != 0)
+                {
                     PointAmount = 1f;
                 }
                 // Does not support touch, stick finger out as if pointing if no trigger found
-                else if(!input.SupportsIndexTouch && input.LeftTrigger == 0) {
+                else if (!input.SupportsIndexTouch && input.LeftTrigger == 0)
+                {
                     PointAmount = 1;
                 }
 
                 ThumbAmount = input.LeftThumbNear ? 0 : 1;
             }
-            else if (grabber.HandSide == ControllerHand.Right) {
+            else if (grabber.HandSide == ControllerHand.Right)
+            {
                 GripAmount = input.RightGrip;
                 PointAmount = 1 - input.RightTrigger; // Range between 0 and 1. 1 == Finger all the way out
                 PointAmount *= InputBridge.Instance.InputSource == XRInputSource.SteamVR ? 0.25F : 0.5F; // Reduce the amount our finger points out if Oculus or XRInput
 
                 // If not near the trigger, point finger all the way out
-                if (input.SupportsIndexTouch && input.RightTriggerNear == false && PointAmount != 0) {
+                if (input.SupportsIndexTouch && input.RightTriggerNear == false && PointAmount != 0)
+                {
                     PointAmount = 1f;
                 }
                 // Does not support touch, stick finger out as if pointing if no trigger found
-                else if (!input.SupportsIndexTouch && input.RightTrigger == 0) {
+                else if (!input.SupportsIndexTouch && input.RightTrigger == 0)
+                {
                     PointAmount = 1;
                 }
 
                 ThumbAmount = input.RightThumbNear ? 0 : 1;
-            }            
+            }
 
             // Try getting child animator
-            if(HandAnimator == null || !HandAnimator.isActiveAndEnabled) {
+            if (HandAnimator == null || !HandAnimator.isActiveAndEnabled)
+            {
                 HandAnimator = GetComponentInChildren<Animator>();
             }
 
-            if (HandAnimator != null) {
+            if (HandAnimator != null)
+            {
                 updateAnimimationStates();
             }
         }
 
         void updateAnimimationStates()
-        {            
-            if(HandAnimator != null && HandAnimator.isActiveAndEnabled && HandAnimator.runtimeAnimatorController != null) {
+        {
+            if (HandAnimator != null && HandAnimator.isActiveAndEnabled && HandAnimator.runtimeAnimatorController != null)
+            {
 
                 _prevGrip = Mathf.Lerp(_prevGrip, GripAmount, Time.deltaTime * HandAnimationSpeed);
                 _prevThumb = Mathf.Lerp(_prevThumb, ThumbAmount, Time.deltaTime * HandAnimationSpeed);
@@ -165,14 +188,16 @@ namespace BNG {
                 HandAnimator.SetLayerWeight(2, _prevPoint);
 
                 // Should we use a custom hand pose?
-                if (grabber.HeldGrabbable != null) {
+                if (grabber.HeldGrabbable != null)
+                {
                     HandAnimator.SetLayerWeight(0, 0);
                     HandAnimator.SetLayerWeight(1, 0);
                     HandAnimator.SetLayerWeight(2, 0);
 
-  //                  PoseId = (int)grabber.HeldGrabbable.CustomHandPose;
+                    //                  PoseId = (int)grabber.HeldGrabbable.CustomHandPose;
 
-                    if (grabber.HeldGrabbable.ActiveGrabPoint != null) {
+                    if (grabber.HeldGrabbable.ActiveGrabPoint != null)
+                    {
 
                         // Default Grip to 1 when holding an item
                         HandAnimator.SetLayerWeight(0, 1);
@@ -184,11 +209,13 @@ namespace BNG {
                         setAnimatorBlend(grabber.HeldGrabbable.ActiveGrabPoint.IndexBlendMin, grabber.HeldGrabbable.ActiveGrabPoint.IndexBlendMax, PointAmount, 2);
 
                         // Thumb
-                        setAnimatorBlend(grabber.HeldGrabbable.ActiveGrabPoint.ThumbBlendMin, grabber.HeldGrabbable.ActiveGrabPoint.ThumbBlendMax, ThumbAmount, 1);                       
+                        setAnimatorBlend(grabber.HeldGrabbable.ActiveGrabPoint.ThumbBlendMin, grabber.HeldGrabbable.ActiveGrabPoint.ThumbBlendMax, ThumbAmount, 1);
                     }
-                    else {
+                    else
+                    {
                         // Force everything to grab if we're holding something
-                        if (grabber.HoldingItem) {
+                        if (grabber.HoldingItem)
+                        {
                             GripAmount = 1;
                             PointAmount = 0;
                             ThumbAmount = 0;
@@ -197,12 +224,14 @@ namespace BNG {
 
                     HandAnimator.SetInteger("Pose", PoseId);
                 }
-                else {
+                else
+                {
                     HandAnimator.SetInteger("Pose", 0);
                 }
             }
 
-            void setAnimatorBlend(float min, float max, float input, int animationLayer) {
+            void setAnimatorBlend(float min, float max, float input, int animationLayer)
+            {
                 HandAnimator.SetLayerWeight(animationLayer, min + (input) * max - min);
             }
         }

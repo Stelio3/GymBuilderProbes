@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class FollowTransform : MonoBehaviour {
+namespace BNG
+{
+    public class FollowTransform : MonoBehaviour
+    {
 
         public Transform FollowTarget;
         public bool MatchRotation = true;
 
-        void Update() {
-            if(FollowTarget) {
+        void Update()
+        {
+            if (FollowTarget)
+            {
                 transform.position = FollowTarget.position;
 
-                if(MatchRotation) {
+                if (MatchRotation)
+                {
                     transform.rotation = FollowTarget.rotation;
                 }
             }

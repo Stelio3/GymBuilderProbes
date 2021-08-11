@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class Explosive : MonoBehaviour {
+namespace BNG
+{
+    public class Explosive : MonoBehaviour
+    {
 
         [Header("Explosion Settings : ")]
         [Tooltip("Objects within this radius will have damage and force applied to it")]
@@ -17,53 +19,62 @@ namespace BNG {
 
         [Tooltip("Add an UpwardsModifier to AddExplosionForce. Use this to make objects fly more up into the air, instead of just outwardly.")]
         public float ExplosiveUpwardsModifier = 3f;
-        
+
 
         [Header("Shown for Debug : ")]
         public bool ShowExplosionRadius = false;
 
-        public virtual void DoExplosion() {
+        public virtual void DoExplosion()
+        {
             StartCoroutine(explosionRoutine());
         }
 
-        IEnumerator explosionRoutine() {
+        IEnumerator explosionRoutine()
+        {
 
             // Get all objects in explosion radius
             Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
 
             // First Damage all of the items
-            for (int x = 0; x < colliders.Length; x++) {
+            for (int x = 0; x < colliders.Length; x++)
+            {
                 Collider hit = colliders[x];
 
                 // Apply Damage
-                if (ExplosionDamage > 0) {
+                if (ExplosionDamage > 0)
+                {
                     Damageable damageable = hit.GetComponent<Damageable>();
-                    if (damageable) {
-                        
-                        if(hit.GetComponent<Explosive>() != null) {
+                    if (damageable)
+                    {
+
+                        if (hit.GetComponent<Explosive>() != null)
+                        {
                             // Add slight delay do damaging explosives so everything doesn't go off at once
                             StartCoroutine(dealDelayedDamaged(damageable, 0.1f));
                         }
-                        else {
+                        else
+                        {
                             damageable.DealDamage(ExplosionDamage, hit.ClosestPoint(transform.position), transform.eulerAngles, true, gameObject, hit.gameObject);
                         }
                     }
                 }
             }
 
-            
+
             // Wait a frame so physics can be applied after damaging the items
             yield return new WaitForFixedUpdate();
             colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
 
             // Then Add Physics Force
-            for (int x = 0; x < colliders.Length; x++) {
+            for (int x = 0; x < colliders.Length; x++)
+            {
                 Collider hit = colliders[x];
 
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
 
                 // Add physics force
-                if (rb != null) {
+                if (rb != null)
+                {
                     rb.AddExplosionForce(ExplosionForce, transform.position, ExplosionRadius, ExplosiveUpwardsModifier);
                 }
             }
@@ -71,15 +82,18 @@ namespace BNG {
             yield return null;
         }
 
-        IEnumerator dealDelayedDamaged(Damageable damageable, float delayTime) {
+        IEnumerator dealDelayedDamaged(Damageable damageable, float delayTime)
+        {
             yield return new WaitForSeconds(delayTime);
 
             damageable.DealDamage(ExplosionDamage);
         }
 
-        void OnDrawGizmosSelected() {
+        void OnDrawGizmosSelected()
+        {
             // Draw a yellow sphere at the transform's position
-            if(ShowExplosionRadius) {
+            if (ShowExplosionRadius)
+            {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(transform.position, ExplosionRadius);
             }

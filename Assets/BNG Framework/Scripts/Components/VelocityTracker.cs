@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
-    public class VelocityTracker : MonoBehaviour {
+    public class VelocityTracker : MonoBehaviour
+    {
 
-        public enum VelocityTrackingType {
+        public enum VelocityTrackingType
+        {
             Device,   // Velocity is retrieved using XR Controller Velocity if it is supported. Will fall back to PerFrame if not.
             PerFrame // Calculate velocity per frame based on prior position / rotation
         }
@@ -38,11 +41,13 @@ namespace BNG {
         // Used for tracking playspace rotation which may be needed to determine velocity of thrown objects
         GameObject playSpace;
 
-        void Start() {
+        void Start()
+        {
             playSpace = GameObject.Find("TrackingSpace");
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
             UpdateVelocities();
 
             // Save our last position / rotation so we can use it for velocity calculations
@@ -50,12 +55,14 @@ namespace BNG {
             _lastRotation = transform.rotation;
         }
 
-        public virtual void UpdateVelocities() {
+        public virtual void UpdateVelocities()
+        {
             UpdateVelocity();
             UpdateAngularVelocity();
         }
 
-        public virtual void UpdateVelocity() {
+        public virtual void UpdateVelocity()
+        {
             // Update velocity based on current and previous position
             _velocity = (transform.position - _lastPosition) / Time.deltaTime;
 
@@ -63,12 +70,14 @@ namespace BNG {
             previousVelocities.Add(GetVelocity());
 
             // Shrink list if necessary
-            if (previousVelocities.Count > AverageVelocityCount) {
+            if (previousVelocities.Count > AverageVelocityCount)
+            {
                 previousVelocities.RemoveAt(0);
             }
         }
 
-        public virtual void UpdateAngularVelocity() {
+        public virtual void UpdateAngularVelocity()
+        {
             // Update our current angular velocity
             Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(_lastRotation);
             deltaRotation.ToAngleAxis(out angle, out axis);
@@ -80,15 +89,18 @@ namespace BNG {
             previousAngularVelocities.Add(GetAngularVelocity());
 
             // Shrink list if necessary
-            if (previousAngularVelocities.Count > AverageVelocityCount) {
+            if (previousAngularVelocities.Count > AverageVelocityCount)
+            {
                 previousAngularVelocities.RemoveAt(0);
             }
         }
 
-        public virtual Vector3 GetVelocity() {
+        public virtual Vector3 GetVelocity()
+        {
 
             // Return velocity straight away if set to per frame velocity check. No need to check device.
-            if(trackingType == VelocityTrackingType.PerFrame) {
+            if (trackingType == VelocityTrackingType.PerFrame)
+            {
                 return _velocity;
             }
 
@@ -96,24 +108,29 @@ namespace BNG {
             Vector3 vel = InputBridge.Instance.GetControllerVelocity(controllerHand);
 
             // Fall back to tracking velocity on a per frame basis if current velocity is unknown
-            if (vel == null || vel == Vector3.zero) {
+            if (vel == null || vel == Vector3.zero)
+            {
                 return _velocity;
             }
-            else {
+            else
+            {
                 // Add the playspace rotation in if necessary
-                if(playSpace != null) {
-                    return playSpace.transform.rotation* vel;
+                if (playSpace != null)
+                {
+                    return playSpace.transform.rotation * vel;
                 }
 
                 return vel;
             }
         }
-       
-        public virtual Vector3 GetAveragedVelocity() {
+
+        public virtual Vector3 GetAveragedVelocity()
+        {
             return GetAveragedVector(previousVelocities);
         }
 
-        public virtual Vector3 GetAngularVelocity() {
+        public virtual Vector3 GetAngularVelocity()
+        {
 
             // Device Angular Velocity appears to have some issues when being used in the editor. Sticking with per-frame angular Velocity for now as it is more reliable.
             return _angularVelocity;
@@ -135,20 +152,24 @@ namespace BNG {
             //}
         }
 
-        public virtual Vector3 GetAveragedAngularVelocity() {
+        public virtual Vector3 GetAveragedAngularVelocity()
+        {
             return GetAveragedVector(previousAngularVelocities);
         }
 
-        public virtual Vector3 GetAveragedVector(List<Vector3> vectors) {
+        public virtual Vector3 GetAveragedVector(List<Vector3> vectors)
+        {
 
-            if (vectors != null) {
+            if (vectors != null)
+            {
 
                 int count = vectors.Count;
                 float x = 0;
                 float y = 0;
                 float z = 0;
 
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; i++)
+                {
                     Vector3 v = vectors[i];
                     x += v.x;
                     y += v.y;

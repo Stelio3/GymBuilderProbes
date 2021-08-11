@@ -11,8 +11,10 @@ public class FixNonUniformScale : MonoBehaviour
     bool running = false;
 
     // Only call on selected
-    void OnDrawGizmosSelected() {
-        if(running) {
+    void OnDrawGizmosSelected()
+    {
+        if (running)
+        {
             return;
         }
 
@@ -23,11 +25,13 @@ public class FixNonUniformScale : MonoBehaviour
         DestroyImmediate(this);
     }
 
-    public void MakeUniform() {
+    public void MakeUniform()
+    {
         Vector3 originalScale = transform.localScale;
 
         // Nothing to scale here
-        if(originalScale == Vector3.one) {
+        if (originalScale == Vector3.one)
+        {
             return;
         }
 
@@ -37,10 +41,12 @@ public class FixNonUniformScale : MonoBehaviour
         MeshRenderer ren = GetComponent<MeshRenderer>();
         MeshFilter filter = GetComponent<MeshFilter>();
 
-        if (ren != null) {
+        if (ren != null)
+        {
             Transform renObject = new GameObject("Renderer").transform;
 
-            if(filter) {
+            if (filter)
+            {
                 MeshFilter mf = renObject.gameObject.AddComponent<MeshFilter>();
                 mf.sharedMesh = filter.sharedMesh;
                 DestroyImmediate(filter);
@@ -57,7 +63,8 @@ public class FixNonUniformScale : MonoBehaviour
             DestroyImmediate(ren);
         }
         BoxCollider col = GetComponent<BoxCollider>();
-        if(col != null) {
+        if (col != null)
+        {
             // Need to resize box collider
             col.center = Vector3.zero;
             col.size = originalScale;

@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
-    public enum TeleportControls {
+    public enum TeleportControls
+    {
         // Rotate Thumbstick to initiate, release to teleport
         ThumbstickRotate,
         // Hold Thumbstick down to initiate, release to teleport
@@ -17,7 +19,8 @@ namespace BNG {
     /// <summary>
     /// A basic Teleport script that uses a parabolic arc to determine teleport location
     /// </summary>
-    public class PlayerTeleport : MonoBehaviour {
+    public class PlayerTeleport : MonoBehaviour
+    {
 
         [Header("Colors")]
 
@@ -42,15 +45,19 @@ namespace BNG {
         public Transform TeleportBeginTransformAlt;
 
         // Get the Starting Point of the Teleport transform depending on if left or right handed
-        Transform teleportTransform {
-            get {
+        Transform teleportTransform
+        {
+            get
+            {
                 return HandSide == ControllerHand.Left ? TeleportBeginTransform : TeleportBeginTransformAlt;
             }
         }
 
         // Get the Thumbstick Axis depending on if left or right handed.
-        Vector2 handedThumbstickAxis {
-            get {
+        Vector2 handedThumbstickAxis
+        {
+            get
+            {
                 return HandSide == ControllerHand.Left ? input.LeftThumbstickAxis : input.RightThumbstickAxis;
             }
         }
@@ -109,7 +116,7 @@ namespace BNG {
         public float TeleportFadeSpeed = 10f;
 
         [Tooltip("Seconds to wait before initiating teleport. Useful if you want to fade the screen  before teleporting.")]
-        public float TeleportDelay = 0.2f;        
+        public float TeleportDelay = 0.2f;
 
         CharacterController controller;
         BNGPlayerController playerController;
@@ -136,12 +143,14 @@ namespace BNG {
         public delegate void OnAfterTeleportAction();
         public static event OnAfterTeleportAction OnAfterTeleport;
 
-        void Start() {
+        void Start()
+        {
             setupVariables();
         }
 
         bool setVariables = false;
-        void setupVariables() {
+        void setupVariables()
+        {
             input = InputBridge.Instance;
             playerController = GetComponent<BNGPlayerController>();
             controller = GetComponentInChildren<CharacterController>();
@@ -149,7 +158,8 @@ namespace BNG {
             fader = cameraRig.GetComponentInChildren<ScreenFader>();
 
             // Make sure teleport line is a root object
-            if (TeleportLine != null) {
+            if (TeleportLine != null)
+            {
                 TeleportLine.transform.parent = null;
                 TeleportLine.transform.position = Vector3.zero;
                 TeleportLine.transform.rotation = Quaternion.identity;
@@ -157,13 +167,15 @@ namespace BNG {
                 _initialLineWidth = TeleportLine.startWidth;
             }
 
-            if (CollisionLayers == 0) {
+            if (CollisionLayers == 0)
+            {
                 Debug.Log("Teleport layer not set. Setting Default.");
                 CollisionLayers = 1;
             }
 
             // HTC Uses a Trackpad that is recognized as a Thumbstick. Force to Hold Downmode
-            if (ControlType == TeleportControls.ThumbstickRotate && input.IsHTCDevice) {
+            if (ControlType == TeleportControls.ThumbstickRotate && input.IsHTCDevice)
+            {
                 Debug.Log("HTC Device detected, switching Teleport Mode to Thumbstick Down");
                 ControlType = TeleportControls.ThumbstickDown;
             }
@@ -171,33 +183,40 @@ namespace BNG {
             setVariables = true;
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Are we pressing button to check for teleport?
-            aimingTeleport = KeyDownForTeleport();            
+            aimingTeleport = KeyDownForTeleport();
 
-            if (aimingTeleport) {
-                DoCheckTeleport();                
+            if (aimingTeleport)
+            {
+                DoCheckTeleport();
             }
             // released key, finish teleport or just hide graphics
-            else if (KeyUpFromTeleport()) {
+            else if (KeyUpFromTeleport())
+            {
                 TryOrHideTeleport();
             }
         }
 
-        void FixedUpdate() {
-            if (aimingTeleport) {
+        void FixedUpdate()
+        {
+            if (aimingTeleport)
+            {
                 calculateParabola();
             }
         }
 
-        public void DoCheckTeleport() {
+        public void DoCheckTeleport()
+        {
             // Ensure line is enabled if we are aiming
             TeleportLine.enabled = true;
 
             // Explicitly set width to force redraw of linerender
             Color updatedColor = validTeleport ? ValidTeleport : InvalidTeleport;
-            if (!validTeleport && _invalidFrames < 3) {
+            if (!validTeleport && _invalidFrames < 3)
+            {
                 updatedColor = ValidTeleport;
             }
 
@@ -214,20 +233,25 @@ namespace BNG {
             updateTeleport();
         }
 
-        public void TryOrHideTeleport() {
-            if (validTeleport) {
+        public void TryOrHideTeleport()
+        {
+            if (validTeleport)
+            {
                 tryTeleport();
             }
-            else {
+            else
+            {
                 hideTeleport();
             }
         }
 
-        public void EnableTeleportation() {
+        public void EnableTeleportation()
+        {
             teleportationEnabled = true;
         }
 
-        public void DisableTeleportation() {
+        public void DisableTeleportation()
+        {
             teleportationEnabled = false;
             validTeleport = false;
             aimingTeleport = false;
@@ -241,7 +265,8 @@ namespace BNG {
         float _hitAngle;
         RaycastHit hit;
 
-        void calculateParabola() {
+        void calculateParabola()
+        {
 
             validTeleport = false;
             bool isDestination = false;
@@ -254,10 +279,12 @@ namespace BNG {
 
             _hitObject = null;
 
-            for (int i = 1; i < SegmentCount; i++) {
+            for (int i = 1; i < SegmentCount; i++)
+            {
 
                 // Hit something, so assign all future segments to this segment
-                if (_hitObject != null) {
+                if (_hitObject != null)
+                {
                     segments[i] = _hitVector;
                     continue;
                 }
@@ -269,7 +296,8 @@ namespace BNG {
                 segVelocity = segVelocity + Physics.gravity * segTime;
 
                 // Check to see if we're going to hit a physics object
-                if (Physics.Raycast(segments[i - 1], segVelocity, out hit, SegmentScale, CollisionLayers)) {
+                if (Physics.Raycast(segments[i - 1], segVelocity, out hit, SegmentScale, CollisionLayers))
+                {
 
                     // remember who we hit
                     _hitObject = hit.collider;
@@ -278,7 +306,7 @@ namespace BNG {
                     segments[i] = segments[i - 1] + segVelocity.normalized * hit.distance;
 
                     // correct ending velocity, since we didn't actually travel an entire segment
-                    segVelocity = segVelocity - Physics.gravity * (SegmentScale - hit.distance) / segVelocity.magnitude;                   
+                    segVelocity = segVelocity - Physics.gravity * (SegmentScale - hit.distance) / segVelocity.magnitude;
 
                     _hitAngle = Vector3.Angle(transform.up, hit.normal);
 
@@ -288,7 +316,8 @@ namespace BNG {
 
                     // Snap to Teleport Destination
                     DestinationObject = _hitObject.GetComponent<TeleportDestination>();
-                    if(DestinationObject != null) {
+                    if (DestinationObject != null)
+                    {
                         isDestination = true;
                         TeleportMarker.transform.position = DestinationObject.transform.position;
                         TeleportMarker.transform.rotation = DestinationObject.transform.rotation;
@@ -297,7 +326,8 @@ namespace BNG {
                     _hitVector = segments[i];
                 }
                 // Nothing hit, continue line by settings next segment to the last
-                else {
+                else
+                {
                     segments[i] = segments[i - 1] + segVelocity * segTime;
                 }
             }
@@ -306,60 +336,72 @@ namespace BNG {
 
             // Make sure teleport location is valid
             // Destination Targets ignore checks
-            if(validTeleport && !isDestination) {
+            if (validTeleport && !isDestination)
+            {
 
                 // Angle too steep
-                if (_hitAngle > MaxSlope) {
+                if (_hitAngle > MaxSlope)
+                {
                     validTeleport = false;
                 }
 
                 // Hit a grabbable object
-                if (_hitObject.GetComponent<Grabbable>() != null) {
+                if (_hitObject.GetComponent<Grabbable>() != null)
+                {
                     validTeleport = false;
                 }
 
                 // Hit a restricted zone
-                if (_hitObject.GetComponent<InvalidTeleportArea>() != null) {
+                if (_hitObject.GetComponent<InvalidTeleportArea>() != null)
+                {
                     validTeleport = false;
                 }
 
                 // Something in the way via raycast
-                if (!teleportClear() ) {
+                if (!teleportClear())
+                {
                     validTeleport = false;
                 }
             }
 
             // Render the positions as a line
             TeleportLine.positionCount = SegmentCount;
-            for (int i = 0; i < SegmentCount; i++) {
+            for (int i = 0; i < SegmentCount; i++)
+            {
                 TeleportLine.SetPosition(i, segments[i]);
             }
 
-            if(!validTeleport) {
+            if (!validTeleport)
+            {
                 _invalidFrames++;
             }
-            else {
+            else
+            {
                 _invalidFrames = 0;
             }
         }
 
         // Clear of obstacles
-        bool teleportClear() {
+        bool teleportClear()
+        {
 
             // Controller may have been cleared - double check it in clear method
-            if(controller == null) {
+            if (controller == null)
+            {
                 controller = GetComponentInChildren<CharacterController>();
             }
 
             // Something in the way via overlap sphere. Uses player capsule radius.
             Collider[] hitColliders = Physics.OverlapSphere(TeleportDestination.position, controller.radius, CollisionLayers, QueryTriggerInteraction.Ignore);
-            if (hitColliders.Length > 0) {
+            if (hitColliders.Length > 0)
+            {
                 return false;
             }
 
             // Something in the way via Raycast up from teleport spot
             // Raycast from the ground up to the height of character controller
-            if (Physics.Raycast(TeleportMarker.transform.position, TeleportMarker.transform.up, out RaycastHit hit, controller.height, CollisionLayers, QueryTriggerInteraction.Ignore)) {
+            if (Physics.Raycast(TeleportMarker.transform.position, TeleportMarker.transform.up, out RaycastHit hit, controller.height, CollisionLayers, QueryTriggerInteraction.Ignore))
+            {
                 return false;
             }
 
@@ -367,18 +409,22 @@ namespace BNG {
             return ValidLayers == (ValidLayers | (1 << _hitObject.gameObject.layer));
         }
 
-        void hideTeleport() {
+        void hideTeleport()
+        {
             TeleportLine.enabled = false;
 
-            if(TeleportMarker.activeSelf) {
+            if (TeleportMarker.activeSelf)
+            {
                 TeleportMarker.SetActive(false);
             }
         }
 
         // Raycast, update graphics
-        void updateTeleport() {
+        void updateTeleport()
+        {
 
-            if(validTeleport) {
+            if (validTeleport)
+            {
 
                 // Rotate based on controller thumbstick
                 rotateMarker();
@@ -388,14 +434,17 @@ namespace BNG {
             }
 
             // Show / Hide Teleport Marker
-            TeleportMarker.SetActive(validTeleport);           
+            TeleportMarker.SetActive(validTeleport);
         }
 
-        void rotateMarker() {
+        void rotateMarker()
+        {
 
-            if(AllowTeleportRotation) {
+            if (AllowTeleportRotation)
+            {
 
-                if(DirectionIndicator != null && !DirectionIndicator.gameObject.activeSelf) {
+                if (DirectionIndicator != null && !DirectionIndicator.gameObject.activeSelf)
+                {
                     DirectionIndicator.gameObject.SetActive(true);
                 }
 
@@ -414,29 +463,35 @@ namespace BNG {
                 TeleportMarker.transform.Rotate(Vector3.up, angle, Space.Self);
             }
             // Rotation Disabled
-            else {
-                if (DirectionIndicator != null && DirectionIndicator.gameObject.activeSelf) {
+            else
+            {
+                if (DirectionIndicator != null && DirectionIndicator.gameObject.activeSelf)
+                {
                     DirectionIndicator.gameObject.SetActive(false);
                 }
             }
         }
 
-        void tryTeleport() {
+        void tryTeleport()
+        {
 
-            if (validTeleport) {
+            if (validTeleport)
+            {
 
                 // Call any events, fade screen, etc.
                 BeforeTeleportFade();
 
                 Vector3 destination = TeleportDestination.position;
                 Quaternion rotation = TeleportMarker.transform.rotation;
-               
+
                 // Override if we're looking at a teleport destination
                 DestinationObject = _hitObject.GetComponent<TeleportDestination>();
-                if (DestinationObject != null) {
+                if (DestinationObject != null)
+                {
                     destination = DestinationObject.DestinationTransform.position;
 
-                    if (DestinationObject.ForcePlayerRotation) {
+                    if (DestinationObject.ForcePlayerRotation)
+                    {
                         rotation = DestinationObject.DestinationTransform.rotation;
                     }
                 }
@@ -454,20 +509,24 @@ namespace BNG {
         /// <summary>
         /// This is called immediately before fade is called and before BeforeTeleport has fired
         /// </summary>
-        public virtual void BeforeTeleportFade() {
+        public virtual void BeforeTeleportFade()
+        {
 
             // Call any Before Teleport Events
             OnBeforeTeleportFade?.Invoke();
 
-            if (FadeScreenOnTeleport && fader) {
+            if (FadeScreenOnTeleport && fader)
+            {
                 fader.FadeInSpeed = TeleportFadeSpeed;
                 fader.DoFadeIn();
             }
         }
 
-        public virtual void BeforeTeleport() {
+        public virtual void BeforeTeleport()
+        {
 
-            if (FadeScreenOnTeleport && fader) {
+            if (FadeScreenOnTeleport && fader)
+            {
                 fader.FadeInSpeed = TeleportFadeSpeed;
                 fader.DoFadeIn();
             }
@@ -476,9 +535,11 @@ namespace BNG {
             OnBeforeTeleport?.Invoke();
         }
 
-        public virtual void AfterTeleport() {
-            
-            if (FadeScreenOnTeleport && fader) {
+        public virtual void AfterTeleport()
+        {
+
+            if (FadeScreenOnTeleport && fader)
+            {
                 fader.DoFadeOut();
             }
 
@@ -486,18 +547,22 @@ namespace BNG {
             OnAfterTeleport?.Invoke();
 
             // Call Event on Teleport Destination if available
-            if(DestinationObject) {
+            if (DestinationObject)
+            {
                 DestinationObject.OnPlayerTeleported?.Invoke();
             }
         }
 
-        IEnumerator doTeleport(Vector3 playerDestination, Quaternion playerRotation, bool rotatePlayer) {
+        IEnumerator doTeleport(Vector3 playerDestination, Quaternion playerRotation, bool rotatePlayer)
+        {
 
-            if(!setVariables) {
+            if (!setVariables)
+            {
                 setupVariables();
             }
 
-            if(TeleportDelay > 0) {
+            if (TeleportDelay > 0)
+            {
                 yield return new WaitForSeconds(TeleportDelay);
             }
 
@@ -517,7 +582,8 @@ namespace BNG {
             controller.transform.localPosition -= new Vector3(0, yOffset, 0);
 
             // Rotate player to TeleportMarker Rotation
-            if (rotatePlayer) {
+            if (rotatePlayer)
+            {
                 controller.transform.rotation = playerRotation;
 
                 // Force our character to remain upright
@@ -525,62 +591,76 @@ namespace BNG {
             }
 
             // Call events, etc.
-            AfterTeleport();            
+            AfterTeleport();
 
             yield return new WaitForEndOfFrame();
-            
+
             // Re-Enable the character controller so we can move again
             controller.enabled = true;
         }
 
-        public void TeleportPlayer(Vector3 destination, Quaternion rotation) {
+        public void TeleportPlayer(Vector3 destination, Quaternion rotation)
+        {
             StartCoroutine(doTeleport(destination, rotation, true));
         }
 
-        public void TeleportPlayerToTransform(Transform destination) {
+        public void TeleportPlayerToTransform(Transform destination)
+        {
             StartCoroutine(doTeleport(destination.position, destination.rotation, true));
         }
 
         // Are we pressing proper key to initiate teleport?
-        public virtual bool KeyDownForTeleport() {
+        public virtual bool KeyDownForTeleport()
+        {
 
             // Make sure we can use teleport
-            if(!teleportationEnabled) {
+            if (!teleportationEnabled)
+            {
                 return false;
             }
 
             // Press stick in any direction to initiate teleport
-            if (ControlType == TeleportControls.ThumbstickRotate) {
-                if(Math.Abs(handedThumbstickAxis.x) >= 0.75 || Math.Abs(handedThumbstickAxis.y) >= 0.75) {
+            if (ControlType == TeleportControls.ThumbstickRotate)
+            {
+                if (Math.Abs(handedThumbstickAxis.x) >= 0.75 || Math.Abs(handedThumbstickAxis.y) >= 0.75)
+                {
                     _reachThumbThreshold = true;
                     return true;
                 }
                 // In dead zone
-                else if (_reachThumbThreshold && (Math.Abs(handedThumbstickAxis.x) > 0.25 || Math.Abs(handedThumbstickAxis.y) > 0.25)) {
+                else if (_reachThumbThreshold && (Math.Abs(handedThumbstickAxis.x) > 0.25 || Math.Abs(handedThumbstickAxis.y) > 0.25))
+                {
                     return true;
                 }
             }
             // Hold down Thumbstick to intiate
-            else if (ControlType == TeleportControls.ThumbstickDown) {
-                if (input.LeftThumbstick && HandSide == ControllerHand.Left) {
+            else if (ControlType == TeleportControls.ThumbstickDown)
+            {
+                if (input.LeftThumbstick && HandSide == ControllerHand.Left)
+                {
                     return true;
                 }
-                else if (input.RightThumbstick && HandSide == ControllerHand.Right) {
+                else if (input.RightThumbstick && HandSide == ControllerHand.Right)
+                {
                     return true;
                 }
             }
-            else if(ControlType == TeleportControls.BButton) {
+            else if (ControlType == TeleportControls.BButton)
+            {
                 return input.BButton;
             }
 
             return false;
         }
 
-        public virtual bool KeyUpFromTeleport() {
+        public virtual bool KeyUpFromTeleport()
+        {
 
             // Stick has returned back past input position
-            if (ControlType == TeleportControls.ThumbstickRotate) {
-                if(Math.Abs(input.LeftThumbstickAxis.x) <= 0.25 && Math.Abs(input.LeftThumbstickAxis.y) <= 0.25) {
+            if (ControlType == TeleportControls.ThumbstickRotate)
+            {
+                if (Math.Abs(input.LeftThumbstickAxis.x) <= 0.25 && Math.Abs(input.LeftThumbstickAxis.y) <= 0.25)
+                {
                     // Reset threshold
                     _reachThumbThreshold = false;
                     return true;
@@ -589,19 +669,23 @@ namespace BNG {
                 return false;
             }
             // Or no longer holding down Thumbstick
-            else if (ControlType == TeleportControls.ThumbstickDown) {
+            else if (ControlType == TeleportControls.ThumbstickDown)
+            {
                 return !input.LeftThumbstick;
             }
             // Or no longer holding down button
-            else if (ControlType == TeleportControls.BButton) {
+            else if (ControlType == TeleportControls.BButton)
+            {
                 return !input.BButton;
             }
 
             return true;
         }
 
-        void OnDrawGizmosSelected() {
-            if (controller != null && TeleportDestination.gameObject.activeSelf) {
+        void OnDrawGizmosSelected()
+        {
+            if (controller != null && TeleportDestination.gameObject.activeSelf)
+            {
                 Color gizColor = Color.red;
                 gizColor.a = 0.9f;
                 Gizmos.color = gizColor;

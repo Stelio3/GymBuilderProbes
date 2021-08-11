@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace BNG {
-    public class CustomCenterOfMass : MonoBehaviour {
+namespace BNG
+{
+    public class CustomCenterOfMass : MonoBehaviour
+    {
 
         [Header("Define Center of Mass")]
         [Tooltip("Local coordinates to use as center of mass if 'CenterOfMassTransform' is not specified.")]
@@ -20,33 +22,43 @@ namespace BNG {
         Rigidbody rigid;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             rigid = GetComponent<Rigidbody>();
             SetCenterOfMass(getThisCenterOfMass());
         }
 
-        public virtual void SetCenterOfMass(Vector3 center) {
-            if (rigid) {
+        public virtual void SetCenterOfMass(Vector3 center)
+        {
+            if (rigid)
+            {
                 rigid.centerOfMass = center;
             }
         }
 
-        protected virtual Vector3 getThisCenterOfMass() {
-            if (CenterOfMassTransform != null) {
+        protected virtual Vector3 getThisCenterOfMass()
+        {
+            if (CenterOfMassTransform != null)
+            {
                 return CenterOfMassTransform.localPosition;
             }
-            else {
+            else
+            {
                 return CenterOfMass;
             }
         }
 
-        void OnDrawGizmos() {
-            if(ShowGizmo) {
+        void OnDrawGizmos()
+        {
+            if (ShowGizmo)
+            {
                 Gizmos.color = Color.red;
-                if(rigid) {
+                if (rigid)
+                {
                     Gizmos.DrawSphere(rigid.worldCenterOfMass, 0.02f);
                 }
-                else {
+                else
+                {
                     Gizmos.DrawSphere(transform.position + transform.TransformVector(getThisCenterOfMass()), 0.02f);
                 }
             }

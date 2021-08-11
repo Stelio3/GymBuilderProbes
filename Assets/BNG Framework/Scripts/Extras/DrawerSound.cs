@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
-    public class DrawerSound : MonoBehaviour {
-        
+    public class DrawerSound : MonoBehaviour
+    {
+
         public AudioClip DrawerOpenSound;
         public float DrawerOpenValue = 80f;
 
@@ -15,26 +17,31 @@ namespace BNG {
         bool playedOpenSound = false;
         bool playedCloseSound = false;
 
-        public void OnDrawerUpdate(float drawerValue) {
-            
+        public void OnDrawerUpdate(float drawerValue)
+        {
+
             // Open Sound
-            if(drawerValue < DrawerOpenValue && !playedOpenSound && DrawerOpenSound != null) {
+            if (drawerValue < DrawerOpenValue && !playedOpenSound && DrawerOpenSound != null)
+            {
                 VRUtils.Instance.PlaySpatialClipAt(DrawerOpenSound, transform.position, 1f);
                 playedOpenSound = true;
             }
             // Reset Open Sound
-            if(drawerValue > DrawerOpenValue) {
+            if (drawerValue > DrawerOpenValue)
+            {
                 playedOpenSound = false;
             }
 
             // Close Sound
-            if (drawerValue > DrawerCloseValue && !playedCloseSound && DrawerCloseSound != null) {
+            if (drawerValue > DrawerCloseValue && !playedCloseSound && DrawerCloseSound != null)
+            {
                 VRUtils.Instance.PlaySpatialClipAt(DrawerCloseSound, transform.position, 1f);
                 playedCloseSound = true;
             }
 
             // Reset Close Sound
-            if (drawerValue < DrawerCloseValue) {
+            if (drawerValue < DrawerCloseValue)
+            {
                 playedCloseSound = false;
             }
         }

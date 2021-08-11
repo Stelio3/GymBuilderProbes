@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace BNG {
+namespace BNG
+{
 
-    public class VREmulator : MonoBehaviour {
+    public class VREmulator : MonoBehaviour
+    {
 
         [Header("Enable / Disable : ")]
         [Tooltip("Use Emulator if true and HMDIsActive is false")]
@@ -57,7 +59,8 @@ namespace BNG {
         public Vector3 LeftControllerPosition = new Vector3(-0.2f, -0.2f, 0.5f);
         public Vector3 RightControllerPosition = new Vector3(0.2f, -0.2f, 0.5f);
 
-        void Start() {
+        void Start()
+        {
             mainCameraTransform = GameObject.Find("CameraRig").transform;
             leftHandAnchor = GameObject.Find("LeftHandAnchor").transform;
             rightHandAnchor = GameObject.Find("RightHandAnchor").transform;
@@ -67,38 +70,45 @@ namespace BNG {
 
             player = FindObjectOfType<BNGPlayerController>();
 
-            if(player) {
+            if (player)
+            {
                 // Use this to keep our head up high
                 player.ElevateCameraIfNoHMDPresent = true;
                 _originalPlayerYOffset = player.ElevateCameraHeight;
 
                 smoothLocomotion = player.GetComponentInChildren<SmoothLocomotion>();
 
-                if (smoothLocomotion == null) {
+                if (smoothLocomotion == null)
+                {
                     Debug.Log("No Smooth Locomotion component found. Will not be able to use SmoothLocomotion without calling it manually.");
                 }
-                else if (smoothLocomotion.MoveAction == null) {
+                else if (smoothLocomotion.MoveAction == null)
+                {
                     Debug.Log("Smooth Locomotion Move Action has not been assigned. Make sure to assign this in the inspector if you want to be able to move around using the VR Emulator.");
                 }
             }
         }
 
-        public void OnBeforeRender() {
+        public void OnBeforeRender()
+        {
             HMDIsActive = InputBridge.Instance.HMDActive;
 
             // Ready to go
-            if (EmulatorEnabled && !HMDIsActive) {
+            if (EmulatorEnabled && !HMDIsActive)
+            {
                 UpdateControllerPositions();
             }
         }
 
-        void onFirstActivate() {
-            UpdateControllerPositions();            
+        void onFirstActivate()
+        {
+            UpdateControllerPositions();
 
             didFirstActivate = true;
         }
 
-        void Update() {
+        void Update()
+        {
 
             //// Considerd absent if specified or unknown status
             //bool userAbsent = XRDevice.userPresence == UserPresenceState.NotPresent || XRDevice.userPresence == UserPresenceState.Unknown;
@@ -106,9 +116,11 @@ namespace BNG {
             HMDIsActive = InputBridge.Instance.HMDActive;
 
             // Ready to go
-            if (EmulatorEnabled && !HMDIsActive) {
+            if (EmulatorEnabled && !HMDIsActive)
+            {
 
-                if(!didFirstActivate) {
+                if (!didFirstActivate)
+                {
                     onFirstActivate();
                 }
 
@@ -120,15 +132,18 @@ namespace BNG {
             }
 
             // Device came online after emulator had started
-            if(EmulatorEnabled && didFirstActivate && HMDIsActive) {
+            if (EmulatorEnabled && didFirstActivate && HMDIsActive)
+            {
                 ResetAll();
             }
         }
 
-        public void CheckHeadControls() {
+        public void CheckHeadControls()
+        {
 
             // Hold right mouse button down to move camera around
-            if(Input.GetMouseButton(1)) {
+            if (Input.GetMouseButton(1))
+            {
 
                 // Move Camera on Y Axis
                 mouseRotationY += Input.GetAxis("Mouse Y") * MouseSensitivityY;
@@ -142,7 +157,8 @@ namespace BNG {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-            else {
+            else
+            {
                 // Unlock Camera
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -152,10 +168,12 @@ namespace BNG {
         /// <summary>
         /// Overwrite InputBridge inputs with our own bindings
         /// </summary>
-        public void UpdateInputs() {
+        public void UpdateInputs()
+        {
 
             // Only override controls if no hmd is active and this script is enabled
-            if (EmulatorEnabled == false || HMDIsActive) {
+            if (EmulatorEnabled == false || HMDIsActive)
+            {
                 return;
             }
 
@@ -183,18 +201,22 @@ namespace BNG {
             InputBridge.Instance.RightThumbNear = Input.GetKey(RightThumbNear);
         }
 
-        public void CheckPlayerControls() {
+        public void CheckPlayerControls()
+        {
 
             // Player Up / Down
-            if(Input.GetKey(PlayerUp)) {
+            if (Input.GetKey(PlayerUp))
+            {
                 player.ElevateCameraHeight = Mathf.Clamp(player.ElevateCameraHeight + Time.deltaTime, 0.2f, 5f);
             }
-            else if (Input.GetKey(PlayerDown)) {
+            else if (Input.GetKey(PlayerDown))
+            {
                 player.ElevateCameraHeight = Mathf.Clamp(player.ElevateCameraHeight - Time.deltaTime, 0.2f, 5f);
             }
 
             // Player Move Forward / Back, Snap Turn
-            if(smoothLocomotion != null && smoothLocomotion.enabled == false) {
+            if (smoothLocomotion != null && smoothLocomotion.enabled == false)
+            {
                 // Manually allow player movement if the smooth locomotion component is disabled
                 smoothLocomotion.CheckControllerReferences();
                 smoothLocomotion.UpdateInputs();
@@ -202,7 +224,8 @@ namespace BNG {
             }
         }
 
-        public virtual void UpdateControllerPositions() {
+        public virtual void UpdateControllerPositions()
+        {
             leftControllerTranform.transform.localPosition = LeftControllerPosition;
             leftControllerTranform.transform.localEulerAngles = Vector3.zero;
 
@@ -210,30 +233,38 @@ namespace BNG {
             rightControllerTranform.transform.localEulerAngles = Vector3.zero;
         }
 
-        void checkGrabbers() {
+        void checkGrabbers()
+        {
             // Find Grabber Left
-            if (grabberLeft == null || !grabberLeft.isActiveAndEnabled) {
+            if (grabberLeft == null || !grabberLeft.isActiveAndEnabled)
+            {
                 Grabber[] grabbers = FindObjectsOfType<Grabber>();
 
-                for (var x = 0; x < grabbers.Length; x++) {
-                    if (grabbers[x] != null && grabbers[x].isActiveAndEnabled && grabbers[x].HandSide == ControllerHand.Left) {
+                for (var x = 0; x < grabbers.Length; x++)
+                {
+                    if (grabbers[x] != null && grabbers[x].isActiveAndEnabled && grabbers[x].HandSide == ControllerHand.Left)
+                    {
                         grabberLeft = grabbers[x];
                     }
                 }
             }
 
             // Find Grabber Right
-            if (grabberRight == null || !grabberRight.isActiveAndEnabled) {
+            if (grabberRight == null || !grabberRight.isActiveAndEnabled)
+            {
                 Grabber[] grabbers = FindObjectsOfType<Grabber>();
-                for (var x = 0; x < grabbers.Length; x++) {
-                    if (grabbers[x] != null && grabbers[x].isActiveAndEnabled && grabbers[x].HandSide == ControllerHand.Right) {
+                for (var x = 0; x < grabbers.Length; x++)
+                {
+                    if (grabbers[x] != null && grabbers[x].isActiveAndEnabled && grabbers[x].HandSide == ControllerHand.Right)
+                    {
                         grabberRight = grabbers[x];
                     }
                 }
             }
         }
 
-        public virtual void ResetHands() {
+        public virtual void ResetHands()
+        {
             leftControllerTranform.transform.localPosition = Vector3.zero;
             leftControllerTranform.transform.localEulerAngles = Vector3.zero;
 
@@ -241,7 +272,8 @@ namespace BNG {
             rightControllerTranform.transform.localEulerAngles = Vector3.zero;
         }
 
-        public virtual void ResetAll() {
+        public virtual void ResetAll()
+        {
 
             ResetHands();
 
@@ -249,25 +281,29 @@ namespace BNG {
             mainCameraTransform.localEulerAngles = Vector3.zero;
 
             // Reset Player
-            if (player) {
+            if (player)
+            {
                 player.ElevateCameraHeight = _originalPlayerYOffset;
             }
 
             didFirstActivate = false;
         }
 
-        void OnEnable() {
+        void OnEnable()
+        {
             // Subscribe to input events
             InputBridge.OnInputsUpdated += UpdateInputs;
 
             Application.onBeforeRender += OnBeforeRender;
         }
 
-        void OnDisable() {
+        void OnDisable()
+        {
 
             Application.onBeforeRender -= OnBeforeRender;
 
-            if (isQuitting) {
+            if (isQuitting)
+            {
                 return;
             }
 
@@ -279,7 +315,8 @@ namespace BNG {
         }
 
         bool isQuitting = false;
-        void OnApplicationQuit() {
+        void OnApplicationQuit()
+        {
             isQuitting = true;
         }
     }

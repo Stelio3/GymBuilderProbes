@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Contains various functionality used in the Demo Scene such as  Switching Hands and Locomotion
     /// </summary>
-    public class DemoScript : MonoBehaviour {
+    public class DemoScript : MonoBehaviour
+    {
 
         [Tooltip("If true, the Escape key will exit the game")]
         public bool ExitOnEscape = true;
@@ -35,7 +37,7 @@ namespace BNG {
         /// Used in demo scene
         /// </summary>
         public Text JoystickText;
-        
+
         /// <summary>
         /// Used in demo scene to spawn ammo clips
         /// </summary>
@@ -55,7 +57,8 @@ namespace BNG {
         Rigidbody cubeRigid3;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
 
             launchedObjects = new List<GameObject>();
 
@@ -63,10 +66,12 @@ namespace BNG {
             VRUtils.Instance.Log("Click the Menu button to toggle this menu.");
 
             // Set up initial grabbables so we can reset them later
-            if(ItemsHolder) {
+            if (ItemsHolder)
+            {
                 _initalGrabbables = new Dictionary<Grabbable, PosRot>();
                 var allGrabs = ItemsHolder.GetComponentsInChildren<Grabbable>();
-                foreach(var grab in allGrabs) {
+                foreach (var grab in allGrabs)
+                {
                     _initalGrabbables.Add(grab, new PosRot() { Position = grab.transform.position, Rotation = grab.transform.rotation });
                 }
             }
@@ -76,15 +81,18 @@ namespace BNG {
         }
 
         // Some example controls useful for testing
-        void Update() {
+        void Update()
+        {
 
             // Exit the app
-            if(ExitOnEscape && Input.GetKeyDown(KeyCode.Escape)) {
+            if (ExitOnEscape && Input.GetKeyDown(KeyCode.Escape))
+            {
                 Application.Quit();
             }
 
             // Toggle Debug Menu by pressing menu button down
-            if (InputBridge.Instance && InputBridge.Instance.BackButtonDown) {
+            if (InputBridge.Instance && InputBridge.Instance.BackButtonDown)
+            {
                 DebugMenu.SetActive(!DebugMenu.activeSelf);
             }
 
@@ -92,32 +100,41 @@ namespace BNG {
             rotateGravityCubes();
         }
 
-        public void UpdateSliderText(float sliderValue) {
-            if (LabelToUpdate != null) {
+        public void UpdateSliderText(float sliderValue)
+        {
+            if (LabelToUpdate != null)
+            {
                 LabelToUpdate.text = "Power : " + (int)sliderValue + "%";
             }
 
             // Scale Launcher based on slider value
-            if(DemoLauncher) {
+            if (DemoLauncher)
+            {
                 DemoLauncher.SetForce(DemoLauncher.GetInitialProjectileForce() * (sliderValue / 100));
             }
         }
 
-        public void UpdateJoystickText(float leverX, float leverY) {
-            if (JoystickText != null) {
+        public void UpdateJoystickText(float leverX, float leverY)
+        {
+            if (JoystickText != null)
+            {
                 JoystickText.text = "X : " + (int)leverX + "\nY: " + (int)leverY;
             }
         }
 
-        public void ResetGrabbables() {
-            foreach (var kvp in _initalGrabbables) {
+        public void ResetGrabbables()
+        {
+            foreach (var kvp in _initalGrabbables)
+            {
                 // Only reset high level grabbables that aren't being held
-                if(kvp.Key != null && !kvp.Key.BeingHeld && kvp.Key.transform.parent == ItemsHolder) {
+                if (kvp.Key != null && !kvp.Key.BeingHeld && kvp.Key.transform.parent == ItemsHolder)
+                {
                     kvp.Key.transform.position = kvp.Value.Position;
                     kvp.Key.transform.rotation = kvp.Value.Rotation;
 
                     Rigidbody rb = kvp.Key.GetComponent<Rigidbody>();
-                    if(rb) {
+                    if (rb)
+                    {
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                     }
@@ -126,20 +143,25 @@ namespace BNG {
         }
 
         List<Grabbable> demoClips;
-        public void GrabAmmo(Grabber grabber) {
+        public void GrabAmmo(Grabber grabber)
+        {
 
-            if(demoClips == null) {
+            if (demoClips == null)
+            {
                 demoClips = new List<Grabbable>();
             }
 
-            if(demoClips.Count > 0 && demoClips[0] == null) {
+            if (demoClips.Count > 0 && demoClips[0] == null)
+            {
                 demoClips.RemoveAt(0);
             }
 
-            if(AmmoObject != null) {
+            if (AmmoObject != null)
+            {
 
                 // Make room for new clip. This ensures the demo doesn't ge bogged down
-                if(demoClips.Count > 4 && demoClips[0] != null && demoClips[0].transform.parent == null) {
+                if (demoClips.Count > 4 && demoClips[0] != null && demoClips[0].transform.parent == null)
+                {
                     GameObject.Destroy(demoClips[0].gameObject);
                 }
 
@@ -157,7 +179,8 @@ namespace BNG {
                 ammo.transform.localPosition = -g.GrabPositionOffset;
                 ammo.transform.parent = null;
 
-                if(g != null) {
+                if (g != null)
+                {
                     demoClips.Add(g);
                 }
 
@@ -165,13 +188,16 @@ namespace BNG {
             }
         }
 
-        public void ShootLauncher() {
-            if(launchedObjects == null) {
+        public void ShootLauncher()
+        {
+            if (launchedObjects == null)
+            {
                 launchedObjects = new List<GameObject>();
             }
 
             // Went over max. Destroy oldest launch object
-            if(launchedObjects.Count > MaxLaunchedObjects) {
+            if (launchedObjects.Count > MaxLaunchedObjects)
+            {
                 launchedObjects.Remove(launchedObjects[0]);
                 GameObject.Destroy(launchedObjects[0]);
             }
@@ -179,21 +205,26 @@ namespace BNG {
             launchedObjects.Add(DemoLauncher.ShootProjectile(DemoLauncher.ProjectileForce));
         }
 
-        void initGravityCubes() {
+        void initGravityCubes()
+        {
             // Makes cubes spin in example scene
-            if(GameObject.Find("GravityCube 1")) {
+            if (GameObject.Find("GravityCube 1"))
+            {
                 cubeRigid = GameObject.Find("GravityCube 1").GetComponent<Rigidbody>();
             }
 
-            if (GameObject.Find("GravityCube 2")) {
+            if (GameObject.Find("GravityCube 2"))
+            {
                 cubeRigid1 = GameObject.Find("GravityCube 2").GetComponent<Rigidbody>();
             }
 
-            if (GameObject.Find("GravityCube 3")) {
+            if (GameObject.Find("GravityCube 3"))
+            {
                 cubeRigid2 = GameObject.Find("GravityCube 3").GetComponent<Rigidbody>();
             }
 
-            if (GameObject.Find("GravityCube 4")) {
+            if (GameObject.Find("GravityCube 4"))
+            {
                 cubeRigid3 = GameObject.Find("GravityCube 4").GetComponent<Rigidbody>();
             }
         }
@@ -203,26 +234,32 @@ namespace BNG {
         Vector3 rotateY = new Vector3(0, 0.2f, 0);
         Vector3 rotateZ = new Vector3(0, 0, 0.2f);
         Vector3 rotateXYX = new Vector3(0.2f, 0.2f, 0.2f);
-        void rotateGravityCubes() {
-            if (cubeRigid) {
+        void rotateGravityCubes()
+        {
+            if (cubeRigid)
+            {
                 cubeRigid.angularVelocity = rotateX;
             }
 
-            if (cubeRigid1) {
+            if (cubeRigid1)
+            {
                 cubeRigid1.angularVelocity = rotateY;
             }
 
-            if (cubeRigid2) {
+            if (cubeRigid2)
+            {
                 cubeRigid2.angularVelocity = rotateZ;
             }
 
-            if (cubeRigid3) {
+            if (cubeRigid3)
+            {
                 cubeRigid3.angularVelocity = rotateXYX;
             }
         }
     }
 
-    public class PosRot {
+    public class PosRot
+    {
         public Vector3 Position;
         public Quaternion Rotation;
     }

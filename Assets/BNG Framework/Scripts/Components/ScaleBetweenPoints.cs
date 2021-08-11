@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Scales an object's local Z scale to match a Begin / End point
     /// </summary>
-    public class ScaleBetweenPoints : MonoBehaviour {
+    public class ScaleBetweenPoints : MonoBehaviour
+    {
 
         public Transform Begin;
         public Transform End;
@@ -16,21 +18,27 @@ namespace BNG {
 
         public bool LookAtTarget = false;
 
-        void Update() {
-            if(DoUpdate) {
+        void Update()
+        {
+            if (DoUpdate)
+            {
                 doScale();
             }
         }
 
-        void LateUpdate() {
-            if (DoLateUpdate) {
+        void LateUpdate()
+        {
+            if (DoLateUpdate)
+            {
                 doScale();
             }
         }
 
-        void doScale() {
+        void doScale()
+        {
 
-            if(LookAtTarget) {
+            if (LookAtTarget)
+            {
                 transform.position = Begin.position;
                 transform.LookAt(End, transform.up);
             }

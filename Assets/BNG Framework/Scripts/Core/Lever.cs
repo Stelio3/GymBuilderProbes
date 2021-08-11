@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Helper class to interact with physical levers
     /// </summary>
-    public class Lever : MonoBehaviour {
+    public class Lever : MonoBehaviour
+    {
 
         [Header("Rotation Limits")]
         [Tooltip("Minimum X value in Local Euler Angles")]
@@ -109,31 +111,37 @@ namespace BNG {
 
         private Vector3 _lastLocalAngle;
 
-        void Start() {
+        void Start()
+        {
             grab = GetComponent<Grabbable>();
             rb = GetComponent<Rigidbody>();
             hingedJoint = GetComponent<HingeJoint>();
             configJoint = GetComponent<ConfigurableJoint>();
 
             audioSource = GetComponent<AudioSource>();
-            if (audioSource == null && (SwitchOnSound != null || SwitchOffSound != null)) {
+            if (audioSource == null && (SwitchOnSound != null || SwitchOffSound != null))
+            {
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
         }
 
-        void Awake() {
+        void Awake()
+        {
             transform.localEulerAngles = new Vector3(InitialXRotation, 0, 0);
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Update Kinematic Status.
-            if (rb) {
+            if (rb)
+            {
                 rb.isKinematic = AllowPhysicsForces == false && !grab.BeingHeld;
             }
 
             // Make sure grab offset is reset when not being held
-            if (!grab.BeingHeld) {
+            if (!grab.BeingHeld)
+            {
                 initialOffset = Quaternion.identity;
             }
 
@@ -149,29 +157,35 @@ namespace BNG {
             OnLeverChange(LeverPercentage);
 
             // Up / Down Events
-            if ((LeverPercentage + SwitchTolerance) > 99 && !switchedOn) {
+            if ((LeverPercentage + SwitchTolerance) > 99 && !switchedOn)
+            {
                 OnLeverUp();
             }
-            else if ((LeverPercentage - SwitchTolerance) < 1 && switchedOn) {
+            else if ((LeverPercentage - SwitchTolerance) < 1 && switchedOn)
+            {
                 OnLeverDown();
             }
 
             _lastLocalAngle = transform.localEulerAngles;
-        }       
+        }
 
-        public virtual float GetAnglePercentage(float currentAngle) {
-            if (hingedJoint) {
+        public virtual float GetAnglePercentage(float currentAngle)
+        {
+            if (hingedJoint)
+            {
                 return (currentAngle - hingedJoint.limits.min) / (hingedJoint.limits.max - hingedJoint.limits.min) * 100;
             }
 
-            if (configJoint) {
+            if (configJoint)
+            {
                 return currentAngle / configJoint.linearLimit.limit * 100;
             }
 
             return 0;
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
 
             // Align lever with Grabber
             doLeverLook();
@@ -179,9 +193,11 @@ namespace BNG {
 
         Quaternion initialOffset = Quaternion.identity;
 
-        void doLeverLook() {
+        void doLeverLook()
+        {
             // Do Lever Look
-            if (grab != null && grab.BeingHeld) {
+            if (grab != null && grab.BeingHeld)
+            {
                 // Use the grabber as our look target. 
                 Transform target = grab.GetPrimaryGrabber().transform;
 
@@ -199,22 +215,27 @@ namespace BNG {
                 transform.LookAt(targetPosition, transform.up);
 
                 // Get the initial hand offset so our Lever doesn't jump to the grabber when we first grab it
-                if (initialOffset == Quaternion.identity) {
+                if (initialOffset == Quaternion.identity)
+                {
                     initialOffset = originalRot * Quaternion.Inverse(transform.rotation);
                 }
 
-                if (!SnapToGrabber) {
+                if (!SnapToGrabber)
+                {
                     transform.rotation = transform.rotation * initialOffset;
                 }
 
-                if (UseSmoothLook) {
+                if (UseSmoothLook)
+                {
                     Quaternion newRot = transform.rotation;
                     transform.rotation = originalRot;
                     transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * SmoothLookSpeed);
                 }
             }
-            else if (grab != null && !grab.BeingHeld) {
-                if (ReturnToCenter && AllowPhysicsForces == false) {
+            else if (grab != null && !grab.BeingHeld)
+            {
+                if (ReturnToCenter && AllowPhysicsForces == false)
+                {
                     transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, Time.deltaTime * ReturnLookSpeed);
                 }
             }
@@ -224,13 +245,16 @@ namespace BNG {
         /// Sets the X local euler angle of the lever. Angle is capped by MinimumXRotation / MaximumXRotation
         /// </summary>
         /// <param name="angle"></param>
-        public virtual void SetLeverAngle(float angle) {
+        public virtual void SetLeverAngle(float angle)
+        {
             transform.localEulerAngles = new Vector3(Mathf.Clamp(angle, MinimumXRotation, MaximumXRotation), 0, 0);
         }
 
         // Callback for lever percentage change
-        public virtual void OnLeverChange(float percentage) {
-            if (onLeverChange != null) {
+        public virtual void OnLeverChange(float percentage)
+        {
+            if (onLeverChange != null)
+            {
                 onLeverChange.Invoke(percentage);
             }
         }
@@ -238,20 +262,24 @@ namespace BNG {
         /// <summary>
         /// Lever Moved to down position
         /// </summary>
-        public virtual void OnLeverDown() {
+        public virtual void OnLeverDown()
+        {
 
-            if (SwitchOffSound != null) {
+            if (SwitchOffSound != null)
+            {
                 audioSource.clip = SwitchOffSound;
                 audioSource.Play();
             }
 
-            if (onLeverDown != null) {
+            if (onLeverDown != null)
+            {
                 onLeverDown.Invoke();
             }
 
             switchedOn = false;
 
-            if (DropLeverOnActivation && grab != null) {
+            if (DropLeverOnActivation && grab != null)
+            {
                 grab.DropItem(false, false);
             }
         }
@@ -259,29 +287,35 @@ namespace BNG {
         /// <summary>
         /// Lever moved to up position
         /// </summary>
-        public virtual void OnLeverUp() {
+        public virtual void OnLeverUp()
+        {
 
-            if (SwitchOnSound != null) {
+            if (SwitchOnSound != null)
+            {
                 audioSource.clip = SwitchOnSound;
                 audioSource.Play();
             }
 
             // Fire event
-            if (onLeverUp != null) {
+            if (onLeverUp != null)
+            {
                 onLeverUp.Invoke();
             }
 
             switchedOn = true;
 
-            if(DropLeverOnActivation && grab != null) {
+            if (DropLeverOnActivation && grab != null)
+            {
                 grab.DropItem(false, false);
             }
         }
 
 #if UNITY_EDITOR
-        void OnDrawGizmosSelected() {
+        void OnDrawGizmosSelected()
+        {
 
-            if (ShowEditorGizmos && !Application.isPlaying) {
+            if (ShowEditorGizmos && !Application.isPlaying)
+            {
 
                 Vector3 _origin = transform.position;
                 float rotationDifference = MaximumXRotation - MinimumXRotation;
@@ -304,13 +338,15 @@ namespace BNG {
                 Debug.DrawLine(transform.position, _origin + Quaternion.AngleAxis(InitialXRotation, transform.right) * transform.forward * lineLength, Color.magenta);
 
                 // Fix for exactly 180
-                if(rotationDifference == 180) {
+                if (rotationDifference == 180)
+                {
                     minPosition = _origin + Quaternion.AngleAxis(MinimumXRotation + 0.01f, transform.right) * transform.forward * lineLength;
                 }
 
                 // Draw the arc
                 Vector3 _cross = Vector3.Cross(minPosition - _origin, maxPosition - _origin);
-                if(rotationDifference > 180) {
+                if (rotationDifference > 180)
+                {
                     _cross = Vector3.Cross(maxPosition - _origin, minPosition - _origin);
                 }
 

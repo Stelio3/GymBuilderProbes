@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BNG {
-    public class GrabbableUnityEvents : GrabbableEvents {
+namespace BNG
+{
+    public class GrabbableUnityEvents : GrabbableEvents
+    {
 
         public GrabberEvent onGrab;
         public UnityEvent onRelease;
@@ -29,10 +31,12 @@ namespace BNG {
         /// Item has been grabbed by a Grabber
         /// </summary>
         /// <param name="grabber"></param>
-        public override void OnGrab(Grabber grabber) {
+        public override void OnGrab(Grabber grabber)
+        {
             base.OnGrab(grabber);
 
-            if(onGrab != null) {
+            if (onGrab != null)
+            {
                 onGrab.Invoke(grabber);
             }
         }
@@ -40,10 +44,12 @@ namespace BNG {
         /// <summary>
         /// Has been dropped from the Grabber
         /// </summary>
-        public override void OnRelease() {
+        public override void OnRelease()
+        {
             base.OnRelease();
 
-            if (onRelease != null) {
+            if (onRelease != null)
+            {
                 onRelease.Invoke();
             }
         }
@@ -52,10 +58,12 @@ namespace BNG {
         /// Called if this is the closest grabbable but wasn't in the previous frame 
         /// </summary>
         /// <param name="touchingHand"></param>
-        public override void OnBecomesClosestGrabbable(ControllerHand touchingHand) {
+        public override void OnBecomesClosestGrabbable(ControllerHand touchingHand)
+        {
             base.OnBecomesClosestGrabbable(touchingHand);
 
-            if (onBecomesClosestGrabbable != null) {
+            if (onBecomesClosestGrabbable != null)
+            {
                 onBecomesClosestGrabbable.Invoke();
             }
         }
@@ -64,10 +72,12 @@ namespace BNG {
         /// No longer closest grabbable. May need to disable highlight, ring, etc.
         /// </summary>
         /// <param name="touchingHand"></param>
-        public override void OnNoLongerClosestGrabbable(ControllerHand touchingHand) {
+        public override void OnNoLongerClosestGrabbable(ControllerHand touchingHand)
+        {
             base.OnNoLongerClosestGrabbable(touchingHand);
 
-            if (onNoLongerClosestGrabbable != null) {
+            if (onNoLongerClosestGrabbable != null)
+            {
                 onNoLongerClosestGrabbable.Invoke();
             }
         }
@@ -76,10 +86,12 @@ namespace BNG {
         /// Fires if this is the closest remote grabbable but wasn't in the previous frame
         /// </summary>
         /// <param name="touchingHand"></param>
-        public override void OnBecomesClosestRemoteGrabbable(ControllerHand touchingHand) {
+        public override void OnBecomesClosestRemoteGrabbable(ControllerHand touchingHand)
+        {
             base.OnBecomesClosestRemoteGrabbable(touchingHand);
 
-            if (onBecomesClosestRemoteGrabbable != null) {
+            if (onBecomesClosestRemoteGrabbable != null)
+            {
                 onBecomesClosestRemoteGrabbable.Invoke();
             }
         }
@@ -88,10 +100,12 @@ namespace BNG {
         /// Fires if this was the closest remote grabbable last frame, but not this frame
         /// </summary>
         /// <param name="touchingHand"></param>
-        public override void OnNoLongerClosestRemoteGrabbable(ControllerHand touchingHand) {
+        public override void OnNoLongerClosestRemoteGrabbable(ControllerHand touchingHand)
+        {
             base.OnNoLongerClosestRemoteGrabbable(touchingHand);
 
-            if (onNoLongerClosestRemoteGrabbable != null) {
+            if (onNoLongerClosestRemoteGrabbable != null)
+            {
                 onNoLongerClosestRemoteGrabbable.Invoke();
             }
         }
@@ -100,10 +114,12 @@ namespace BNG {
         /// Amount of Grip (0-1). Only fired if object is being held.
         /// </summary>
         /// <param name="gripValue">0 - 1 Open / Closed</param>
-        public override void OnGrip(float gripValue) {
+        public override void OnGrip(float gripValue)
+        {
             base.OnGrip(gripValue);
 
-            if(onGrip != null) {
+            if (onGrip != null)
+            {
                 onGrip.Invoke(gripValue);
             }
         }
@@ -112,10 +128,12 @@ namespace BNG {
         /// Amount of Trigger being held down on the grabbed items controller. Only fired if object is being held.
         /// </summary>
         /// <param name="triggerValue">0 - 1 Open / Closed</param>
-        public override void OnTrigger(float triggerValue) {
+        public override void OnTrigger(float triggerValue)
+        {
             base.OnTrigger(triggerValue);
 
-            if (onTrigger != null) {
+            if (onTrigger != null)
+            {
                 onTrigger.Invoke(triggerValue);
             }
         }
@@ -123,10 +141,12 @@ namespace BNG {
         /// <summary>
         /// Fires if trigger was pressed down on this controller this frame. Only fired if object is being held.
         /// </summary>
-        public override void OnTriggerDown() {
+        public override void OnTriggerDown()
+        {
             base.OnTriggerDown();
 
-            if (onTriggerDown != null) {
+            if (onTriggerDown != null)
+            {
                 onTriggerDown.Invoke();
             }
         }
@@ -134,10 +154,12 @@ namespace BNG {
         /// <summary>
         /// Fires if trigger was released on this controller this frame. Only fired if object is being held.
         /// </summary>
-        public override void OnTriggerUp() {
+        public override void OnTriggerUp()
+        {
             base.OnTriggerUp();
 
-            if (onTriggerUp != null) {
+            if (onTriggerUp != null)
+            {
                 onTriggerUp.Invoke();
             }
         }
@@ -146,10 +168,12 @@ namespace BNG {
         /// Button 1 is being held down this frame but not last
         /// Oculus : Button 1 = "A" if held in Right controller."X" if held in Left Controller
         /// </summary>
-        public override void OnButton1() {
+        public override void OnButton1()
+        {
             base.OnButton1();
 
-            if (onButton1 != null) {
+            if (onButton1 != null)
+            {
                 onButton1.Invoke();
             }
         }
@@ -158,10 +182,12 @@ namespace BNG {
         /// Button 1 Pressed down this frame
         /// Oculus : Button 1 = "A" if held in Right controller."X" if held in Left Controller
         /// </summary>
-        public override void OnButton1Down() {
+        public override void OnButton1Down()
+        {
             base.OnButton1Down();
 
-            if (onButton1Down != null) {
+            if (onButton1Down != null)
+            {
                 onButton1Down.Invoke();
             }
         }
@@ -170,10 +196,12 @@ namespace BNG {
         /// Button 1 Released this frame
         /// Oculus : Button 1 = "A" if held in Right controller."X" if held in Left Controller
         /// </summary>
-        public override void OnButton1Up() {
+        public override void OnButton1Up()
+        {
             base.OnButton1Up();
 
-            if (onButton1Up != null) {
+            if (onButton1Up != null)
+            {
                 onButton1Up.Invoke();
             }
         }
@@ -182,10 +210,12 @@ namespace BNG {
         /// Button 2 is being held down this frame but not last
         /// Oculus : Button 2 = "B" if held in Right controller."Y" if held in Left Controller
         /// </summary>
-        public override void OnButton2() {
+        public override void OnButton2()
+        {
             base.OnButton2();
 
-            if (onButton2 != null) {
+            if (onButton2 != null)
+            {
                 onButton2.Invoke();
             }
         }
@@ -194,10 +224,12 @@ namespace BNG {
         /// Button 2 Pressed down this frame
         /// Oculus : Button 2 = "B" if held in Right controller."Y" if held in Left Controller
         /// </summary>
-        public override void OnButton2Down() {
+        public override void OnButton2Down()
+        {
             base.OnButton2Down();
 
-            if (onButton2Down != null) {
+            if (onButton2Down != null)
+            {
                 onButton2Down.Invoke();
             }
         }
@@ -206,10 +238,12 @@ namespace BNG {
         /// Button 2 Released this frame
         /// Oculus : Button 2 = "B" if held in Right controller."Y" if held in Left Controller
         /// </summary>
-        public override void OnButton2Up() {
+        public override void OnButton2Up()
+        {
             base.OnButton2Up();
 
-            if (onButton2Up != null) {
+            if (onButton2Up != null)
+            {
                 onButton2Up.Invoke();
             }
         }
@@ -218,10 +252,12 @@ namespace BNG {
         /// Button 2 Released this frame
         /// Oculus : Button 2 = "B" if held in Right controller."Y" if held in Left Controller
         /// </summary>
-        public override void OnSnapZoneEnter() {
+        public override void OnSnapZoneEnter()
+        {
             base.OnSnapZoneEnter();
 
-            if (onSnapZoneEnter != null) {
+            if (onSnapZoneEnter != null)
+            {
                 onSnapZoneEnter.Invoke();
             }
         }
@@ -230,10 +266,12 @@ namespace BNG {
         /// Button 2 Released this frame
         /// Oculus : Button 2 = "B" if held in Right controller."Y" if held in Left Controller
         /// </summary>
-        public override void OnSnapZoneExit() {
+        public override void OnSnapZoneExit()
+        {
             base.OnSnapZoneExit();
 
-            if (onSnapZoneExit != null) {
+            if (onSnapZoneExit != null)
+            {
                 onSnapZoneExit.Invoke();
             }
         }

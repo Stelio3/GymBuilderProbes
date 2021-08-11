@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Shows a ring at the grab point of a grabbable if within a certain distance
     /// </summary>
-    public class RingHelper : MonoBehaviour {
+    public class RingHelper : MonoBehaviour
+    {
         [Tooltip("The Grabbable Object to Observe")]
         public Grabbable grabbable;
 
@@ -65,18 +67,21 @@ namespace BNG {
 
         Transform mainCam;
 
-        void Start() {
+        void Start()
+        {
             AssignCamera();
 
-            if (grabbable == null) {
+            if (grabbable == null)
+            {
                 grabbable = transform.parent.GetComponent<Grabbable>();
             }
-            
+
             canvas = GetComponent<Canvas>();
             scaler = GetComponent<CanvasScaler>();
             text = GetComponent<Text>();
 
-            if(text == null) {
+            if (text == null)
+            {
                 Debug.LogWarning("No Text Component Found on RingHelper");
                 return;
             }
@@ -84,17 +89,19 @@ namespace BNG {
             _initalOpacity = text.color.a;
             _currentOpacity = _initalOpacity;
 
-            AssignGrabbers();            
+            AssignGrabbers();
         }
 
-        void Update() {
+        void Update()
+        {
 
             // Double check for mainCam 
             AssignCamera();
-            
+
 
             // Bail if Text Component was removed or doesn't exist
-            if (text == null || mainCam == null || grabbable == null) {
+            if (text == null || mainCam == null || grabbable == null)
+            {
                 return;
             }
 
@@ -104,35 +111,41 @@ namespace BNG {
             handsFull = grabbersExist && leftGrabber.HoldingItem && rightGrabber.HoldingItem;
 
             // Not a valid Grab
-            if(grabbersExist && grabbable.GrabButton == GrabButton.Grip && !leftGrabber.FreshGrip && !rightGrabber.FreshGrip) {
+            if (grabbersExist && grabbable.GrabButton == GrabButton.Grip && !leftGrabber.FreshGrip && !rightGrabber.FreshGrip)
+            {
                 handsFull = true;
             }
 
             bool showRings = handsFull;
 
             // If being held or not active, immediately hide the ring
-            if (grabbable.BeingHeld || !grabbable.isActiveAndEnabled) {
+            if (grabbable.BeingHeld || !grabbable.isActiveAndEnabled)
+            {
                 canvas.enabled = false;
                 return;
             }
 
             // Requires another Grabbable to be held. Can exit immediately
-            if(grabbable.OtherGrabbableMustBeGrabbed != null && grabbable.OtherGrabbableMustBeGrabbed.BeingHeld == false) {
+            if (grabbable.OtherGrabbableMustBeGrabbed != null && grabbable.OtherGrabbableMustBeGrabbed.BeingHeld == false)
+            {
                 canvas.enabled = false;
                 return;
             }
 
             // Show if within range
             float currentDistance = Vector3.Distance(transform.position, mainCam.position);
-            if(!handsFull && currentDistance <= grabbable.RemoteGrabDistance) {
+            if (!handsFull && currentDistance <= grabbable.RemoteGrabDistance)
+            {
                 showRings = true;
             }
-            else {
-                showRings = false;                
+            else
+            {
+                showRings = false;
             }
 
             // Animate ring opacity in / out
-            if(showRings) {
+            if (showRings)
+            {
                 canvas.enabled = true;
                 canvas.transform.LookAt(mainCam);
 
@@ -141,23 +154,27 @@ namespace BNG {
 
                 bool isClosest = grabbable.GetClosestGrabber() != null && grabbable.IsGrabbable();
                 // Check if grabpoint was specified
-                if(Grabpoint != null) {
+                if (Grabpoint != null)
+                {
 
                 }
 
                 // If a valid grabbable, increase size a bit
-                if (isClosest) {
+                if (isClosest)
+                {
                     scaler.dynamicPixelsPerUnit = ringSizeGrabbable;
 
                     text.color = getSelectedColor();
                 }
-                else {
+                else
+                {
                     scaler.dynamicPixelsPerUnit = ringSizeInRange;
                     text.color = RingColor;
                 }
 
                 _currentOpacity += Time.deltaTime * RingFadeSpeed;
-                if (_currentOpacity > _initalOpacity) {
+                if (_currentOpacity > _initalOpacity)
+                {
                     _currentOpacity = _initalOpacity;
                 }
 
@@ -165,14 +182,17 @@ namespace BNG {
                 colorCurrent.a = _currentOpacity;
                 text.color = colorCurrent;
             }
-            else {
+            else
+            {
 
                 _currentOpacity -= Time.deltaTime * RingFadeSpeed;
-                if (_currentOpacity <= 0) {
+                if (_currentOpacity <= 0)
+                {
                     _currentOpacity = 0;
                     canvas.enabled = false;
                 }
-                else {
+                else
+                {
                     canvas.enabled = true;
                     Color colorCurrent = text.color;
                     colorCurrent.a = _currentOpacity;
@@ -181,45 +201,57 @@ namespace BNG {
             }
         }
 
-        public virtual void AssignCamera() {
-            if (mainCam == null) {
+        public virtual void AssignCamera()
+        {
+            if (mainCam == null)
+            {
                 // Find By Tag instead of Camera.main as the camera could be disabled
-                if(GameObject.FindGameObjectWithTag("MainCamera") != null) {
+                if (GameObject.FindGameObjectWithTag("MainCamera") != null)
+                {
                     mainCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
                 }
             }
         }
 
-        public virtual void AssignGrabbers() {
+        public virtual void AssignGrabbers()
+        {
             // Assign left / right grabbers
             Grabber[] grabs;
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player) {
+            if (player)
+            {
                 grabs = player.GetComponentsInChildren<Grabber>();
             }
-            else {
+            else
+            {
                 // Fall back to all grabbers
                 grabs = FindObjectsOfType<Grabber>();
             }
 
             // Check grabber assignment
-            for (int x = 0; x < grabs.Length; x++) {
+            for (int x = 0; x < grabs.Length; x++)
+            {
                 Grabber g = grabs[x];
-                if (g.HandSide == ControllerHand.Left) {
+                if (g.HandSide == ControllerHand.Left)
+                {
                     leftGrabber = g;
                 }
-                else if (g.HandSide == ControllerHand.Right) {
+                else if (g.HandSide == ControllerHand.Right)
+                {
                     rightGrabber = g;
                 }
             }
         }
 
-        Color getSelectedColor() {
+        Color getSelectedColor()
+        {
 
             // Use secondary color if closest grabber is on the left hand
             closestGrabber = grabbable.GetClosestGrabber();
-            if (grabbable != null && closestGrabber != null) {
-                if (closestGrabber.HandSide == ControllerHand.Left) {
+            if (grabbable != null && closestGrabber != null)
+            {
+                if (closestGrabber.HandSide == ControllerHand.Left)
+                {
                     return RingSecondarySelectedColor;
                 }
             }

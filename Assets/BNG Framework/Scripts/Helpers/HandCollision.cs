@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
     /// <summary>
     /// Controls collision state of Hand Model.
     /// </summary>
-    public class HandCollision : MonoBehaviour {
+    public class HandCollision : MonoBehaviour
+    {
 
         /// <summary>
         /// Used to determine if pointing or gripping
@@ -51,26 +53,31 @@ namespace BNG {
         List<Collider> handColliders;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             handColliders = new List<Collider>();
             var tempColliders = GetComponentsInChildren<Collider>(true);
 
             // Only accept non-trigger colliders.
-            foreach(var c in tempColliders) {
-                if(!c.isTrigger) {
+            foreach (var c in tempColliders)
+            {
+                if (!c.isTrigger)
+                {
                     handColliders.Add(c);
                 }
             }
         }
 
         // Update is called once per frame
-        void Update() {
-            if(!EnableHandCollision) {
+        void Update()
+        {
+            if (!EnableHandCollision)
+            {
                 return;
             }
 
             bool grabbing = HandGrabber != null && HandGrabber.HoldingItem;
-           
+
             bool makingFist = HandControl != null && HandControl.GripAmount > 0.9f && (HandControl.PointAmount < 0.1 || HandControl.PointAmount > 1);
             MakingFist = makingFist;
             PointAmount = HandControl.PointAmount;
@@ -78,34 +85,41 @@ namespace BNG {
 
             bool pointing = HandControl != null && HandControl.PointAmount > 0.9f && HandControl.GripAmount > 0.9f;
 
-            for (int x = 0; x < handColliders.Count; x++) {
+            for (int x = 0; x < handColliders.Count; x++)
+            {
                 Collider col = handColliders[x];
 
                 // Immediately disable collider if no collision on grab
-                if (EnableCollisionDuringGrab == false && grabbing) {
+                if (EnableCollisionDuringGrab == false && grabbing)
+                {
                     col.enabled = false;
                     continue;
                 }
 
                 // Immediately disable collider if we just released an item. 
                 // This is so we don't enable the collider right when we are trying to drop something
-                if(HandGrabber != null && (Time.time - HandGrabber.LastDropTime < 0.1f )) {
+                if (HandGrabber != null && (Time.time - HandGrabber.LastDropTime < 0.1f))
+                {
                     col.enabled = false;
                     continue;
                 }
 
                 bool enableCollider = false;
 
-                if (EnableCollisionDuringGrab && grabbing) {
+                if (EnableCollisionDuringGrab && grabbing)
+                {
                     enableCollider = true;
                 }
-                else if (EnableCollisionOnPoint && pointing) {
+                else if (EnableCollisionOnPoint && pointing)
+                {
                     enableCollider = true;
                 }
-                else if (EnableCollisionOnFist && makingFist) {
+                else if (EnableCollisionOnFist && makingFist)
+                {
                     enableCollider = true;
                 }
-                else if (EnableCollisionOnAllPoses) {
+                else if (EnableCollisionOnAllPoses)
+                {
                     enableCollider = true;
                 }
 

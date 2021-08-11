@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class DoorHelper : MonoBehaviour {
+namespace BNG
+{
+    public class DoorHelper : MonoBehaviour
+    {
 
         public AudioClip DoorOpenSound;
         public AudioClip DoorCloseSound;
@@ -41,11 +43,13 @@ namespace BNG {
 
         public float AngularVelocitySnapDoor = 0.2f;
 
-        void Start() {
+        void Start()
+        {
             hinge = GetComponent<HingeJoint>();
             rigid = GetComponent<Rigidbody>();
 
-            if(DoorLockTransform) {
+            if (DoorLockTransform)
+            {
                 initialLockPosition = DoorLockTransform.transform.localPosition.x;
             }
         }
@@ -58,7 +62,8 @@ namespace BNG {
 
         public string DebugText;
 
-        void Update() {
+        void Update()
+        {
 
             // Read Angular Velocity used for snapping door shut
             AngularVelocity = rigid.angularVelocity.magnitude;
@@ -69,82 +74,97 @@ namespace BNG {
             Vector3 currentRotation = transform.localEulerAngles;
             angle = Mathf.Floor(currentRotation.y);
 
-            if(angle >= 180) {
-                angle -= 180; 
+            if (angle >= 180)
+            {
+                angle -= 180;
             }
-            else {
+            else
+            {
                 angle = 180 - angle;
             }
 
             // Play Open Sound
-            if (angle > 10) {
+            if (angle > 10)
+            {
 
-                if(!playedOpenSound) {
+                if (!playedOpenSound)
+                {
                     VRUtils.Instance.PlaySpatialClipAt(DoorOpenSound, transform.position, 1f, 1f);
                     playedOpenSound = true;
                 }
             }
 
-            if(angle > 30) {
+            if (angle > 30)
+            {
                 readyToPlayCloseSound = true;
             }
 
             // Reset Open Sound
-            if(angle < 2 && playedOpenSound) {
+            if (angle < 2 && playedOpenSound)
+            {
                 playedOpenSound = false;
             }
 
             // Should we snap the door closed?
-            if (angle < 1 && AngularVelocity <= AngularVelocitySnapDoor) {
+            if (angle < 1 && AngularVelocity <= AngularVelocitySnapDoor)
+            {
                 rigid.angularVelocity = Vector3.zero;
             }
 
             // Play Close Sound
-            if (readyToPlayCloseSound && angle < 2) {
+            if (readyToPlayCloseSound && angle < 2)
+            {
                 VRUtils.Instance.PlaySpatialClipAt(DoorCloseSound, transform.position, 1f, 1f);
                 readyToPlayCloseSound = false;
             }
 
             // Calculate Handle if available
-            if (HandleFollower) {
+            if (HandleFollower)
+            {
                 DegreesTurned = Mathf.Abs(HandleFollower.localEulerAngles.y - 270);
             }
 
-            if(DoorLockTransform) {
+            if (DoorLockTransform)
+            {
                 // 45 Degrees = Fully Open
                 float moveLockAmount = 0.025f;
                 float rotateAngles = 55;
                 float ratio = rotateAngles / (rotateAngles - Mathf.Clamp(DegreesTurned, 0, rotateAngles));
-                lockPos =  initialLockPosition - (ratio * moveLockAmount) + moveLockAmount;
+                lockPos = initialLockPosition - (ratio * moveLockAmount) + moveLockAmount;
                 lockPos = Mathf.Clamp(lockPos, initialLockPosition - moveLockAmount, initialLockPosition);
 
                 DoorLockTransform.transform.localPosition = new Vector3(lockPos, DoorLockTransform.transform.localPosition.y, DoorLockTransform.transform.localPosition.z);
             }
 
             // Set Lock Status
-            if(RequireHandleTurnToOpen) {
+            if (RequireHandleTurnToOpen)
+            {
                 doorLocked = DegreesTurned < DegreesTurnToOpen;
             }
 
             // Lock Door in place if closed and requires handle to be turned
             bool rigidIsKinematic = angle < 0.02f && doorLocked;
-            if(rigidIsKinematic) {
+            if (rigidIsKinematic)
+            {
                 // Check on detection mode
-                if (rigid.collisionDetectionMode == CollisionDetectionMode.Continuous || rigid.collisionDetectionMode == CollisionDetectionMode.ContinuousDynamic) {
+                if (rigid.collisionDetectionMode == CollisionDetectionMode.Continuous || rigid.collisionDetectionMode == CollisionDetectionMode.ContinuousDynamic)
+                {
                     rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 }
 
                 rigid.isKinematic = true;
             }
-            else {
+            else
+            {
                 // Check on detection mode
-                if (rigid.collisionDetectionMode == CollisionDetectionMode.ContinuousSpeculative) {
+                if (rigid.collisionDetectionMode == CollisionDetectionMode.ContinuousSpeculative)
+                {
                     rigid.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 }
 
                 rigid.isKinematic = false;
             }
-            
+
         }
     }
 }

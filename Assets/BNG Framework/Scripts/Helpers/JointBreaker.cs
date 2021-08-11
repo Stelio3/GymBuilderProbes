@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class JointBreaker : MonoBehaviour {
+namespace BNG
+{
+    public class JointBreaker : MonoBehaviour
+    {
 
         public float BreakDistance = 0.25f;
 
@@ -23,30 +25,37 @@ namespace BNG {
         bool brokeJoint = false;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             startPos = transform.localPosition;
             theJoint = GetComponent<Joint>();
         }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
             JointDistance = Vector3.Distance(transform.localPosition, startPos);
 
-            if(!brokeJoint && JointDistance > BreakDistance) {
+            if (!brokeJoint && JointDistance > BreakDistance)
+            {
                 BreakJoint();
             }
         }
 
-        public void BreakJoint() {
+        public void BreakJoint()
+        {
 
-            if(DestroyJointOnBreak &&  theJoint) {
+            if (DestroyJointOnBreak && theJoint)
+            {
                 Destroy(theJoint);
             }
 
-            if (OnBreakEvent != null) {
+            if (OnBreakEvent != null)
+            {
 
                 var heldGrabbable = GetComponent<Grabbable>();
-                if(heldGrabbable && heldGrabbable.GetPrimaryGrabber() ) {
+                if (heldGrabbable && heldGrabbable.GetPrimaryGrabber())
+                {
                     brokeJoint = true;
                     OnBreakEvent.Invoke(heldGrabbable.GetPrimaryGrabber());
                 }

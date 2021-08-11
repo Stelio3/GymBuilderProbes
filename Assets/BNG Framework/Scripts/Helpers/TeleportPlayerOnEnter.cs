@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class TeleportPlayerOnEnter : MonoBehaviour {
+namespace BNG
+{
+    public class TeleportPlayerOnEnter : MonoBehaviour
+    {
 
         public Transform TeleportDestination;
 
-        void OnTriggerEnter(Collider other) {
-            if(other.GetComponent<CharacterController>()) {
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<CharacterController>())
+            {
                 PlayerTeleport pt = other.transform.GetComponentInParent<PlayerTeleport>();
-                if(pt && TeleportDestination) {
+                if (pt && TeleportDestination)
+                {
                     pt.TeleportPlayerToTransform(TeleportDestination);
                 }
             }

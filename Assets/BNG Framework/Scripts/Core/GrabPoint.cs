@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
-    public class GrabPoint : MonoBehaviour {
+    public class GrabPoint : MonoBehaviour
+    {
 
         [Header("Pose")]
         /// <summary>
@@ -62,7 +64,8 @@ namespace BNG {
 #if UNITY_EDITOR
         // Make sure animators update in the editor mode to show hand positions
         // By using OnDrawGizmosSelected we only call this function if the object is selected in the editor
-        void OnDrawGizmosSelected() {
+        void OnDrawGizmosSelected()
+        {
             updateChildAnimators();
             UpdatePreviewTransforms();
 
@@ -72,10 +75,12 @@ namespace BNG {
         /// <summary>
         /// Draw an arc in the editor representing MaxDegreeDifferenceAllowed
         /// </summary>
-        void drawEditorArc() {
+        void drawEditorArc()
+        {
 
             // Draw arc representing the MaxDegreeDifferenceAllowed of the Grab Point
-            if (ShowAngleGizmo && MaxDegreeDifferenceAllowed != 0 && MaxDegreeDifferenceAllowed != 360) {
+            if (ShowAngleGizmo && MaxDegreeDifferenceAllowed != 0 && MaxDegreeDifferenceAllowed != 360)
+            {
                 Vector3 from = Quaternion.AngleAxis(-0.5f * MaxDegreeDifferenceAllowed, transform.up) * (-transform.forward - Vector3.Dot(-transform.forward, transform.up) * transform.up);
 
                 UnityEditor.Handles.color = new Color(0, 1, 0, 0.1f);
@@ -84,43 +89,51 @@ namespace BNG {
         }
 #endif
 
-        public void UpdatePreviewTransforms() {
-            Transform leftHandPreview = transform.Find("LeftHandModelsEditorPreview");            
+        public void UpdatePreviewTransforms()
+        {
+            Transform leftHandPreview = transform.Find("LeftHandModelsEditorPreview");
             Transform rightHandPreview = transform.Find("RightHandModelsEditorPreview");
 
             // If there is a Hand in the scene, use that offset instead of our defaults
-            if(GameObject.Find("LeftController/Grabber") != null) {
+            if (GameObject.Find("LeftController/Grabber") != null)
+            {
 
                 Grabber LeftGrabber = GameObject.Find("LeftController/Grabber").GetComponent<Grabber>();
                 previewModelOffsetLeft = LeftGrabber.transform.InverseTransformPoint(LeftGrabber.HandsGraphics.position);
                 //previewModelOffsetLeft = GameObject.Find("LeftController/Grabber").GetComponent<Grabber>().HandsGraphics.position - GameObject.Find("LeftController/Grabber").transform.position;
             }
 
-            if (GameObject.Find("RightController/Grabber") != null) {
+            if (GameObject.Find("RightController/Grabber") != null)
+            {
                 Grabber RightGrabber = GameObject.Find("RightController/Grabber").GetComponent<Grabber>();
                 previewModelOffsetRight = RightGrabber.transform.InverseTransformPoint(RightGrabber.HandsGraphics.position);
                 // previewModelOffsetRight = GameObject.Find("RightController/Grabber").GetComponent<Grabber>().HandsGraphics.position - GameObject.Find("RightController/Grabber").transform.position;
             }
 
-            if (leftHandPreview) {
+            if (leftHandPreview)
+            {
                 leftHandPreview.localPosition = previewModelOffsetLeft;
                 leftHandPreview.localEulerAngles = Vector3.zero;
             }
 
-            if(rightHandPreview) {
+            if (rightHandPreview)
+            {
                 rightHandPreview.localPosition = previewModelOffsetRight;
                 rightHandPreview.localEulerAngles = Vector3.zero;
             }
         }
 
-        void updateChildAnimators() {
+        void updateChildAnimators()
+        {
 
             var animators = GetComponentsInChildren<Animator>();
-            for (int x = 0; x < animators.Length; x++) {
+            for (int x = 0; x < animators.Length; x++)
+            {
                 animators[x].Update(Time.deltaTime);
 #if UNITY_EDITOR
                 // Only set dirty if not in prefab mode
-                if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() == null) {
+                if (UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() == null)
+                {
                     UnityEditor.EditorUtility.SetDirty(animators[x].gameObject);
                 }
 #endif

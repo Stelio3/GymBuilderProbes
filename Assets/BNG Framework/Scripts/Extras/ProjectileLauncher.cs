@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
-    public class ProjectileLauncher : MonoBehaviour {
+namespace BNG
+{
+    public class ProjectileLauncher : MonoBehaviour
+    {
 
         /// <summary>
         /// Launch this from the 
@@ -24,7 +26,8 @@ namespace BNG {
         private float _initialProjectileForce;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             // Setup initial velocity for launcher so we can modify it later
             _initialProjectileForce = ProjectileForce;
         }
@@ -33,9 +36,11 @@ namespace BNG {
         /// Returns the object that was shot
         /// </summary>
         /// <returns>The object that was shot</returns>
-        public GameObject ShootProjectile(float projectileForce) {
-            
-            if (MuzzleTransform && ProjectileObject) {
+        public GameObject ShootProjectile(float projectileForce)
+        {
+
+            if (MuzzleTransform && ProjectileObject)
+            {
                 GameObject launched = Instantiate(ProjectileObject, MuzzleTransform.transform.position, MuzzleTransform.transform.rotation) as GameObject;
                 launched.transform.position = MuzzleTransform.transform.position;
                 launched.transform.rotation = MuzzleTransform.transform.rotation;
@@ -44,7 +49,8 @@ namespace BNG {
 
                 VRUtils.Instance.PlaySpatialClipAt(LaunchSound, launched.transform.position, 1f);
 
-                if(LaunchParticles) {
+                if (LaunchParticles)
+                {
                     LaunchParticles.Play();
                 }
 
@@ -54,15 +60,18 @@ namespace BNG {
             return null;
         }
 
-        public void ShootProjectile() {
+        public void ShootProjectile()
+        {
             ShootProjectile(ProjectileForce);
         }
 
-        public void SetForce(float force) {
+        public void SetForce(float force)
+        {
             ProjectileForce = force;
         }
 
-        public float GetInitialProjectileForce() {
+        public float GetInitialProjectileForce()
+        {
             return _initialProjectileForce;
         }
     }

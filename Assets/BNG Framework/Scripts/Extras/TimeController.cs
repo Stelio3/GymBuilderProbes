@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Press Y to slow time by modifying Time.timeScale and Time.fixedDeltaTime
     /// </summary>
-    public class TimeController : MonoBehaviour {
+    public class TimeController : MonoBehaviour
+    {
 
         /// <summary>
         /// Timescale to slow down to if slow down key is pressed
@@ -23,7 +25,7 @@ namespace BNG {
         public bool YKeySlowsTime = true;
 
         [Tooltip("Input Action used to initiate slow time")]
-        public InputActionReference SlowTimeAction;       
+        public InputActionReference SlowTimeAction;
 
         [Tooltip("(Optional) Play this clip when starting to slow time")]
         public AudioClip SlowTimeClip;
@@ -39,7 +41,7 @@ namespace BNG {
 
         public bool TimeSlowing
         {
-            get { return _slowingTime;  }
+            get { return _slowingTime; }
         }
         bool _slowingTime = false;
         bool routineRunning = false;
@@ -50,9 +52,11 @@ namespace BNG {
         public bool ForceTimeScale = false;
 
         // Start is called before the first frame update
-        void Start() {
-            
-            if(SetFixedDelta) {
+        void Start()
+        {
+
+            if (SetFixedDelta)
+            {
                 Time.fixedDeltaTime = (Time.timeScale / UnityEngine.XR.XRDevice.refreshRate);
             }
 
@@ -61,12 +65,15 @@ namespace BNG {
             audioSource = GetComponent<AudioSource>();
         }
 
-        void Update() {
+        void Update()
+        {
 
-            if (SlowTimeInputDown() || ForceTimeScale) {
+            if (SlowTimeInputDown() || ForceTimeScale)
+            {
                 SlowTime();
             }
-            else {
+            else
+            {
                 ResumeTime();
             }
         }
@@ -75,26 +82,32 @@ namespace BNG {
         /// Returns true if SlowTimeAction is being held down
         /// </summary>
         /// <returns></returns>
-        public virtual bool SlowTimeInputDown() {
+        public virtual bool SlowTimeInputDown()
+        {
             // Check default Y Key
-            if ((YKeySlowsTime && InputBridge.Instance.YButton)) {
+            if ((YKeySlowsTime && InputBridge.Instance.YButton))
+            {
                 return true;
             }
-            
+
             // Check for Unity Input Action
-            if (SlowTimeAction != null) {
+            if (SlowTimeAction != null)
+            {
                 return SlowTimeAction.action.ReadValue<float>() > 0f;
             }
 
             return false;
         }
 
-        public void SlowTime() {
-           
-            if(!_slowingTime) {
+        public void SlowTime()
+        {
+
+            if (!_slowingTime)
+            {
 
                 // Make sure we aren't running a routine
-                if(resumeRoutine != null) {
+                if (resumeRoutine != null)
+                {
                     StopCoroutine(resumeRoutine);
                 }
 
@@ -103,7 +116,8 @@ namespace BNG {
                 audioSource.Play();
 
                 // Haptics
-                if(SpeedupTimeClip) {
+                if (SpeedupTimeClip)
+                {
                     InputBridge.Instance.VibrateController(0.1f, 0.2f, SpeedupTimeClip.length, ControllerHand.Left);
                 }
 
@@ -115,17 +129,20 @@ namespace BNG {
         }
 
         private IEnumerator resumeRoutine;
-        public void ResumeTime() {
+        public void ResumeTime()
+        {
             // toggled over; play audio cue
             // Don't resume until we're done playing the initial sound clip
-            if(_slowingTime && !audioSource.isPlaying && !routineRunning) {
+            if (_slowingTime && !audioSource.isPlaying && !routineRunning)
+            {
 
                 resumeRoutine = resumeTimeRoutine();
                 StartCoroutine(resumeRoutine);
             }
         }
 
-        IEnumerator resumeTimeRoutine() {
+        IEnumerator resumeTimeRoutine()
+        {
             routineRunning = true;
 
             audioSource.clip = SpeedupTimeClip;

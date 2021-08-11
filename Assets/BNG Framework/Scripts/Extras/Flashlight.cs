@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// A simple Grabbable example that toggles a light source on and off
     /// </summary>
-    public class Flashlight : GrabbableEvents {
+    public class Flashlight : GrabbableEvents
+    {
 
         public Light SpotLight;
         public Transform LightSwitch;
@@ -15,11 +17,13 @@ namespace BNG {
         Vector3 originalSwitchPosition;
 
         // Start is called before the first frame update
-        void Start() {
+        void Start()
+        {
             originalSwitchPosition = LightSwitch.transform.localPosition;
         }
 
-        public override void OnTrigger(float triggerValue) {
+        public override void OnTrigger(float triggerValue)
+        {
 
             SpotLight.enabled = triggerValue > 0.2f;
 
@@ -28,7 +32,8 @@ namespace BNG {
             base.OnTrigger(triggerValue);
         }
 
-        public override void OnTriggerUp() {
+        public override void OnTriggerUp()
+        {
 
             SpotLight.enabled = false;
 

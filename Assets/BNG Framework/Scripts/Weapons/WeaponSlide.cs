@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Weapon slide on a pistol. Charges weapon and ejects casings.
     /// </summary>
-    public class WeaponSlide : MonoBehaviour {
+    public class WeaponSlide : MonoBehaviour
+    {
 
         /// <summary>
         /// Minimum distance slide will travel on Z axis
@@ -59,7 +61,8 @@ namespace BNG {
         /// </summary>
         bool lockSlidePosition;
 
-        void Start() {
+        void Start()
+        {
             initialLocalPos = transform.localPosition;
             audioSource = GetComponent<AudioSource>();
             parentWeapon = transform.parent.GetComponent<RaycastWeapon>();
@@ -68,12 +71,14 @@ namespace BNG {
             rigid = GetComponent<Rigidbody>();
             initialMass = rigid.mass;
 
-            if (parentWeapon != null) {
+            if (parentWeapon != null)
+            {
                 Physics.IgnoreCollision(GetComponent<Collider>(), parentWeapon.GetComponent<Collider>());
             }
         }
 
-        public virtual void OnEnable() {
+        public virtual void OnEnable()
+        {
             // Lock the slide in place when teleporting or snap turning
             PlayerTeleport.OnBeforeTeleport += LockSlidePosition;
             PlayerTeleport.OnAfterTeleport += UnlockSlidePosition;
@@ -82,68 +87,84 @@ namespace BNG {
             //PlayerRotation.OnAfterRotate += UnlockSlidePosition;
         }
 
-        public virtual void OnDisable() {
+        public virtual void OnDisable()
+        {
             PlayerTeleport.OnBeforeTeleport -= LockSlidePosition;
             PlayerTeleport.OnAfterTeleport -= UnlockSlidePosition;
 
             //PlayerRotation.OnBeforeRotate += LockSlidePosition;
             //PlayerRotation.OnAfterRotate += UnlockSlidePosition;
-        }        
+        }
 
         // Update is called once per frame
-        void Update() {
+        void Update()
+        {
 
             // If our slide is currently locked just set it and return early
-            if(lockSlidePosition) {
+            if (lockSlidePosition)
+            {
                 transform.localPosition = _lockPosition;
                 return;
             }
 
             float localZ = transform.localPosition.z;
 
-            if (LockedBack) {
+            if (LockedBack)
+            {
                 transform.localPosition = new Vector3(initialLocalPos.x, initialLocalPos.y, MinLocalZ);
 
                 // Not locking back if hand is holding this
-                if (thisGrabbable != null && thisGrabbable.BeingHeld) {
+                if (thisGrabbable != null && thisGrabbable.BeingHeld)
+                {
                     UnlockBack();
                 }
             }
 
-            if (!LockedBack) {
+            if (!LockedBack)
+            {
                 // Clamp values
-                if (localZ <= MinLocalZ) {
+                if (localZ <= MinLocalZ)
+                {
                     transform.localPosition = new Vector3(initialLocalPos.x, initialLocalPos.y, MinLocalZ);
-                    if (slidingBack) {
+                    if (slidingBack)
+                    {
                         onSlideBack();
                     }
                 }
-                else if (localZ >= MaxLocalZ) {
+                else if (localZ >= MaxLocalZ)
+                {
                     transform.localPosition = new Vector3(initialLocalPos.x, initialLocalPos.y, MaxLocalZ);
 
                     // Moving forward
-                    if (!slidingBack) {
+                    if (!slidingBack)
+                    {
                         onSlideForward();
                     }
                 }
             }
         }
 
-        void FixedUpdate() {
+        void FixedUpdate()
+        {
             // Change mass of slider rigidbody. This prevents stuttering when the object is not held and the slide is back
-            if (ZeroMassWhenNotHeld && parentGrabbable.BeingHeld && rigid) {
+            if (ZeroMassWhenNotHeld && parentGrabbable.BeingHeld && rigid)
+            {
                 rigid.mass = initialMass;
             }
-            else if (ZeroMassWhenNotHeld && rigid) {
+            else if (ZeroMassWhenNotHeld && rigid)
+            {
                 // Set mass to very low to prevent stuttering when not held
                 rigid.mass = 0.0001f;
-            }           
+            }
         }
 
-        public virtual void LockBack() {
+        public virtual void LockBack()
+        {
 
-            if (!LockedBack) {
-                if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld) {
+            if (!LockedBack)
+            {
+                if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld)
+                {
                     VRUtils.Instance.PlaySpatialClipAt(LockedBackSound, transform.position, 1f, 0.8f);
                 }
 
@@ -151,67 +172,84 @@ namespace BNG {
             }
         }
 
-        public virtual void UnlockBack() {
+        public virtual void UnlockBack()
+        {
 
-            if (LockedBack) {
-                if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld) {
+            if (LockedBack)
+            {
+                if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld)
+                {
                     VRUtils.Instance.PlaySpatialClipAt(SlideReleaseSound, transform.position, 1f, 0.9f);
                 }
 
                 LockedBack = false;
 
                 // This is considered a charge
-                if (parentWeapon != null) {
+                if (parentWeapon != null)
+                {
                     parentWeapon.OnWeaponCharged(false);
                 }
             }
         }
 
-        void onSlideBack() {
+        void onSlideBack()
+        {
 
-            if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld) {
+            if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld)
+            {
                 playSoundInterval(0, 0.2f, 0.9f);
             }
 
-            if (parentWeapon != null) {
+            if (parentWeapon != null)
+            {
                 parentWeapon.OnWeaponCharged(true);
             }
 
             slidingBack = false;
         }
 
-        void onSlideForward() {
+        void onSlideForward()
+        {
 
-            if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld) {
+            if (thisGrabbable.BeingHeld || parentGrabbable.BeingHeld)
+            {
                 playSoundInterval(0.2f, 0.35f, 1f);
             }
 
             slidingBack = true;
         }
 
-        public virtual void LockSlidePosition() {
+        public virtual void LockSlidePosition()
+        {
             // Lock the slide position if we aren't holding the object
-            if (parentGrabbable.BeingHeld && !thisGrabbable.BeingHeld && !lockSlidePosition) {
+            if (parentGrabbable.BeingHeld && !thisGrabbable.BeingHeld && !lockSlidePosition)
+            {
                 _lockPosition = transform.localPosition;
                 lockSlidePosition = true;
             }
         }
 
-        public virtual void UnlockSlidePosition() {
-            if (lockSlidePosition) {
+        public virtual void UnlockSlidePosition()
+        {
+            if (lockSlidePosition)
+            {
                 StartCoroutine(UnlockSlideRoutine());
             }
         }
 
-        public IEnumerator UnlockSlideRoutine() {
+        public IEnumerator UnlockSlideRoutine()
+        {
             yield return new WaitForSeconds(0.2f);
             lockSlidePosition = false;
         }
 
-        void playSoundInterval(float fromSeconds, float toSeconds, float volume) {
-            if (audioSource) {
+        void playSoundInterval(float fromSeconds, float toSeconds, float volume)
+        {
+            if (audioSource)
+            {
 
-                if (audioSource.isPlaying) {
+                if (audioSource.isPlaying)
+                {
                     audioSource.Stop();
                 }
 

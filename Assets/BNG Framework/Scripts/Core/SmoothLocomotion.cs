@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace BNG {
+namespace BNG
+{
 
-    public enum MovementVector {
+    public enum MovementVector
+    {
         HMD,
         Controller
-    }    
+    }
 
-    public class SmoothLocomotion : MonoBehaviour {
+    public class SmoothLocomotion : MonoBehaviour
+    {
 
         [Header("Movement : ")]
         public float MovementSpeed = 1.25f;
@@ -85,24 +88,29 @@ namespace BNG {
         public static event OnAfterMoveAction OnAfterMove;
         #endregion
 
-        public virtual void Update() {
+        public virtual void Update()
+        {
             CheckControllerReferences();
-            UpdateInputs();            
+            UpdateInputs();
             MoveCharacter();
         }
 
-        public virtual void CheckControllerReferences() {
+        public virtual void CheckControllerReferences()
+        {
             // Component may be called while disabled, so check for references here
-            if (playerController == null) {
+            if (playerController == null)
+            {
                 playerController = GetComponentInParent<BNGPlayerController>();
             }
 
-            if(characterController == null) {
+            if (characterController == null)
+            {
                 characterController = GetComponent<CharacterController>();
             }
         }
 
-        public virtual void UpdateInputs() {
+        public virtual void UpdateInputs()
+        {
 
             // Start by resetting our previous frame's inputs
             movementX = 0;
@@ -111,49 +119,60 @@ namespace BNG {
 
             // Start with VR Controller Input
             Vector2 primaryAxis = GetMovementAxis();
-            if (playerController && playerController.IsGrounded()  ) {
+            if (playerController && playerController.IsGrounded())
+            {
                 movementX = primaryAxis.x;
                 movementZ = primaryAxis.y;
             }
-            else if(AirControl) {
+            else if (AirControl)
+            {
                 movementX = primaryAxis.x * AirControlSpeed;
                 movementZ = primaryAxis.y * AirControlSpeed;
             }
 
             // If VR Inputs not in use, check for keyboard inputs
-            if (AllowKeyboardInputs && movementX == 0 && movementZ == 0) {
+            if (AllowKeyboardInputs && movementX == 0 && movementZ == 0)
+            {
                 GetKeyBoardInputs();
             }
 
-            if (CheckJump()) {
+            if (CheckJump())
+            {
                 movementY += JumpForce;
             }
 
-            if(CheckSprint()) {
+            if (CheckSprint())
+            {
                 movementX *= StrafeSprintSpeed;
                 movementZ *= SprintSpeed;
             }
-            else {
+            else
+            {
                 movementX *= StrafeSpeed;
                 movementZ *= MovementSpeed;
-            }            
+            }
         }
 
-        public virtual Vector2 GetMovementAxis() {
+        public virtual Vector2 GetMovementAxis()
+        {
 
             // Use the largest, non-zero value we find in our input list
             Vector3 lastAxisValue = Vector3.zero;
 
             // Check raw input bindings
-            if(inputAxis != null) {
-                for (int i = 0; i < inputAxis.Count; i++) {
+            if (inputAxis != null)
+            {
+                for (int i = 0; i < inputAxis.Count; i++)
+                {
                     Vector3 axisVal = InputBridge.Instance.GetInputAxisValue(inputAxis[i]);
 
                     // Always take this value if our last entry was 0. 
-                    if (lastAxisValue == Vector3.zero) {
+                    if (lastAxisValue == Vector3.zero)
+                    {
                         lastAxisValue = axisVal;
                     }
-                    else if (axisVal != Vector3.zero && axisVal.magnitude > lastAxisValue.magnitude) {
+                    else if (axisVal != Vector3.zero && axisVal.magnitude > lastAxisValue.magnitude)
+                    {
                         lastAxisValue = axisVal;
                     }
                 }
@@ -161,64 +180,77 @@ namespace BNG {
 
             // Check Unity Input Action if we have application focus
             bool hasRequiredFocus = RequireAppFocus == false || RequireAppFocus && Application.isFocused;
-            if (MoveAction != null && hasRequiredFocus) {
+            if (MoveAction != null && hasRequiredFocus)
+            {
                 Vector3 axisVal = MoveAction.action.ReadValue<Vector2>();
 
                 // Always take this value if our last entry was 0. 
-                if (lastAxisValue == Vector3.zero) {
+                if (lastAxisValue == Vector3.zero)
+                {
                     lastAxisValue = axisVal;
                 }
-                else if (axisVal != Vector3.zero && axisVal.magnitude > lastAxisValue.magnitude) {
+                else if (axisVal != Vector3.zero && axisVal.magnitude > lastAxisValue.magnitude)
+                {
                     lastAxisValue = axisVal;
                 }
             }
 
             return lastAxisValue;
-        }        
+        }
 
-        public virtual void MoveCharacter() {
+        public virtual void MoveCharacter()
+        {
 
             // Bail early if no elligible for movement
-            if(movementDisabled || characterController == null) {
+            if (movementDisabled || characterController == null)
+            {
                 return;
             }
 
             Vector3 moveDirection = new Vector3(movementX, movementY, movementZ);
 
-            if(ForwardDirection != null) {
+            if (ForwardDirection != null)
+            {
                 moveDirection = ForwardDirection.TransformDirection(moveDirection);
             }
-            else {
+            else
+            {
                 moveDirection = transform.TransformDirection(moveDirection);
             }
 
             // Check for jump value
-            if (playerController != null && playerController.IsGrounded() && !movementDisabled) {
+            if (playerController != null && playerController.IsGrounded() && !movementDisabled)
+            {
                 // Reset jump speed if grounded
                 _verticalSpeed = 0;
-                if (CheckJump()) {
+                if (CheckJump())
+                {
                     _verticalSpeed = JumpForce;
                 }
             }
 
             moveDirection.y = _verticalSpeed;
 
-            if(playerController) {
+            if (playerController)
+            {
                 playerController.LastPlayerMoveTime = Time.time;
             }
 
-            if(moveDirection != Vector3.zero) {
+            if (moveDirection != Vector3.zero)
+            {
                 MoveCharacter(moveDirection * Time.deltaTime);
             }
         }
 
         public float Magnitude;
 
-        public virtual void MoveCharacter(Vector3 motion) {
+        public virtual void MoveCharacter(Vector3 motion)
+        {
 
             // Can bail immediately if no movement is required
 
-            if(motion == null || motion == Vector3.zero) {
+            if (motion == null || motion == Vector3.zero)
+            {
                 return;
             }
 
@@ -229,83 +261,102 @@ namespace BNG {
             CheckControllerReferences();
 
             // Call any Before Move Events
-            if(callEvents) {
+            if (callEvents)
+            {
                 OnBeforeMove?.Invoke();
             }
 
-            if(characterController && characterController.enabled) {
+            if (characterController && characterController.enabled)
+            {
                 characterController.Move(motion);
             }
 
             // Call any After Move Events
-            if (callEvents) {
+            if (callEvents)
+            {
                 OnAfterMove?.Invoke();
             }
         }
 
-        public virtual void GetKeyBoardInputs() {
+        public virtual void GetKeyBoardInputs()
+        {
             // Forward
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
                 movementZ += 1f;
             }
             // Back
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
                 movementZ -= 1f;
             }
             // Left
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
                 movementX -= 1f;
             }
             // Right
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
                 movementX += 1f;
             }
         }
 
-        public virtual bool CheckJump() {
+        public virtual bool CheckJump()
+        {
 
             // Don't jump if not grounded
-            if(playerController != null && !playerController.IsGrounded()) {
+            if (playerController != null && !playerController.IsGrounded())
+            {
                 return false;
             }
 
             // Check for bound controller button
-            for (int x = 0; x < JumpInput.Count; x++) {
-                if (InputBridge.Instance.GetControllerBindingValue(JumpInput[x])) {
+            for (int x = 0; x < JumpInput.Count; x++)
+            {
+                if (InputBridge.Instance.GetControllerBindingValue(JumpInput[x]))
+                {
                     return true;
                 }
             }
 
             // Check Unity Input Action value
-            if (JumpAction != null && JumpAction.action.ReadValue<float>() > 0) {
+            if (JumpAction != null && JumpAction.action.ReadValue<float>() > 0)
+            {
                 return true;
             }
 
             return false;
         }
 
-        public virtual bool CheckSprint() {
+        public virtual bool CheckSprint()
+        {
 
             // Check for bound controller button
-            for (int x = 0; x < SprintInput.Count; x++) {
-                if (InputBridge.Instance.GetControllerBindingValue(SprintInput[x])) {
+            for (int x = 0; x < SprintInput.Count; x++)
+            {
+                if (InputBridge.Instance.GetControllerBindingValue(SprintInput[x]))
+                {
                     return true;
                 }
             }
 
             // Check Unity Input Action
-            if (SprintAction != null) {
+            if (SprintAction != null)
+            {
                 return SprintAction.action.ReadValue<float>() == 1f;
             }
 
             return false;
         }
 
-        public virtual void EnableMovement() {
+        public virtual void EnableMovement()
+        {
             movementDisabled = false;
         }
 
-        public virtual void DisableMovement() {
+        public virtual void DisableMovement()
+        {
             movementDisabled = true;
         }
     }

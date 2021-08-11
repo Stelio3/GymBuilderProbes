@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BNG {
+namespace BNG
+{
 
     /// <summary>
     /// Plays a Sound Clip OnCollisionEnter
     /// </summary>
-    public class CollisionSound : MonoBehaviour {
+    public class CollisionSound : MonoBehaviour
+    {
 
         public AudioClip CollisionAudio;
         AudioSource audioSource;
@@ -32,10 +34,12 @@ namespace BNG {
         float lastPlayedSound;
         public float LastRelativeVelocity = 0;
 
-        void Start() {
+        void Start()
+        {
             audioSource = GetComponent<AudioSource>();
 
-            if(audioSource == null) {
+            if (audioSource == null)
+            {
                 audioSource = gameObject.AddComponent<AudioSource>();
                 audioSource.spatialBlend = 1f;
             }
@@ -45,15 +49,18 @@ namespace BNG {
             grab = GetComponent<Grabbable>();
         }
 
-        private void OnCollisionEnter(Collision collision) {
+        private void OnCollisionEnter(Collision collision)
+        {
 
             // Just spawned, don't fire collision sound immediately
-            if(Time.time - startTime < 0.2f) {
+            if (Time.time - startTime < 0.2f)
+            {
                 return;
             }
 
             // No Collider present, don't play sound
-            if (col == null || !col.enabled) {
+            if (col == null || !col.enabled)
+            {
                 return;
             }
 
@@ -63,7 +70,8 @@ namespace BNG {
             var colSound = collision.collider.GetComponent<CollisionSound>();
             // Don't play a sound if something else is playing the same sound.
             // This prevents overlap
-            if (colSound) {
+            if (colSound)
+            {
                 otherColliderPlayedSound = colSound.RecentlyPlayedSound && colSound.CollisionAudio == CollisionAudio;
             }
 
@@ -71,19 +79,22 @@ namespace BNG {
             bool minVelReached = colVelocity > 0.1f;
 
             // If object is being held play the sound very lightly
-            if(!minVelReached && grab != null && grab.BeingHeld) {
+            if (!minVelReached && grab != null && grab.BeingHeld)
+            {
                 minVelReached = true;
                 soundVolume = 0.1f;
             }
 
             bool audioValid = audioSource != null && CollisionAudio != null;
 
-            if (minVelReached && audioValid && !otherColliderPlayedSound) {
+            if (minVelReached && audioValid && !otherColliderPlayedSound)
+            {
 
                 LastRelativeVelocity = colVelocity;
 
                 // Play Shot
-                if (audioSource.isPlaying) {
+                if (audioSource.isPlaying)
+                {
                     audioSource.Stop();
                 }
 
@@ -98,7 +109,8 @@ namespace BNG {
             }
         }
 
-        void resetLastPlayedSound() {
+        void resetLastPlayedSound()
+        {
             RecentlyPlayedSound = false;
         }
     }
