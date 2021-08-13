@@ -12,6 +12,7 @@ namespace BNG
     /// </summary>
     public class UIPointer : MonoBehaviour
     {
+        public Material redM, greenM;
 
         [Tooltip("The controller side this pointer is on")]
         public ControllerHand ControllerSide = ControllerHand.Right;
@@ -24,8 +25,6 @@ namespace BNG
 
         [Tooltip("If true the cursor and LineRenderer will be Hidden. Otherwise it will still be show at a fixed length")]
         public bool HidePointerIfNoObjectsFound = true;
-
-        public bool ispointerFixed = false;
 
         [Tooltip("How long the line / cursor should extend if no object are found to point at")]
         public float FixedPointerLength = 10f;
@@ -96,7 +95,6 @@ namespace BNG
             // Can bail early if not looking at anything
             if (data == null || data.pointerCurrentRaycast.gameObject == null)
             {
-
                 HidePointer();
 
 
@@ -117,6 +115,7 @@ namespace BNG
                 {
                     if (data.pointerCurrentRaycast.distance > selectedPointerEvents.MaxDistance)
                     {
+                        Debug.Log("Estamos lejos!: " + data.pointerCurrentRaycast.distance + " > " + selectedPointerEvents.MaxDistance);
                         HidePointer();
                         return;
                     }
@@ -125,13 +124,14 @@ namespace BNG
                 // Can bail immediately if not looking at a UI object or an Object with PointerEvents on it
                 if (!lookingAtUI && !lookingAtPhysicalObject)
                 {
+                    Debug.Log("Ni UI Ni Objeto");
                     HidePointer();
                     return;
                 }
 
                 // Set as local position
                 float distance = Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition);
-                _cursor.transform.localPosition = new Vector3(0, 0, distance - _cursor.GetComponentInChildren<MeshRenderer>().bounds.extents.z);
+                _cursor.transform.localPosition = new Vector3(0, 0, distance * LineDistanceModifier);
                 _cursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, data.pointerCurrentRaycast.worldNormal);
 
                 // Scale cursor based on distance from main camera
@@ -148,6 +148,7 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
+                lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == GBObjectManager.Instance.getSelected.tag ? greenM : redM;
             }
         }
 

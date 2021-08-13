@@ -7,68 +7,127 @@ namespace BNG
 {
     public class GymBuilderObject : MonoBehaviour
     {
+        public Material HighlightMaterial;
+        Material initialMaterial;
+
+        // Currently activating the object?
+        bool active = false;
+
+        public bool Selected { get; set; }
+
+        // Currently hovering over the object?
+        bool hovering = false;
+
         Rigidbody rb;
         BoxCollider bc;
-        MeshFilter mf;
-
-        RaycastGymBuilder ray;
-
-        private void Awake()
-        {
-            ray = new RaycastGymBuilder();
-        }
+        MeshRenderer mr;
+        public Material matSelected;
         void Start()
         {
-            rb = gameObject.GetComponent<Rigidbody>();
-            bc = gameObject.GetComponent<BoxCollider>();
-            mf = gameObject.GetComponent<MeshFilter>();
+            rb = GetComponent<Rigidbody>();
+            bc = GetComponent<BoxCollider>();
 
-            rb = rb == null ? gameObject.AddComponent<Rigidbody>() : gameObject.GetComponent<Rigidbody>();
-            bc = bc == null ? gameObject.AddComponent<BoxCollider>() : gameObject.GetComponent<BoxCollider>();
-            mf = mf == null ? gameObject.AddComponent<MeshFilter>() : gameObject.GetComponent<MeshFilter>();
+            rb = rb == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
+            bc = bc == null ? gameObject.AddComponent<BoxCollider>() : GetComponent<BoxCollider>();
 
-            MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-            CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-
-            int i = 0;
-            while (i < meshFilters.Length)
-            {
-                combine[i].mesh = meshFilters[i].sharedMesh;
-                combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-
-                i++;
-            }
-            mf.mesh = new Mesh();
-            mf.mesh.CombineMeshes(combine);
+            mr = GetComponentInChildren<MeshRenderer>();
 
             rb.useGravity = false;
             rb.freezeRotation = true;
 
-            bc.size = mf.mesh.bounds.size;
-            bc.center = mf.mesh.bounds.center;
+            initialMaterial = mr.sharedMaterial;
         }
 
-        /*public void show(PointerEventData eventData)
+        public void SetSelected(PointerEventData eventData)
         {
-            gameObject.SetActive(true);
+            if (GBObjectManager.Instance.getSelected == gameObject)
+            {
+                GBObjectManager.Instance.getSelected = null;
+                Selected = false;
+            }
+            else
+            {
+                GBObjectManager.Instance.getSelected = gameObject;
+                Selected = true;
+            }
+            UpdateMaterial();
         }
 
-        public void notshow(PointerEventData eventData)
-        {
-            gameObject.SetActive(false);
-        }
-
+        // Holding down activate
         public void SetActive(PointerEventData eventData)
         {
-            ray.canMove(true);
-            ray.setGameObject(gameObject);
+            active = true;
+
+            UpdateMaterial();
         }
 
         // No longer ohlding down activate
         public void SetInactive(PointerEventData eventData)
         {
-            ray.canMove(false);
-            ray.setGameObject(null);
-        }*/
+            active = false;
+
+            UpdateMaterial();
+        }
+
+        // Hovering over our object
+        public void SetHovering(PointerEventData eventData)
+        {
+            hovering = true;
+
+            UpdateMaterial();
+        }
+
+        // No longer hovering over our object
+        public void ResetHovering(PointerEventData eventData)
+        {
+            hovering = false;
+            active = false;
+
+            UpdateMaterial();
+        }
+
+        public void UpdateMaterial()
+        {
+            if (active || Selected)
+            {
+                mr.sharedMaterial = matSelected;
+            }
+            else if (hovering)
+            {
+                mr.sharedMaterial = HighlightMaterial;
+            }
+            else
+            {
+                mr.sharedMaterial = initialMaterial;
+            }
+        }
+
+        public void moveObject(PointerEventData eventData)
+        {
+            RaycastResult rayResult = eventData.pointerCurrentRaycast;
+
+            if (Selected)
+            {
+                if (rayResult.gameObject.transform.gameObject.tag == gameObject.tag)
+                {
+                    gameObject.SetActive(true);
+                    if (gameObject.tag == "Wall")
+                    {
+                        transform.rotation = rayResult.gameObject.transform.rotation;
+                        transform.position = rayResult.worldPosition - (rayResult.gameObject.transform.right * (GetComponent<BoxCollider>().size.x / 2 + 0.001f));
+                    }else if (gameObject.tag == "Floor")
+                    {
+                        transform.position = rayResult.worldPosition + (Vector3.up * (GetComponent<BoxCollider>().size.y / 2 + 0.001f));
+                    }else if (gameObject.tag == "Roof")
+                    {
+                        transform.position = rayResult.worldPosition - (Vector3.up * (GetComponent<BoxCollider>().size.y / 2 + 0.001f));
+                    }
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }
