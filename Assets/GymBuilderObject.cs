@@ -113,14 +113,14 @@ namespace BNG
                     gameObject.SetActive(true);
                     if (gameObject.tag == "Wall")
                     {
-                        transform.rotation = rayResult.gameObject.transform.rotation;
-                        transform.position = rayResult.worldPosition - (rayResult.gameObject.transform.right * (GetComponent<BoxCollider>().size.x / 2 + 0.001f));
+                        transform.rotation = Quaternion.FromToRotation(-Vector3.right, rayResult.worldNormal);
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.x / 2) + GetComponent<BoxCollider>().center.x));
                     }else if (gameObject.tag == "Floor")
                     {
-                        transform.position = rayResult.worldPosition + (Vector3.up * (GetComponent<BoxCollider>().size.y / 2 + 0.001f));
-                    }else if (gameObject.tag == "Roof")
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y));
+                    }else if(gameObject.tag == "Roof")
                     {
-                        transform.position = rayResult.worldPosition - (Vector3.up * (GetComponent<BoxCollider>().size.y / 2 + 0.001f));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y));
                     }
                 }
                 else
