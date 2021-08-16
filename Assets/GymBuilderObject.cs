@@ -7,9 +7,6 @@ namespace BNG
 {
     public class GymBuilderObject : MonoBehaviour
     {
-        public Material HighlightMaterial;
-        Material initialMaterial;
-
         // Currently activating the object?
         bool active = false;
 
@@ -21,21 +18,28 @@ namespace BNG
         Rigidbody rb;
         BoxCollider bc;
         MeshRenderer mr;
-        public Material matSelected;
-        void Start()
+        Outline outline;
+
+        private void Awake()
         {
+            outline = GetComponent<Outline>();
             rb = GetComponent<Rigidbody>();
             bc = GetComponent<BoxCollider>();
 
+            outline = outline == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
             rb = rb == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
             bc = bc == null ? gameObject.AddComponent<BoxCollider>() : GetComponent<BoxCollider>();
-
+        }
+        void Start()
+        {
             mr = GetComponentInChildren<MeshRenderer>();
+
+            outline.enabled = false;
+            outline.OutlineColor = Color.black;
+            outline.OutlineWidth = 2f;
 
             rb.useGravity = false;
             rb.freezeRotation = true;
-
-            initialMaterial = mr.sharedMaterial;
         }
 
         public void SetSelected(PointerEventData eventData)
@@ -88,17 +92,18 @@ namespace BNG
 
         public void UpdateMaterial()
         {
-            if (active || Selected)
+            if (Selected)
             {
-                mr.sharedMaterial = matSelected;
+                outline.enabled = true;
+                outline.OutlineColor = Color.black;
             }
-            else if (hovering)
+            else if (hovering || active)
             {
-                mr.sharedMaterial = HighlightMaterial;
+                outline.OutlineColor = Color.red;
             }
             else
             {
-                mr.sharedMaterial = initialMaterial;
+                outline.enabled = false;
             }
         }
 
@@ -106,15 +111,15 @@ namespace BNG
         {
             RaycastResult rayResult = eventData.pointerCurrentRaycast;
 
-            if (Selected)
+            if (GBObjectManager.Instance.getSelected == gameObject)
             {
                 if (rayResult.gameObject.transform.gameObject.tag == gameObject.tag)
                 {
                     gameObject.SetActive(true);
                     if (gameObject.tag == "Wall")
                     {
-                        transform.rotation = Quaternion.FromToRotation(-Vector3.right, rayResult.worldNormal);
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.x / 2) + GetComponent<BoxCollider>().center.x));
+                        transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z));
                     }else if (gameObject.tag == "Floor")
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y));

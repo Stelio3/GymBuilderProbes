@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 8497941124123333252}
   - component: {fileID: -5993188819278394545}
   - component: {fileID: 3977612781136639449}
+  - component: {fileID: 111511548870566882}
   m_Layer: 0
   m_Name: WallObject
-  m_TagString: Wall
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
+  matSelected: {fileID: 0}
 --- !u!114 &-5993188819278394545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +167,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.38785428, y: 0.837996, z: 0.7341957}
   m_Center: {x: -0.036268055, y: -0.034631133, z: -0.0072264075}
+--- !u!114 &111511548870566882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552227539175310766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1552227540140507440
 GameObject:
   m_ObjectHideFlags: 0

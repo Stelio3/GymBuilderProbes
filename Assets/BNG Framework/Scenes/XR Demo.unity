@@ -503,7 +503,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &100759116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,8 +527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!1 &118925890
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,7 +761,7 @@ GameObject:
   - component: {fileID: 386113925}
   m_Layer: 0
   m_Name: RigidFloor (7)
-  m_TagString: Roof
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -783,8 +792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &386113926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,7 +842,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &386113927
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1002,7 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 517506bfe24c29045be6760eeaba84aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go: {fileID: 1552227539175310766, guid: 6339c82cd4c38f444abce3263dd1bc2e, type: 3}
+  go: {fileID: 8152048787854168653, guid: 5ab5faa4b1be5f143b26189c86a43bf8, type: 3}
 --- !u!114 &420960089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1022,7 +1040,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f23f0db546d95e046be9cc11162e2d9b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f48fb794ea72f194eba4be1988925de2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1179,8 +1197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &488073670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,7 +1247,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &488073671
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1459,8 +1486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &622736005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1511,7 +1536,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &622736006
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1949,7 +1985,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &749938587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1962,8 +2009,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!1 &876490787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +2136,7 @@ GameObject:
   - component: {fileID: 917708540}
   m_Layer: 0
   m_Name: RigidFloor (3)
-  m_TagString: Roof
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2122,8 +2167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &917708541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2174,7 +2217,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &917708542
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2380,7 +2434,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &926016951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2393,8 +2458,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!1 &930787862
 GameObject:
   m_ObjectHideFlags: 0
@@ -2411,7 +2474,7 @@ GameObject:
   - component: {fileID: 930787864}
   m_Layer: 0
   m_Name: RigidFloor (5)
-  m_TagString: Roof
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2442,8 +2505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &930787865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2494,7 +2555,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &930787866
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2694,8 +2766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &1062209998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2746,7 +2816,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1062209999
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3030,7 +3111,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1343407349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3043,8 +3135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!1 &1360075618
 GameObject:
   m_ObjectHideFlags: 0
@@ -3055,6 +3145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1360075620}
   - component: {fileID: 1360075619}
+  - component: {fileID: 1360075621}
   m_Layer: 0
   m_Name: GBObjectManager
   m_TagString: Untagged
@@ -3088,6 +3179,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1360075621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360075618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3397cc9f2a36db4bb84d2a8fd4b17ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1525680809
 GameObject:
   m_ObjectHideFlags: 0
@@ -3211,8 +3314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &1542250574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,7 +3364,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1542250575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3340,7 +3452,7 @@ GameObject:
   - component: {fileID: 1542293147}
   m_Layer: 0
   m_Name: RigidFloor (8)
-  m_TagString: Roof
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3371,8 +3483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &1542293148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3423,7 +3533,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1542293149
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4242,7 +4363,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1971433218}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1971433226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4255,8 +4387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!1 &2006511621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4304,8 +4434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 2100000, guid: ed9334fcf6b670248bc42a5060a1f869, type: 2}
 --- !u!114 &2006511624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4356,7 +4484,18 @@ MonoBehaviour:
         m_CallState: 2
   OnPointerUpEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &2006511625
 BoxCollider:
   m_ObjectHideFlags: 0

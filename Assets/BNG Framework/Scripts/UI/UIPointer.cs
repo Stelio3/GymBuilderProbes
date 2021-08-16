@@ -148,7 +148,10 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
-                lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == GBObjectManager.Instance.getSelected.tag ? greenM : redM;
+                if (GBObjectManager.Instance.getSelected)
+                {
+                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == GBObjectManager.Instance.getSelected.tag ? greenM : redM;
+                }
             }
         }
 
