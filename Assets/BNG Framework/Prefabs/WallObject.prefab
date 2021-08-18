@@ -68,8 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb0c9bdc2f2d594a83c52e45a55f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: {fileID: 2100000, guid: 5526f6616ddf95f45bfca3ac406b4bc7, type: 2}
-  matSelected: {fileID: 0}
+  bc: {fileID: 0}
 --- !u!114 &-5993188819278394545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +161,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552227539175310766}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.38785428, y: 0.837996, z: 0.7341957}

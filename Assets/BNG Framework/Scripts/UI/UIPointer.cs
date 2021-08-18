@@ -59,7 +59,7 @@ namespace BNG
 
             if (cursor)
             {
-                _cursor = GameObject.Instantiate(cursor);
+                _cursor = Instantiate(cursor);
                 _cursor.transform.SetParent(transform);
                 _cursorInitialLocalScale = transform.localScale;
             }
@@ -78,11 +78,11 @@ namespace BNG
             // Automatically update VR System with out transforms
             if (AutoUpdateUITransforms && ControllerSide == ControllerHand.Left)
             {
-                uiSystem.LeftPointerTransform = this.transform;
+                uiSystem.LeftPointerTransform = transform;
             }
             else if (AutoUpdateUITransforms && ControllerSide == ControllerHand.Right)
             {
-                uiSystem.RightPointerTransform = this.transform;
+                uiSystem.RightPointerTransform = transform;
             }
 
             uiSystem.UpdateControllerHand(ControllerSide);
@@ -115,7 +115,6 @@ namespace BNG
                 {
                     if (data.pointerCurrentRaycast.distance > selectedPointerEvents.MaxDistance)
                     {
-                        Debug.Log("Estamos lejos!: " + data.pointerCurrentRaycast.distance + " > " + selectedPointerEvents.MaxDistance);
                         HidePointer();
                         return;
                     }
@@ -124,7 +123,6 @@ namespace BNG
                 // Can bail immediately if not looking at a UI object or an Object with PointerEvents on it
                 if (!lookingAtUI && !lookingAtPhysicalObject)
                 {
-                    Debug.Log("Ni UI Ni Objeto");
                     HidePointer();
                     return;
                 }

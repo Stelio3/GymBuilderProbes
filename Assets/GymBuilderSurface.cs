@@ -7,9 +7,6 @@ namespace BNG
 {
     public class GymBuilderSurface : MonoBehaviour
     {
-        Material initialMaterial;
-
-        public bool Selected { get; set; }
         MeshRenderer mr;
         private GymBuilderObject builderObject;
         Outline outline;
@@ -20,10 +17,10 @@ namespace BNG
 
             outline = outline == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
         }
+
         void Start()
         {
             mr = GetComponent<MeshRenderer>();
-            initialMaterial = mr.sharedMaterial;
 
             outline.enabled = false;
             outline.OutlineColor = Color.black;
@@ -31,33 +28,11 @@ namespace BNG
         }
         public void SetSelected(PointerEventData eventData)
         {
-            if (GBObjectManager.Instance.getSelected)
+            if (!GBObjectManager.Instance.getSelected)
             {
-                builderObject = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>();
-
-                if (!builderObject.Selected)
-                {
-                    if (GBObjectManager.Instance.getSurface == gameObject)
-                    {
-                        GBObjectManager.Instance.getSurface = null;
-                        Selected = false;
-                    }
-                    else
-                    {
-                        GBObjectManager.Instance.getSurface = gameObject;
-                        Selected = true;
-                    }
-                }
-                builderObject.Selected = false;
-                builderObject.gameObject.layer = LayerMask.NameToLayer("Default");
-                builderObject.UpdateMaterial();
+                ResetMaterial();
+                GBObjectManager.Instance.getSurface = GBObjectManager.Instance.getSurface != gameObject ? gameObject : null;
             }
-            else
-            {
-                GBObjectManager.Instance.getSurface = gameObject;
-                Selected = true;
-            }
-
             UpdateMaterial();
         }
         public void SetActive(PointerEventData eventData)
@@ -65,11 +40,9 @@ namespace BNG
             if (GBObjectManager.Instance.getSelected)
             {
                 builderObject = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>();
-                if (builderObject.Selected)
-                {
-                    builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-                    builderObject.moveObject(eventData);
-                }
+                builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+                builderObject.moveObject(eventData);
+                builderObject.UpdateMaterial();
             }
             
 
@@ -77,36 +50,36 @@ namespace BNG
         }
         public void SetInactive(PointerEventData eventData)
         {
-            if (GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>())
+            if (GBObjectManager.Instance.getSelected)
             {
                 builderObject = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>();
-                builderObject.Selected = false;
-             }
-
-
+                builderObject.gameObject.layer = LayerMask.NameToLayer("Default");
+                GBObjectManager.Instance.getSelected = null;
+                builderObject.UpdateMaterial();
+            }
             UpdateMaterial();
+        }
+
+        public void ResetMaterial()
+        {
+            if (GBObjectManager.Instance.getSurface)
+            {
+                GBObjectManager.Instance.getSurface.GetComponent<GymBuilderSurface>().outline.enabled = false;
+            }
         }
 
         public void UpdateMaterial()
         {
-            if (Selected && GBObjectManager.Instance.getSurface == gameObject)
+            if (GBObjectManager.Instance.getSurface == gameObject)
             {
-                outline.enabled = true;
-            }
-            else
-            {
-                outline.enabled = false;
+                GBObjectManager.Instance.getSurface.GetComponent<GymBuilderSurface>().outline.enabled = true;
             }
         }
         public void setColor(Material material)
         {
-            if (Selected)
+            if (GBObjectManager.Instance.getSurface == gameObject)
             {
-                Selected = false;
-                outline.enabled = false;
-                GBObjectManager.Instance.getSurface = null;
                 mr.sharedMaterial = material;
-                initialMaterial = material;
             }
         }
     }

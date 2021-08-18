@@ -10,15 +10,16 @@ namespace BNG
         // Currently activating the object?
         bool active = false;
 
-        public bool Selected { get; set; }
-
         // Currently hovering over the object?
         bool hovering = false;
 
         Rigidbody rb;
-        BoxCollider bc;
-        MeshRenderer mr;
+        public BoxCollider bc;
         Outline outline;
+
+        bool colisioned = false;
+        Vector3 colisionNormal;
+        Vector3 colisionDistance;
 
         private void Awake()
         {
@@ -32,52 +33,32 @@ namespace BNG
         }
         void Start()
         {
-            mr = GetComponentInChildren<MeshRenderer>();
-
-            outline.enabled = false;
+            outline.enabled = true;
             outline.OutlineColor = Color.black;
             outline.OutlineWidth = 2f;
+
+            GBObjectManager.Instance.getSelected = gameObject;
+
+            if (GBObjectManager.Instance.getSurface)
+            {
+                GBObjectManager.Instance.getSurface.GetComponent<GymBuilderSurface>().ResetMaterial();
+                GBObjectManager.Instance.getSurface = null;
+                
+            }
+
 
             rb.useGravity = false;
             rb.freezeRotation = true;
         }
-
         public void SetSelected(PointerEventData eventData)
         {
-            if (GBObjectManager.Instance.getSelected == gameObject)
-            {
-                GBObjectManager.Instance.getSelected = null;
-                Selected = false;
-            }
-            else
-            {
-                GBObjectManager.Instance.getSelected = gameObject;
-                Selected = true;
-            }
+            GBObjectManager.Instance.getSelected = GBObjectManager.Instance.getSelected != gameObject ? gameObject : null;
             UpdateMaterial();
         }
-
-        // Holding down activate
-        public void SetActive(PointerEventData eventData)
-        {
-            active = true;
-
-            UpdateMaterial();
-        }
-
-        // No longer ohlding down activate
-        public void SetInactive(PointerEventData eventData)
-        {
-            active = false;
-
-            UpdateMaterial();
-        }
-
         // Hovering over our object
         public void SetHovering(PointerEventData eventData)
         {
             hovering = true;
-
             UpdateMaterial();
         }
 
@@ -90,9 +71,25 @@ namespace BNG
             UpdateMaterial();
         }
 
+        // Holding down activate
+        public void SetActive(PointerEventData eventData)
+        {
+            active = true;
+
+            UpdateMaterial();
+        }
+
+        // No longer holding down activate
+        public void SetInactive(PointerEventData eventData)
+        {
+            active = false;
+
+            UpdateMaterial();
+        }
+
         public void UpdateMaterial()
         {
-            if (Selected)
+            if (GBObjectManager.Instance.getSelected == gameObject)
             {
                 outline.enabled = true;
                 outline.OutlineColor = Color.black;
@@ -118,14 +115,20 @@ namespace BNG
                     gameObject.SetActive(true);
                     if (gameObject.tag == "Wall")
                     {
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z + 0.01f));
                         transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z));
-                    }else if (gameObject.tag == "Floor")
+                        if(rayResult.worldNormal == -Vector3.forward)
+                        {
+                            transform.up = Vector3.up;
+                            transform.forward = rayResult.worldNormal;
+                        }
+                    }
+                    else if (gameObject.tag == "Floor")
                     {
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y -0.0001f));
                     }else if(gameObject.tag == "Roof")
                     {
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f));
                     }
                 }
                 else
@@ -133,6 +136,21 @@ namespace BNG
                     gameObject.SetActive(false);
                 }
             }
+        }
+        private void OnTriggerStay(Collider other)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.right, out hit))
+            {
+                Debug.Log(hit.normal);
+                colisionNormal = hit.normal;
+                colisionDistance = hit.point;
+            }
+            colisioned = true;
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            colisioned = false;
         }
     }
 }
