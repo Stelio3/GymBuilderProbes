@@ -10,6 +10,9 @@ namespace BNG
         // Currently activating the object?
         bool active = false;
 
+        [HideInInspector]
+        public bool locked = false;
+
         // Currently hovering over the object?
         bool hovering = false;
 
@@ -107,8 +110,8 @@ namespace BNG
         public void moveObject(PointerEventData eventData)
         {
             RaycastResult rayResult = eventData.pointerCurrentRaycast;
-
-            if (GBObjectManager.Instance.getSelected == gameObject)
+            Debug.Log(locked);
+            if (GBObjectManager.Instance.getSelected == gameObject && !locked)
             {
                 if (rayResult.gameObject.transform.gameObject.tag == gameObject.tag)
                 {

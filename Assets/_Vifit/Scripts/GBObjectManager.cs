@@ -18,8 +18,9 @@ public class GBObjectManager : Singleton<GBObjectManager>
     {
         if (go.GetComponent<GymBuilderObject>())
         {
-            getSelected = Instantiate(go);
-
+            Vector3 newObjectLocation = (PlayerStats.Instance.player.transform.forward * 2f) + PlayerStats.Instance.player.transform.position;
+            getSelected = Instantiate(go, newObjectLocation, go.transform.rotation);
+            getSelected.transform.LookAt(PlayerStats.Instance.player.transform);
         }
         
     }
@@ -28,6 +29,13 @@ public class GBObjectManager : Singleton<GBObjectManager>
         if (getSurface)
         {
             getSurface.GetComponent<GymBuilderSurface>().setColor(material);
+        }
+    }
+    public void lockObject()
+    {
+        if (getSelected)
+        {
+            getSelected.GetComponent<GymBuilderObject>().locked = !getSelected.GetComponent<GymBuilderObject>().locked;
         }
     }
 
