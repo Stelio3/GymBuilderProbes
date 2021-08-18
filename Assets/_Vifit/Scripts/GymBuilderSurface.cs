@@ -30,8 +30,15 @@ namespace BNG
         {
             if (!GBObjectManager.Instance.getSelected)
             {
-                ResetMaterial();
-                GBObjectManager.Instance.getSurface = GBObjectManager.Instance.getSurface != gameObject ? gameObject : null;
+                if (ChangeMaterial.BtnSelected)
+                {
+                    setColor();
+                }
+                else
+                {
+                    ResetMaterial();
+                    GBObjectManager.Instance.getSurface = GBObjectManager.Instance.getSurface != gameObject ? gameObject : null;
+                }
             }
             UpdateMaterial();
         }
@@ -75,12 +82,9 @@ namespace BNG
                 GBObjectManager.Instance.getSurface.GetComponent<GymBuilderSurface>().outline.enabled = true;
             }
         }
-        public void setColor(Material material)
+        public void setColor()
         {
-            if (GBObjectManager.Instance.getSurface == gameObject)
-            {
-                mr.sharedMaterial = material;
-            }
+            mr.sharedMaterial = ChangeMaterial.BtnSelected.GetComponent<ChangeMaterial>().material;
         }
     }
 }

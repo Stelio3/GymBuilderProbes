@@ -8,7 +8,10 @@ public class LockObject : MonoBehaviour
 {
     private void Update()
     {
-        gameObject.GetComponent<Image>().color = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>().locked ? Color.grey : Color.white;
+        if (GBObjectManager.Instance.getSelected)
+        {
+            gameObject.GetComponent<Image>().color = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>().locked ? Color.grey : Color.white;
+        }
     }
     public void lockObject()
     {

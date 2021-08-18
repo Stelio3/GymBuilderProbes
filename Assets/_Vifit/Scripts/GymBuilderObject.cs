@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace BNG
@@ -9,6 +10,7 @@ namespace BNG
     {
         // Currently activating the object?
         bool active = false;
+        ChangeMaterial changeMaterial;
 
         [HideInInspector]
         public bool locked = false;
@@ -55,6 +57,12 @@ namespace BNG
         }
         public void SetSelected(PointerEventData eventData)
         {
+            if (ChangeMaterial.BtnSelected)
+            {
+                changeMaterial = ChangeMaterial.BtnSelected.GetComponent<ChangeMaterial>();
+                ChangeMaterial.BtnSelected.GetComponent<Image>().color = changeMaterial.material.color;
+                ChangeMaterial.BtnSelected = null;
+            }
             GBObjectManager.Instance.getSelected = GBObjectManager.Instance.getSelected != gameObject ? gameObject : null;
             UpdateMaterial();
         }

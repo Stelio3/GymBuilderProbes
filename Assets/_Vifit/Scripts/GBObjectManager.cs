@@ -24,13 +24,6 @@ public class GBObjectManager : Singleton<GBObjectManager>
         }
         
     }
-    public void changeMaterial(Material material)
-    {
-        if (getSurface)
-        {
-            getSurface.GetComponent<GymBuilderSurface>().setColor(material);
-        }
-    }
     public void lockObject()
     {
         if (getSelected)
