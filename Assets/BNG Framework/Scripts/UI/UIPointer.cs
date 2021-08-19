@@ -12,7 +12,7 @@ namespace BNG
     /// </summary>
     public class UIPointer : MonoBehaviour
     {
-        public Material redM, greenM;
+        public Material redM, whiteM;
 
         [Tooltip("The controller side this pointer is on")]
         public ControllerHand ControllerSide = ControllerHand.Right;
@@ -146,9 +146,11 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
-                if (GBObjectManager.Instance.getSelected)
+                if (GM_GBManager.Instance.getSelected)
                 {
-                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == GBObjectManager.Instance.getSelected.tag ? greenM : redM;
+                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == 
+                        GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>().scriptableObject.type.ToString() ? 
+                        whiteM : redM;
                 }
             }
         }

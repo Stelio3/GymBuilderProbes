@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 517506bfe24c29045be6760eeaba84aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go: {fileID: 1552227539175310766, guid: 5e64b8c69742f964f897cd335069715e, type: 3}
+  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
 --- !u!114 &36713494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4659d870ddeff044f86fe3b0e806b1d0, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -633,9 +633,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
-  m_YourFirstButton: {fileID: 0}
-  m_YourSecondButton: {fileID: 0}
-  m_YourThirdButton: {fileID: 0}
 --- !u!114 &118925894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,7 +850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 517506bfe24c29045be6760eeaba84aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go: {fileID: 8152048787854168653, guid: 5ab5faa4b1be5f143b26189c86a43bf8, type: 3}
+  scriptableObject: {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
 --- !u!114 &420960089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,7 +870,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f48fb794ea72f194eba4be1988925de2, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4202,7 +4199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redM: {fileID: 2100000, guid: eb4f63a1c24846549b212d7c7f64a784, type: 2}
-  greenM: {fileID: 2100000, guid: eca70ad1867acb141a7914818d64faa8, type: 2}
+  whiteM: {fileID: 2100000, guid: eca70ad1867acb141a7914818d64faa8, type: 2}
   ControllerSide: 1
   AutoUpdateUITransforms: 1
   cursor: {fileID: 2255670627275077591, guid: b52cdd976639a854ea60de00a42ffeb9, type: 3}
@@ -4489,9 +4486,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
-  m_YourFirstButton: {fileID: 0}
-  m_YourSecondButton: {fileID: 0}
-  m_YourThirdButton: {fileID: 0}
 --- !u!114 &1892702971
 MonoBehaviour:
   m_ObjectHideFlags: 0

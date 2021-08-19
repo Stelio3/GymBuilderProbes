@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8820921655925917943}
-  - component: {fileID: 5604147096082761554}
+  - component: {fileID: 83691655248279032}
   - component: {fileID: 7647421535532888984}
   - component: {fileID: 2468414895085696351}
   - component: {fileID: 6397841145723273754}
@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5894623587832394897}
   m_Layer: 0
   m_Name: MITO_LOGO
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5604147096082761554
+--- !u!33 &83691655248279032
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb0c9bdc2f2d594a83c52e45a55f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scriptableObject: {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   locked: 0
   bc: {fileID: 0}
 --- !u!114 &5894623587832394897

@@ -5,25 +5,25 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using BNG;
 
-public class ChangeMaterial : MonoBehaviour
+public class GM_ChangeMaterial : MonoBehaviour
 {
     public Material material;
     public static GameObject BtnSelected { get; set; }
 
-    GymBuilderObject builderObject;
+    GM_GBObject builderObject;
 
     public void changeMaterial() {
-        if (GBObjectManager.Instance.getSelected)
+        if (GM_GBManager.Instance.getSelected)
         {
-            builderObject = GBObjectManager.Instance.getSelected.GetComponent<GymBuilderObject>();
-            GBObjectManager.Instance.getSelected = null;
+            builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
+            GM_GBManager.Instance.getSelected = null;
             builderObject.UpdateMaterial();
         }
         if (BtnSelected)
         {
             if (BtnSelected != gameObject)
             {
-                BtnSelected.GetComponent<Image>().color = BtnSelected.GetComponent<ChangeMaterial>().material.color;
+                BtnSelected.GetComponent<Image>().color = BtnSelected.GetComponent<GM_ChangeMaterial>().material.color;
                 BtnSelected = gameObject;
                 BtnSelected.GetComponent<Image>().color = new Color(material.color.r, material.color.g, material.color.b, 0.5f);
             }

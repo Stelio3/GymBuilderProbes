@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 111511548870566882}
   m_Layer: 0
   m_Name: WallObject
-  m_TagString: Floor
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb0c9bdc2f2d594a83c52e45a55f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
   locked: 0
   bc: {fileID: 0}
 --- !u!114 &-5993188819278394545

@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace BNG
 {
-    public class GymBuilderObject : MonoBehaviour
+    public class GM_GBObject : MonoBehaviour
     {
+        public GM_GBScriptableObjects scriptableObject;
         // Currently activating the object?
         bool active = false;
-        ChangeMaterial changeMaterial;
+        GM_ChangeMaterial changeMaterial;
 
         [HideInInspector]
         public bool locked = false;
@@ -19,6 +19,7 @@ namespace BNG
         bool hovering = false;
 
         Rigidbody rb;
+        [HideInInspector]
         public BoxCollider bc;
         Outline outline;
 
@@ -42,12 +43,12 @@ namespace BNG
             outline.OutlineColor = Color.black;
             outline.OutlineWidth = 2f;
 
-            GBObjectManager.Instance.getSelected = gameObject;
+            GM_GBManager.Instance.getSelected = gameObject;
 
-            if (GBObjectManager.Instance.getSurface)
+            if (GM_GBManager.Instance.getSurface)
             {
-                GBObjectManager.Instance.getSurface.GetComponent<GymBuilderSurface>().ResetMaterial();
-                GBObjectManager.Instance.getSurface = null;
+                GM_GBManager.Instance.getSurface.GetComponent<GM_GBSurface>().ResetMaterial();
+                GM_GBManager.Instance.getSurface = null;
                 
             }
 
@@ -57,13 +58,13 @@ namespace BNG
         }
         public void SetSelected(PointerEventData eventData)
         {
-            if (ChangeMaterial.BtnSelected)
+            if (GM_ChangeMaterial.BtnSelected)
             {
-                changeMaterial = ChangeMaterial.BtnSelected.GetComponent<ChangeMaterial>();
-                ChangeMaterial.BtnSelected.GetComponent<Image>().color = changeMaterial.material.color;
-                ChangeMaterial.BtnSelected = null;
+                changeMaterial = GM_ChangeMaterial.BtnSelected.GetComponent<GM_ChangeMaterial>();
+                GM_ChangeMaterial.BtnSelected.GetComponent<Image>().color = changeMaterial.material.color;
+                GM_ChangeMaterial.BtnSelected = null;
             }
-            GBObjectManager.Instance.getSelected = GBObjectManager.Instance.getSelected != gameObject ? gameObject : null;
+            GM_GBManager.Instance.getSelected = GM_GBManager.Instance.getSelected != gameObject ? gameObject : null;
             UpdateMaterial();
         }
         // Hovering over our object
@@ -100,7 +101,7 @@ namespace BNG
 
         public void UpdateMaterial()
         {
-            if (GBObjectManager.Instance.getSelected == gameObject)
+            if (GM_GBManager.Instance.getSelected == gameObject)
             {
                 outline.enabled = true;
                 outline.OutlineColor = Color.black;
@@ -118,13 +119,12 @@ namespace BNG
         public void moveObject(PointerEventData eventData)
         {
             RaycastResult rayResult = eventData.pointerCurrentRaycast;
-            Debug.Log(locked);
-            if (GBObjectManager.Instance.getSelected == gameObject && !locked)
+            if (GM_GBManager.Instance.getSelected == gameObject && !locked)
             {
-                if (rayResult.gameObject.transform.gameObject.tag == gameObject.tag)
+                if (rayResult.gameObject.transform.gameObject.tag == scriptableObject.type.ToString())
                 {
                     gameObject.SetActive(true);
-                    if (gameObject.tag == "Wall")
+                    if (rayResult.gameObject.transform.gameObject.tag == "Wall")
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z + 0.01f));
                         transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
@@ -134,10 +134,10 @@ namespace BNG
                             transform.forward = rayResult.worldNormal;
                         }
                     }
-                    else if (gameObject.tag == "Floor")
+                    else if (rayResult.gameObject.transform.gameObject.tag == "Floor")
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y -0.0001f));
-                    }else if(gameObject.tag == "Roof")
+                    }else if(rayResult.gameObject.transform.gameObject.tag == "Roof")
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f));
                     }
@@ -153,7 +153,6 @@ namespace BNG
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.right, out hit))
             {
-                Debug.Log(hit.normal);
                 colisionNormal = hit.normal;
                 colisionDistance = hit.point;
             }

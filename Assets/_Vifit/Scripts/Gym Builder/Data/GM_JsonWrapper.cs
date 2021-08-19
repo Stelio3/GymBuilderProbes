@@ -4,8 +4,8 @@ using UnityEngine;
 using System.IO;
 
 [System.Serializable]
-public class JsonWrapper
+public class GM_JsonWrapper
 {
-    public GameDataManager GymBuilder;
-    public GameDataManager gameData;
+    public GM_GameDataManager GymBuilder;
+    public GM_GameDataManager gameData;
 }

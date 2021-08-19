@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class JsonData : MonoBehaviour
+public class GM_JsonData : MonoBehaviour
 {
     string filename = "data.json";
     string path;
 
-    GameDataManager gameData = new GameDataManager();
+    GM_GameDataManager gameData = new GM_GameDataManager();
     void Start()
     {
         path = Application.dataPath + "/" + filename;
@@ -21,15 +21,15 @@ public class JsonData : MonoBehaviour
             gameData.date = System.DateTime.Now.ToShortDateString();
             gameData.time = System.DateTime.Now.ToShortTimeString();
 
-            GBObjectData q1 = new GBObjectData();
+            GM_GBObjectData q1 = new GM_GBObjectData();
             q1.name = "q1";
             q1.position = gameObject.transform.position;
 
-            GBObjectData q2 = new GBObjectData();
+            GM_GBObjectData q2 = new GM_GBObjectData();
             q2.name = "q2";
             q2.position = gameObject.transform.position;
 
-            GBObjectData q3 = new GBObjectData();
+            GM_GBObjectData q3 = new GM_GBObjectData();
             q3.name = "q3";
             q3.position = gameObject.transform.position;
 
@@ -46,7 +46,7 @@ public class JsonData : MonoBehaviour
     }
     void SaveData()
     {
-        JsonWrapper wrapper = new JsonWrapper();
+        GM_JsonWrapper wrapper = new GM_JsonWrapper();
         wrapper.GymBuilder = gameData;
         wrapper.gameData = gameData;
 
@@ -60,10 +60,10 @@ public class JsonData : MonoBehaviour
             if (File.Exists(path))
             {
                 string contents = File.ReadAllText(path);
-                JsonWrapper wrapper = JsonUtility.FromJson<JsonWrapper>(contents);
+                GM_JsonWrapper wrapper = JsonUtility.FromJson<GM_JsonWrapper>(contents);
                 gameData = wrapper.GymBuilder;
 
-                foreach (GBObjectData q in gameData.gymBuilderObjects)
+                foreach (GM_GBObjectData q in gameData.gymBuilderObjects)
                 {
                     Debug.Log(q.name + q.position);
                 }
@@ -71,7 +71,7 @@ public class JsonData : MonoBehaviour
             else
             {
                 Debug.Log("File does not exist");
-                gameData = new GameDataManager();
+                gameData = new GM_GameDataManager();
             }
         }
         catch (System.Exception ex)

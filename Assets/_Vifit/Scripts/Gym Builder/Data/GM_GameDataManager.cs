@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class GameDataManager
+public class GM_GameDataManager
 {
     public string date = "";
     public string time = "";
-    public List<GBObjectData> gymBuilderObjects = new List<GBObjectData>();
+    public List<GM_GBObjectData> gymBuilderObjects = new List<GM_GBObjectData>();
 }
