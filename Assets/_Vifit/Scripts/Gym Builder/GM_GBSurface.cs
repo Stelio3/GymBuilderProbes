@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace BNG
 {
@@ -10,7 +11,7 @@ namespace BNG
         MeshRenderer mr;
         private GM_GBObject builderObject;
         Outline outline;
-
+        public GameObject canvas;
         private void Awake()
         {
             outline = GetComponent<Outline>();
@@ -46,12 +47,28 @@ namespace BNG
         {
             if (GM_GBManager.Instance.getSelected)
             {
+                canvas.GetComponent<GraphicRaycaster>().enabled = false;
                 builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
                 builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-                builderObject.moveObject(eventData);
+                builderObject.moveObject(eventData.pointerCurrentRaycast);
                 builderObject.UpdateMaterial();
             }
             
+
+            UpdateMaterial();
+        }
+        public void FirstHovering(PointerEventData eventData)
+        {
+            if (GM_GBManager.Instance.getSelected && GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>().firstHovering)
+            {
+                canvas.GetComponent<GraphicRaycaster>().enabled = false;
+                builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
+                builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+                builderObject.moveObject(eventData.pointerCurrentRaycast);
+                builderObject.firstHovering = false;
+                builderObject.UpdateMaterial();
+            }
+
 
             UpdateMaterial();
         }
@@ -59,6 +76,7 @@ namespace BNG
         {
             if (GM_GBManager.Instance.getSelected)
             {
+                canvas.GetComponent<GraphicRaycaster>().enabled = true;
                 builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
                 builderObject.gameObject.layer = LayerMask.NameToLayer("Default");
                 GM_GBManager.Instance.getSelected = null;

@@ -24,6 +24,7 @@ namespace BNG
         Outline outline;
 
         bool colisioned = false;
+        public bool firstHovering = true;
         Vector3 colisionNormal;
         Vector3 colisionDistance;
 
@@ -51,8 +52,6 @@ namespace BNG
                 GM_GBManager.Instance.getSurface = null;
                 
             }
-
-
             rb.useGravity = false;
             rb.freezeRotation = true;
         }
@@ -116,9 +115,8 @@ namespace BNG
             }
         }
 
-        public void moveObject(PointerEventData eventData)
+        public void moveObject(RaycastResult rayResult)
         {
-            RaycastResult rayResult = eventData.pointerCurrentRaycast;
             if (GM_GBManager.Instance.getSelected == gameObject && !locked)
             {
                 if (rayResult.gameObject.transform.gameObject.tag == scriptableObject.type.ToString())

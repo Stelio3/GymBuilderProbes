@@ -131,6 +131,7 @@ namespace BNG
                 float distance = Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition);
                 _cursor.transform.localPosition = new Vector3(0, 0, distance * LineDistanceModifier);
                 _cursor.transform.rotation = Quaternion.FromToRotation(Vector3.forward, data.pointerCurrentRaycast.worldNormal);
+                RaycastPoint();
 
                 // Scale cursor based on distance from main camera
                 float cameraDist = Vector3.Distance(Camera.main.transform.position, _cursor.transform.position);
@@ -153,6 +154,11 @@ namespace BNG
                         whiteM : redM;
                 }
             }
+        }
+
+        public RaycastResult RaycastPoint()
+        {
+            return data.pointerCurrentRaycast;
         }
 
         public virtual void HidePointer()

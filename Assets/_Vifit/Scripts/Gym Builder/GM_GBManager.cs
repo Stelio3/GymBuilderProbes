@@ -8,6 +8,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
 {
     public GameObject getSelected { get; set; }
     public GameObject getSurface { get; set; }
+    
 
     private void Awake()
     {
@@ -18,9 +19,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
     {
         if (go.GetComponent<GM_GBObject>())
         {
-            Vector3 newObjectLocation = (PlayerStats.Instance.player.transform.forward * 2f) + PlayerStats.Instance.player.transform.position;
-            getSelected = Instantiate(go, newObjectLocation, go.transform.rotation);
-            getSelected.transform.LookAt(PlayerStats.Instance.player.transform);
+            getSelected = Instantiate(go);
         }
         
     }
