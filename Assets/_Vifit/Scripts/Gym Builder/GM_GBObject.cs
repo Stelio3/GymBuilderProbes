@@ -5,117 +5,59 @@ using UnityEngine.EventSystems;
 
 namespace BNG
 {
-    public class GM_GBObject : MonoBehaviour
+    public class GM_GBObject : GM_GBEditions
     {
         public GM_GBScriptableObjects scriptableObject;
-        // Currently activating the object?
-        bool active = false;
-        GM_ChangeMaterial changeMaterial;
-
-        [HideInInspector]
-        public bool locked = false;
-
-        // Currently hovering over the object?
-        bool hovering = false;
 
         Rigidbody rb;
         [HideInInspector]
         public BoxCollider bc;
-        Outline outline;
 
-        bool colisioned = false;
         public bool firstHovering = true;
-        Vector3 colisionNormal;
-        Vector3 colisionDistance;
 
-        private void Awake()
+        protected override void Awake()
         {
-            outline = GetComponent<Outline>();
+            base.Awake();
             rb = GetComponent<Rigidbody>();
             bc = GetComponent<BoxCollider>();
 
-            outline = outline == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
             rb = rb == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
             bc = bc == null ? gameObject.AddComponent<BoxCollider>() : GetComponent<BoxCollider>();
         }
-        void Start()
+        protected override void Start()
         {
-            outline.enabled = true;
-            outline.OutlineColor = Color.black;
-            outline.OutlineWidth = 2f;
-
-            GM_GBManager.Instance.getSelected = gameObject;
-
-            if (GM_GBManager.Instance.getSurface)
-            {
-                GM_GBManager.Instance.getSurface.GetComponent<GM_GBSurface>().ResetMaterial();
-                GM_GBManager.Instance.getSurface = null;
-                
-            }
+            base.Start();
             rb.useGravity = false;
             rb.freezeRotation = true;
+
+            outline.OutlineWidth = 2f;
+
+            GM_GBManager.Instance.UpdateSelected(gameObject, Type.Object);
         }
         public void SetSelected(PointerEventData eventData)
         {
-            if (GM_ChangeMaterial.BtnSelected)
+            if (GM_GBManager.Instance.type == Type.Color)
             {
-                changeMaterial = GM_ChangeMaterial.BtnSelected.GetComponent<GM_ChangeMaterial>();
-                GM_ChangeMaterial.BtnSelected.GetComponent<Image>().color = changeMaterial.material.color;
-                GM_ChangeMaterial.BtnSelected = null;
+                GM_GBManager.Instance.getSelected.GetComponent<Image>().color = GM_GBManager.Instance.getSelected.GetComponent<GM_ChangeMaterial>().material.color;
             }
-            GM_GBManager.Instance.getSelected = GM_GBManager.Instance.getSelected != gameObject ? gameObject : null;
-            UpdateMaterial();
-        }
-        // Hovering over our object
-        public void SetHovering(PointerEventData eventData)
-        {
-            hovering = true;
-            UpdateMaterial();
-        }
-
-        // No longer hovering over our object
-        public void ResetHovering(PointerEventData eventData)
-        {
-            hovering = false;
-            active = false;
-
-            UpdateMaterial();
-        }
-
-        // Holding down activate
-        public void SetActive(PointerEventData eventData)
-        {
-            active = true;
-
-            UpdateMaterial();
-        }
-
-        // No longer holding down activate
-        public void SetInactive(PointerEventData eventData)
-        {
-            active = false;
-
-            UpdateMaterial();
-        }
-
-        public void UpdateMaterial()
-        {
-            if (GM_GBManager.Instance.getSelected == gameObject)
+            if (GM_GBManager.Instance.getSelected)
             {
-                outline.enabled = true;
-                outline.OutlineColor = Color.black;
-            }
-            else if (hovering || active)
-            {
-                outline.OutlineColor = Color.red;
+                if (GM_GBManager.Instance.getSelected != gameObject)
+                {
+                    GM_GBManager.Instance.UpdateSelected(gameObject, Type.Object);
+                }
+                else
+                {
+                    GM_GBManager.Instance.UpdateSelected(null, Type.None);
+                }
             }
             else
             {
-                outline.enabled = false;
+                GM_GBManager.Instance.UpdateSelected(gameObject, Type.Object);
             }
         }
 
-        public void moveObject(RaycastResult rayResult)
+        public override void moveObject(RaycastResult rayResult)
         {
             if (GM_GBManager.Instance.getSelected == gameObject && !locked)
             {
@@ -146,7 +88,7 @@ namespace BNG
                 }
             }
         }
-        private void OnTriggerStay(Collider other)
+        /*private void OnTriggerStay(Collider other)
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.right, out hit))
@@ -159,6 +101,6 @@ namespace BNG
         private void OnTriggerExit(Collider other)
         {
             colisioned = false;
-        }
+        }*/
     }
 }

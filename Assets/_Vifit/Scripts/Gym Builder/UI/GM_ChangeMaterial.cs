@@ -8,41 +8,25 @@ using BNG;
 public class GM_ChangeMaterial : MonoBehaviour
 {
     public Material material;
-    public static GameObject BtnSelected { get; set; }
-
-    GM_GBObject builderObject;
-
     public void changeMaterial() {
-        if (GM_GBManager.Instance.getSelected)
+        if (GM_GBManager.Instance.type == Type.Color)
         {
-            builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
-            GM_GBManager.Instance.getSelected = null;
-            builderObject.UpdateMaterial();
-        }
-        if (BtnSelected)
-        {
-            if (BtnSelected != gameObject)
+            if (GM_GBManager.Instance.getSelected != gameObject || !GM_GBManager.Instance.getSelected)
             {
-                BtnSelected.GetComponent<Image>().color = BtnSelected.GetComponent<GM_ChangeMaterial>().material.color;
-                BtnSelected = gameObject;
-                BtnSelected.GetComponent<Image>().color = new Color(material.color.r, material.color.g, material.color.b, 0.5f);
+                GM_GBManager.Instance.getSelected.GetComponent<Image>().color = GM_GBManager.Instance.getSelected.GetComponent<GM_ChangeMaterial>().material.color;
+                GM_GBManager.Instance.UpdateSelected(gameObject, Type.Color);
+                GM_GBManager.Instance.getSelected.GetComponent<Image>().color = new Color(material.color.r, material.color.g, material.color.b, 0.5f);
             }
             else
             {
-                BtnSelected.GetComponent<Image>().color = material.color;
-                BtnSelected = null;
+                GM_GBManager.Instance.getSelected.GetComponent<Image>().color = material.color;
+                GM_GBManager.Instance.UpdateSelected(null, Type.None);
             }
         }
         else
         {
-            BtnSelected = gameObject;
-            BtnSelected.GetComponent<Image>().color = new Color(material.color.r, material.color.g, material.color.b, 0.5f);
+            GM_GBManager.Instance.UpdateSelected(gameObject, Type.Color);
+            GM_GBManager.Instance.getSelected.GetComponent<Image>().color = new Color(material.color.r, material.color.g, material.color.b, 0.5f);
         }
     }
-    private void Reset()
-    {
-        
-    }
-
-
 }
