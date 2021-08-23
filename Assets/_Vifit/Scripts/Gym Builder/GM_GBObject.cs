@@ -81,6 +81,8 @@ namespace BNG
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f));
                     }
+                    GM_GameDataManager.UpdateData().prefab.Object.transform.position = transform.localPosition;
+                    GM_GameDataManager.UpdateData().prefab.Object.transform.rotation = transform.rotation;
                 }
                 else
                 {

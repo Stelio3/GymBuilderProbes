@@ -20,6 +20,7 @@ public class MenuBuilder : MonoBehaviour
         else
         {
             DisableBuilderMode();
+            GM_JsonData.SaveToJSON(GM_GameDataManager.gymBuilderObjects);
         }
     }
 

@@ -14,6 +14,6 @@ public class GM_ItemShop : MonoBehaviour
     }
     public void ShowObject() {
         canvas.GetComponent<GraphicRaycaster>().enabled = false;
-        GM_GBManager.Instance.CreateNew(scriptableObject.Object);
+        GM_GBManager.Instance.SpawnObject(scriptableObject);
     }
 }

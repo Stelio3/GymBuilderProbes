@@ -67,14 +67,6 @@ public abstract class GM_GBEditions : MonoBehaviour
     }
 
     public abstract void moveObject(RaycastResult rayResult);
-
-    public static void LockObject()
-    {
-        if (GM_GBManager.Instance.type == Type.Object || GM_GBManager.Instance.type == Type.Surface)
-        {
-            GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked = !GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked;
-        }
-    }
     public void UpdateMaterial()
     {
         if (GM_GBManager.Instance.getSelected == gameObject)
@@ -91,6 +83,5 @@ public abstract class GM_GBEditions : MonoBehaviour
     {
         pointerEvents.enabled = status;
         GM_GBManager.Instance.UpdateSelected(null, Type.None);
-        UpdateMaterial();
     }
 }

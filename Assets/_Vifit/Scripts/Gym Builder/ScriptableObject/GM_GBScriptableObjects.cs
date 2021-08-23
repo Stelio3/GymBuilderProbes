@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New GymBuilder Object", menuName = "GymBuilder Object")]
+[System.Serializable]
 public class GM_GBScriptableObjects : ScriptableObject
 {
     public int id;

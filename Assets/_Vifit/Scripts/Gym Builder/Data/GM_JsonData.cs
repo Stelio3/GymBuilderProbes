@@ -1,84 +1,110 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 
-public class GM_JsonData : MonoBehaviour
+public static class GM_JsonData 
 {
-    string filename = "data.json";
-    string path;
-
-    GM_GameDataManager gameData = new GM_GameDataManager();
-    void Start()
+    public static void SaveToJSON<T>(List<T> toSave)
     {
-        path = Application.dataPath + "/" + filename;
+        string content = JsonHelper.ToJson(toSave.ToArray(), true);
+        WriteFile(GetPath(), content);
     }
-    // Update is called once per frame
-    void Update()
+
+    public static void SaveToJSON<T>(T toSave)
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        string content = JsonUtility.ToJson(toSave, true);
+        WriteFile(GetPath(), content);
+    }
+
+    public static List<GM_ObjectData> ReadFromJSON<T>()
+    {
+        string content = ReadFile(GetPath());
+
+        if (string.IsNullOrEmpty(content) || content == "{}")
         {
-            gameData.date = System.DateTime.Now.ToShortDateString();
-            gameData.time = System.DateTime.Now.ToShortTimeString();
-
-            GM_GBObjectData q1 = new GM_GBObjectData();
-            q1.name = "q1";
-            q1.position = gameObject.transform.position;
-
-            GM_GBObjectData q2 = new GM_GBObjectData();
-            q2.name = "q2";
-            q2.position = gameObject.transform.position;
-
-            GM_GBObjectData q3 = new GM_GBObjectData();
-            q3.name = "q3";
-            q3.position = gameObject.transform.position;
-
-            gameData.gymBuilderObjects.Add(q1);
-            gameData.gymBuilderObjects.Add(q2);
-            gameData.gymBuilderObjects.Add(q3);
-
-            SaveData();
+            return new List<GM_ObjectData>();
         }
-        if (Input.GetKeyDown(KeyCode.R))
+
+        List<GM_ObjectData> res = JsonHelper.FromJson<GM_ObjectData>(content).ToList();
+
+        return res;
+    }
+    private static string GetPath()
+    {
+        string filename = "data.json";
+        return Application.dataPath + "/_Vifit/Scripts/Gym Builder/Data/" + filename;
+    }
+
+    private static void WriteFile(string path, string content)
+    {
+        FileStream fileStream = new FileStream(path, FileMode.Create);
+
+        using (StreamWriter writer = new StreamWriter(fileStream))
         {
-            ReadData();
+            writer.Write(content);
         }
     }
-    void SaveData()
-    {
-        GM_JsonWrapper wrapper = new GM_JsonWrapper();
-        wrapper.GymBuilder = gameData;
-        wrapper.gameData = gameData;
 
-        string contents = JsonUtility.ToJson(wrapper, true);
-        File.WriteAllText(path, contents);
-    }
-    void ReadData()
+    private static string ReadFile(string path)
     {
-        try
+        if (File.Exists(path))
         {
-            if (File.Exists(path))
+            using (StreamReader reader = new StreamReader(path))
             {
-                string contents = File.ReadAllText(path);
-                GM_JsonWrapper wrapper = JsonUtility.FromJson<GM_JsonWrapper>(contents);
-                gameData = wrapper.GymBuilder;
-
-                foreach (GM_GBObjectData q in gameData.gymBuilderObjects)
-                {
-                    Debug.Log(q.name + q.position);
-                }
-            }
-            else
-            {
-                Debug.Log("File does not exist");
-                gameData = new GM_GameDataManager();
+                string content = reader.ReadToEnd();
+                return content;
             }
         }
-        catch (System.Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-
-
+        return "";
     }
+}
+
+public static class JsonHelper
+{
+    public static T[] FromJson<T>(string json)
+    {
+        GM_Wrapper<T> wrapper = JsonUtility.FromJson<GM_Wrapper<T>>(json);
+        return wrapper.GymBuilder;
+    }
+
+    public static string ToJson<T>(T[] array)
+    {
+        GM_Wrapper<T> wrapper = new GM_Wrapper<T>();
+        wrapper.GymBuilder = array;
+        return JsonUtility.ToJson(wrapper);
+    }
+
+    public static string ToJson<T>(T[] array, bool prettyPrint)
+    {
+        GM_Wrapper<T> wrapper = new GM_Wrapper<T>();
+        wrapper.GymBuilder = array;
+        return JsonUtility.ToJson(wrapper, prettyPrint);
+    }
+}
+[Serializable]
+public class GM_Wrapper<T>
+{
+    public T[] GymBuilder;
+}
+[Serializable]
+public class GM_GameDataManager
+{
+    public static List<GM_ObjectData> gymBuilderObjects = new List<GM_ObjectData>();
+    public static GM_ObjectData UpdateData()
+    {
+        return gymBuilderObjects.Find(o => o.prefab.Object == GM_GBManager.Instance.getSelected);
+    }
+}
+[Serializable]
+public class GM_ObjectData
+{
+    public int id;
+    public GM_GBScriptableObjects prefab;
+    public Material material;
+    public bool locked;
+    public Vector3 position;
+    public Quaternion rotation;
 }

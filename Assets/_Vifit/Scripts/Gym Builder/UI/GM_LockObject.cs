@@ -19,6 +19,10 @@ public class GM_LockObject : MonoBehaviour
     }
     public void lockObject()
     {
-        GM_GBManager.Instance.lockObject();
+        if (GM_GBManager.Instance.type == Type.Object || GM_GBManager.Instance.type == Type.Surface)
+        {
+            GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked = !GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked;
+            GM_GameDataManager.UpdateData().locked = GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked;
+        }
     }
 }

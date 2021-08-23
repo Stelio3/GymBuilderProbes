@@ -85,6 +85,7 @@ namespace BNG
         public void setColor()
         {
             mr.sharedMaterial = GM_GBManager.Instance.getSelected.GetComponent<GM_ChangeMaterial>().material;
+            GM_GameDataManager.UpdateData().material = mr.sharedMaterial;
         }
     }
 }
