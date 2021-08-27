@@ -69,7 +69,7 @@ public abstract class GM_GBEditions : MonoBehaviour
     public abstract void moveObject(RaycastResult rayResult);
     public void UpdateMaterial()
     {
-        if (GM_GBManager.Instance.getSelected == gameObject)
+        if (GM_GBManager.Instance.GetSelected == gameObject)
         {
             outline.enabled = true;
         }

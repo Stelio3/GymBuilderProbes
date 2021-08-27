@@ -36,13 +36,13 @@ namespace BNG
         }
         public void SetSelected(PointerEventData eventData)
         {
-            if (GM_GBManager.Instance.type == Type.Color)
+            if (GM_GBManager.Instance.TypeSelected == Type.Color)
             {
-                GM_GBManager.Instance.getSelected.GetComponent<Image>().color = GM_GBManager.Instance.getSelected.GetComponent<GM_ChangeMaterial>().material.color;
+                GM_GBManager.Instance.GetSelected.GetComponent<Image>().color = GM_GBManager.Instance.GetSelected.GetComponent<GM_ChangeMaterial>().material.color;
             }
-            if (GM_GBManager.Instance.getSelected)
+            if (GM_GBManager.Instance.GetSelected)
             {
-                if (GM_GBManager.Instance.getSelected != gameObject)
+                if (GM_GBManager.Instance.GetSelected != gameObject)
                 {
                     GM_GBManager.Instance.UpdateSelected(gameObject, Type.Object);
                 }
@@ -59,12 +59,12 @@ namespace BNG
 
         public override void moveObject(RaycastResult rayResult)
         {
-            if (GM_GBManager.Instance.getSelected == gameObject && !locked)
+            if (GM_GBManager.Instance.GetSelected == gameObject && !locked)
             {
-                if (rayResult.gameObject.transform.gameObject.tag == scriptableObject.type.ToString())
+                if (rayResult.gameObject.transform.gameObject.CompareTag(scriptableObject.type.ToString()))
                 {
                     gameObject.SetActive(true);
-                    if (rayResult.gameObject.transform.gameObject.tag == "Wall")
+                    if (rayResult.gameObject.transform.gameObject.CompareTag("Wall"))
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z + 0.01f));
                         transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
@@ -74,15 +74,15 @@ namespace BNG
                             transform.forward = rayResult.worldNormal;
                         }
                     }
-                    else if (rayResult.gameObject.transform.gameObject.tag == "Floor")
+                    else if (rayResult.gameObject.transform.gameObject.CompareTag("Floor"))
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y -0.0001f));
-                    }else if(rayResult.gameObject.transform.gameObject.tag == "Roof")
+                    }else if(rayResult.gameObject.transform.gameObject.CompareTag("Roof"))
                     {
                         transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f));
                     }
-                    GM_GameDataManager.UpdateData().prefab.Object.transform.position = transform.localPosition;
-                    GM_GameDataManager.UpdateData().prefab.Object.transform.rotation = transform.rotation;
+                    GM_GameDataManager.UpdateData().position = transform.localPosition;
+                    GM_GameDataManager.UpdateData().rotation = transform.rotation;
                 }
                 else
                 {

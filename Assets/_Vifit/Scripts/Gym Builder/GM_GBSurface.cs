@@ -20,17 +20,17 @@ namespace BNG
         }
         public void SetSelected(PointerEventData eventData)
         {
-            if (GM_GBManager.Instance.type != Type.Object)
+            if (GM_GBManager.Instance.TypeSelected != Type.Object)
             {
-                if (GM_GBManager.Instance.type == Type.Color)
+                if (GM_GBManager.Instance.TypeSelected == Type.Color)
                 {
                     setColor();
                 }
                 else
                 {
-                    if (GM_GBManager.Instance.getSelected)
+                    if (GM_GBManager.Instance.GetSelected)
                     {
-                        if (GM_GBManager.Instance.getSelected != gameObject)
+                        if (GM_GBManager.Instance.GetSelected != gameObject)
                         {
                             GM_GBManager.Instance.UpdateSelected(gameObject, Type.Surface);
                         }
@@ -49,20 +49,20 @@ namespace BNG
         }
         public override void SetActive(PointerEventData eventData)
         {
-            if (GM_GBManager.Instance.type == Type.Object)
+            if (GM_GBManager.Instance.TypeSelected == Type.Object)
             {
                 canvas.GetComponent<GraphicRaycaster>().enabled = false;
-                builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
+                builderObject = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>();
                 builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 builderObject.moveObject(eventData.pointerCurrentRaycast);
             }
         }
         public void FirstHovering(PointerEventData eventData)
         {
-            if (GM_GBManager.Instance.type == Type.Object && GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>().firstHovering)
+            if (GM_GBManager.Instance.TypeSelected == Type.Object && GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>().firstHovering)
             {
                 canvas.GetComponent<GraphicRaycaster>().enabled = false;
-                builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
+                builderObject = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>();
                 builderObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
                 builderObject.moveObject(eventData.pointerCurrentRaycast);
                 builderObject.firstHovering = false;
@@ -70,11 +70,15 @@ namespace BNG
         }
         public override void SetInactive(PointerEventData eventData)
         {
-            if (GM_GBManager.Instance.type == Type.Object)
+            if (GM_GBManager.Instance.TypeSelected == Type.Object)
             {
                 canvas.GetComponent<GraphicRaycaster>().enabled = true;
-                builderObject = GM_GBManager.Instance.getSelected.GetComponent<GM_GBObject>();
+                builderObject = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>();
                 builderObject.gameObject.layer = LayerMask.NameToLayer("Default");
+                if (!builderObject.isActiveAndEnabled)
+                {
+                    Destroy(builderObject);
+                }
                 GM_GBManager.Instance.UpdateSelected(null, Type.None);
             }
         }
@@ -84,7 +88,7 @@ namespace BNG
         }
         public void setColor()
         {
-            mr.sharedMaterial = GM_GBManager.Instance.getSelected.GetComponent<GM_ChangeMaterial>().material;
+            mr.sharedMaterial = GM_GBManager.Instance.GetSelected.GetComponent<GM_ChangeMaterial>().material;
             GM_GameDataManager.UpdateData().material = mr.sharedMaterial;
         }
     }

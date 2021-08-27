@@ -95,14 +95,15 @@ public class GM_GameDataManager
     public static List<GM_ObjectData> gymBuilderObjects = new List<GM_ObjectData>();
     public static GM_ObjectData UpdateData()
     {
-        return gymBuilderObjects.Find(o => o.prefab.Object == GM_GBManager.Instance.getSelected);
+        return gymBuilderObjects.Find(o => o.objectId == SerializableObjects.Get(o.id).id && 
+        GM_GBManager.Instance.GetSelected.name.Replace("(Clone)", "").Trim() == SerializableObjects.Get(o.id).Object.name);
     }
 }
 [Serializable]
 public class GM_ObjectData
 {
     public int id;
-    public GM_GBScriptableObjects prefab;
+    public int objectId;
     public Material material;
     public bool locked;
     public Vector3 position;

@@ -8,9 +8,9 @@ public class GM_LockObject : MonoBehaviour
 {
     private void Update()
     {
-        if (GM_GBManager.Instance.type == Type.Object || GM_GBManager.Instance.type == Type.Surface)
+        if (GM_GBManager.Instance.TypeSelected == Type.Object || GM_GBManager.Instance.TypeSelected == Type.Surface)
         {
-            gameObject.GetComponent<Image>().color = GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked ? Color.grey : Color.white;
+            gameObject.GetComponent<Image>().color = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked ? Color.grey : Color.white;
         }
         else
         {
@@ -19,10 +19,10 @@ public class GM_LockObject : MonoBehaviour
     }
     public void lockObject()
     {
-        if (GM_GBManager.Instance.type == Type.Object || GM_GBManager.Instance.type == Type.Surface)
+        if (GM_GBManager.Instance.TypeSelected == Type.Object || GM_GBManager.Instance.TypeSelected == Type.Surface)
         {
-            GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked = !GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked;
-            GM_GameDataManager.UpdateData().locked = GM_GBManager.Instance.getSelected.GetComponent<GM_GBEditions>().locked;
+            GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked = !GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked;
+            GM_GameDataManager.UpdateData().locked = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked;
         }
     }
 }
