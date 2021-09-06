@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public abstract class GM_GBEditions : MonoBehaviour
 {
+    public int id { get; set; }
     protected Outline outline;
     [HideInInspector]
     public  bool locked = false;

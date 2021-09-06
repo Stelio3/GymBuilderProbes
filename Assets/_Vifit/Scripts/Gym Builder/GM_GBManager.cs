@@ -21,7 +21,8 @@ public class GM_GBManager : Singleton<GM_GBManager>
     {
         foreach (GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
         {
-            GameObject savedObject = Instantiate(SerializableObjects.Get(o.id).Object);
+            GameObject savedObject = Instantiate(SerializableObjects.Get(o.objectId).Object);
+            savedObject.GetComponent<GM_GBEditions>().id = o.id;
             savedObject.transform.position = o.position;
             savedObject.transform.rotation = o.rotation;
             GM_GameDataManager.gymBuilderObjects.Add(o);
@@ -36,9 +37,10 @@ public class GM_GBManager : Singleton<GM_GBManager>
             {
                 if (GetSelected)
                 {
-                    if (o.id == go.id)
+                    if (o.objectId == go.id)
                     {
                         GetSelected = Instantiate(go.Object);
+                        GetSelected.GetComponent<GM_GBEditions>().id = o.id;
                         inJson = true;
                     }
                 }
@@ -50,6 +52,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
                 toAddJson.objectId = go.id;
                 lastId++;
                 toAddJson.id = lastId;
+                GetSelected.GetComponent<GM_GBEditions>().id = lastId;
                 GM_GameDataManager.gymBuilderObjects.Add(toAddJson);
             }
         }

@@ -7,7 +7,7 @@ public class MenuBuilder : MonoBehaviour
     public delegate void OnMenuBuilderAction(bool status);
     public static event OnMenuBuilderAction OnMenuBuilder;
 
-    public GameObject gbPanel, optionsPanel, exitPanel;
+    public GameObject gbPanel, exitPanel;
        
     private bool status = true;
 
@@ -26,7 +26,6 @@ public class MenuBuilder : MonoBehaviour
 
     public void EnableBuilderMode() {
         gbPanel.SetActive(true);
-        optionsPanel.SetActive(true);
         exitPanel.SetActive(false);
 
         OnMenuBuilder?.Invoke(true);
@@ -34,7 +33,6 @@ public class MenuBuilder : MonoBehaviour
     } 
     public void DisableBuilderMode() {
         gbPanel.SetActive(false);
-        optionsPanel.SetActive(false);
         exitPanel.SetActive(true);
 
         OnMenuBuilder?.Invoke(false);

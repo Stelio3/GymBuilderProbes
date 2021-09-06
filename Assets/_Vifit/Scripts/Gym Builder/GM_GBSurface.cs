@@ -57,7 +57,7 @@ namespace BNG
                 builderObject.moveObject(eventData.pointerCurrentRaycast);
             }
         }
-        public void FirstHovering(PointerEventData eventData)
+        /*public void FirstHovering(PointerEventData eventData)
         {
             if (GM_GBManager.Instance.TypeSelected == Type.Object && GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>().firstHovering)
             {
@@ -67,7 +67,7 @@ namespace BNG
                 builderObject.moveObject(eventData.pointerCurrentRaycast);
                 builderObject.firstHovering = false;
             }
-        }
+        }*/
         public override void SetInactive(PointerEventData eventData)
         {
             if (GM_GBManager.Instance.TypeSelected == Type.Object)

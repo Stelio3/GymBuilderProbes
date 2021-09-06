@@ -95,8 +95,7 @@ public class GM_GameDataManager
     public static List<GM_ObjectData> gymBuilderObjects = new List<GM_ObjectData>();
     public static GM_ObjectData UpdateData()
     {
-        return gymBuilderObjects.Find(o => o.objectId == SerializableObjects.Get(o.id).id && 
-        GM_GBManager.Instance.GetSelected.name.Replace("(Clone)", "").Trim() == SerializableObjects.Get(o.id).Object.name);
+        return gymBuilderObjects.Find(o => o.id == GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().id);
     }
 }
 [Serializable]
