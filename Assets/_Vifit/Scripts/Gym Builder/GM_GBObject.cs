@@ -13,21 +13,20 @@ namespace BNG
         [HideInInspector]
         public BoxCollider bc;
 
-        public bool firstHovering = true;
+        protected bool firstHovering = true;
 
         protected override void Awake()
         {
             base.Awake();
-            rb = GetComponent<Rigidbody>();
-            bc = GetComponent<BoxCollider>();
 
-            rb = rb == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
-            bc = bc == null ? gameObject.AddComponent<BoxCollider>() : GetComponent<BoxCollider>();
+            rb = GetComponent<Rigidbody>() == null ? gameObject.AddComponent<Rigidbody>() : GetComponent<Rigidbody>();
+            bc = GetComponent<BoxCollider>() == null ? gameObject.AddComponent<BoxCollider>() : GetComponent<BoxCollider>();
         }
         protected override void Start()
         {
             base.Start();
             rb.useGravity = false;
+            rb.isKinematic = true;
             rb.freezeRotation = true;
 
             outline.OutlineWidth = 2f;
@@ -66,7 +65,7 @@ namespace BNG
                     gameObject.SetActive(true);
                     if (rayResult.gameObject.transform.gameObject.CompareTag("Wall"))
                     {
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z + 0.01f));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GetComponent<BoxCollider>().size.z / 2) + GetComponent<BoxCollider>().center.z + 0.01f) * transform.localScale.z));
                         transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
                         if(rayResult.worldNormal == -Vector3.forward)
                         {
@@ -76,10 +75,10 @@ namespace BNG
                     }
                     else if (rayResult.gameObject.transform.gameObject.CompareTag("Floor"))
                     {
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y -0.0001f));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GetComponent<BoxCollider>().size.y / 2) - GetComponent<BoxCollider>().center.y -0.0001f) * transform.localScale.y));
                     }else if(rayResult.gameObject.transform.gameObject.CompareTag("Roof"))
                     {
-                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * ((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f));
+                        transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GetComponent<BoxCollider>().size.y / 2) + GetComponent<BoxCollider>().center.y + 0.0001f) * transform.localScale.y));
                     }
                     GM_GameDataManager.UpdateData().position = transform.localPosition;
                     GM_GameDataManager.UpdateData().rotation = transform.rotation;

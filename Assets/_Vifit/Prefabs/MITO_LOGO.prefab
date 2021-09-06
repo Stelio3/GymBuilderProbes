@@ -209,8 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb0c9bdc2f2d594a83c52e45a55f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   locked: 0
+  scriptableObject: {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   bc: {fileID: 0}
 --- !u!114 &5894623587832394897
 MonoBehaviour:

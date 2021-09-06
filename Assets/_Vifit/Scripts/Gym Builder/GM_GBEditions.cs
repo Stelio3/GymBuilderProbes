@@ -13,7 +13,7 @@ public abstract class GM_GBEditions : MonoBehaviour
     bool active = false;
     bool hovering = false;
 
-    public BNG.PointerEvents pointerEvents;
+    BNG.PointerEvents pointerEvents;
 
     void OnEnable()
     {
@@ -27,8 +27,7 @@ public abstract class GM_GBEditions : MonoBehaviour
     protected virtual void Awake()
     {
         pointerEvents = GetComponent<PointerEvents>();
-        outline = GetComponent<Outline>();
-        outline = outline == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
+        outline = GetComponent<Outline>() == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
     }
 
     protected virtual void Start()

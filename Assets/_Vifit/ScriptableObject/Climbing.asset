@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1210a26d2dfa62428311f2f61d606b1, type: 3}
+  m_Name: Climbing
+  m_EditorClassIdentifier: 
+  id: 3
+  name: Climbing wall
+  description: This is the description for the climbing wall
+  price: 10
+  objectImage: {fileID: 21300000, guid: 0d7bf3f7120fd9b408782fb2fa741ed9, type: 3}
+  Object: {fileID: 1464732494075458232, guid: f52cd28e5328dba408cc67825ba9e8fa, type: 3}
+  type: 1
