@@ -133,7 +133,6 @@ GameObject:
   - component: {fileID: 11173458}
   - component: {fileID: 11173457}
   - component: {fileID: 11173455}
-  - component: {fileID: 11173456}
   m_Layer: 0
   m_Name: GymBuilder
   m_TagString: Untagged
@@ -204,7 +203,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11173456}
+      - m_Target: {fileID: 2101213254}
         m_MethodName: ChangeStatus
         m_Mode: 1
         m_Arguments:
@@ -215,20 +214,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &11173456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 11173453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff8be0372f006242af1cb34d5387214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gbPanel: {fileID: 1398475675}
-  exitPanel: {fileID: 1469869973}
 --- !u!114 &11173457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1187,7 +1172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d146168bd344ee246808512147156e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 256289664}
+  button: {fileID: 0}
   relatedPanel: {fileID: 730938435}
 --- !u!114 &256289664
 MonoBehaviour:
@@ -1563,6 +1548,49 @@ RectTransform:
   m_AnchoredPosition: {x: -325.00006, y: 441}
   m_SizeDelta: {x: 1000, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &394858206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 394858207}
+  - component: {fileID: 394858208}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &394858207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394858206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &394858208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394858206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728900957cc8b944286988a657fee0d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &409431819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3056,7 +3084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d146168bd344ee246808512147156e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 931355422}
+  button: {fileID: 0}
   relatedPanel: {fileID: 730938435}
 --- !u!114 &931355422
 MonoBehaviour:
@@ -4925,7 +4953,6 @@ GameObject:
   - component: {fileID: 1360075620}
   - component: {fileID: 1360075619}
   - component: {fileID: 1360075621}
-  - component: {fileID: 1360075622}
   m_Layer: 0
   m_Name: GBObjectManager
   m_TagString: Untagged
@@ -4977,18 +5004,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5de38a83fa91bb7409c6401457a827fd, type: 2}
   - {fileID: 11400000, guid: 9f2a378bd06fd7144aa0e728f77d34a5, type: 2}
   - {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
---- !u!114 &1360075622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360075618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728900957cc8b944286988a657fee0d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1365736895
 GameObject:
   m_ObjectHideFlags: 0
@@ -7493,7 +7508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d146168bd344ee246808512147156e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 1719099155}
+  button: {fileID: 0}
   relatedPanel: {fileID: 730938435}
 --- !u!114 &1719099155
 MonoBehaviour:
@@ -8348,7 +8363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d146168bd344ee246808512147156e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 1915077535}
+  button: {fileID: 0}
   relatedPanel: {fileID: 730938435}
 --- !u!114 &1915077535
 MonoBehaviour:
@@ -9247,6 +9262,51 @@ MonoBehaviour:
   scriptableObject: {fileID: 11400000, guid: 5de38a83fa91bb7409c6401457a827fd, type: 2}
   canvas: {fileID: 1559364932}
   infoPanel: {fileID: 409431819}
+--- !u!1 &2101213252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101213253}
+  - component: {fileID: 2101213254}
+  m_Layer: 0
+  m_Name: MenuBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101213253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101213252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2101213254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101213252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff8be0372f006242af1cb34d5387214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gbPanel: {fileID: 1398475675}
+  exitPanel: {fileID: 1469869973}
 --- !u!1001 &2634128103435655830
 PrefabInstance:
   m_ObjectHideFlags: 0
