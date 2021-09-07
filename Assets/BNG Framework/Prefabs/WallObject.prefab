@@ -69,10 +69,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 0
-  pointerEvents: {fileID: 0}
   scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
   bc: {fileID: 0}
-  firstHovering: 1
 --- !u!114 &-5993188819278394545
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1145632582095222356}
   - component: {fileID: 2883127890863899294}
   - component: {fileID: 1533221421106193041}
-  - component: {fileID: 3207131580961437126}
   - component: {fileID: 7755003559614495003}
   m_Layer: 0
   m_Name: Punch_small
@@ -96,90 +95,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7209205, y: 0.83549803, z: 0.37227172}
   m_Center: {x: 0.30664137, y: -0.102430016, z: -0.00000013411045}
---- !u!114 &3207131580961437126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3675520014118118219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 744b3611da944e54da5e532e02ae2454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxDistance: 100
-  Enabled: 1
-  OnPointerClickEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7755003559614495003}
-        m_MethodName: SetSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerEnterEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7755003559614495003}
-        m_MethodName: SetHovering
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerExitEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7755003559614495003}
-        m_MethodName: ResetHovering
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerDownEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7755003559614495003}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnPointerUpEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7755003559614495003}
-        m_MethodName: SetInactive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &7755003559614495003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcb0c9bdc2f2d594a83c52e45a55f5ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
   scriptableObject: {fileID: 11400000, guid: 9f2a378bd06fd7144aa0e728f77d34a5, type: 2}
+  locked: 0
   bc: {fileID: 0}
 --- !u!1 &8347592962945954031
 GameObject:

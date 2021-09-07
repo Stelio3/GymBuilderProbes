@@ -147,10 +147,10 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
-                if (GM_GBManager.Instance.TypeSelected == Type.Object)
+                if (GM_GBManager.Instance.GetSelected)
                 {
-                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.tag == 
-                        GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>().scriptableObject.type.ToString() ? 
+                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.CompareTag(
+                        GM_GBManager.Instance.GetSelected.GetComponent<GM_GBObject>().scriptableObject.type.ToString()) ?
                         whiteM : redM;
                 }
             }

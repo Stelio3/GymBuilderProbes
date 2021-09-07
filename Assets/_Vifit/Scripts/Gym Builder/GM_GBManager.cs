@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-public enum Type { None, Object, Surface, Color };
+public enum Type { None, Object, Surface };
 public class GM_GBManager : Singleton<GM_GBManager>
 {
     public GameObject GetSelected { get; set; }

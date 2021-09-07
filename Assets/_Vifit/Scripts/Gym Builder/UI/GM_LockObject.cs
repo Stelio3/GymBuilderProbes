@@ -1,28 +1,23 @@
-﻿using BNG;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GM_LockObject : MonoBehaviour
+public class GM_LockObject : GM_Options
 {
-    private void Update()
+    protected Color normalColor;
+    private void Start()
     {
-        if (GM_GBManager.Instance.TypeSelected == Type.Object || GM_GBManager.Instance.TypeSelected == Type.Surface)
-        {
-            gameObject.GetComponent<Image>().color = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked ? Color.grey : Color.white;
-        }
-        else
-        {
-            gameObject.GetComponent<Image>().color = Color.white;
-        }
+        normalColor = GetComponent<Button>().colors.normalColor;
     }
-    public void lockObject()
+    public override void Selected()
     {
-        if (GM_GBManager.Instance.TypeSelected == Type.Object || GM_GBManager.Instance.TypeSelected == Type.Surface)
-        {
-            GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked = !GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked;
-            GM_GameDataManager.UpdateData().locked = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().locked;
-        }
+        SetSelected(OptionType.Lock);
+    }
+    public void ObjectLocked(bool status)
+    {
+        ColorBlock cb = GetComponent<Button>().colors;
+        cb.selectedColor = status ? GetComponent<Button>().colors.pressedColor : normalColor;
+        GetComponent<Button>().colors = cb;
     }
 }

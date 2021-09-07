@@ -25,13 +25,7 @@ namespace VRUiKits.Utils
             normalColor = button.colors.normalColor;
             highlightedColor = button.colors.highlightedColor;
 
-            button.onClick.AddListener(() =>
-            {
-                if (null != OnItemSelected)
-                {
-                    OnItemSelected(this);
-                }
-            });
+            button.onClick.AddListener(() => { OnItemSelected(this); });
         }
 
         public virtual void Activate()
