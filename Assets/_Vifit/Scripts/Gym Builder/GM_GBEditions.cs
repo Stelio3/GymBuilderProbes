@@ -68,6 +68,8 @@ public abstract class GM_GBEditions : MonoBehaviour
         {
             case OptionType.Delete:
                 InputBridge.Instance.VibrateController(0.1f, 0.3f, 0.1f, ControllerHand.Left);
+                GM_GameDataManager.UpdateData(gameObject).position = Vector3.zero;
+                GM_GameDataManager.UpdateData(gameObject).rotation = Quaternion.identity;
                 Destroy(gameObject);
                 GM_GBManager.Instance.UpdateSelected(null, Type.None);
                 break;
@@ -75,7 +77,7 @@ public abstract class GM_GBEditions : MonoBehaviour
             case OptionType.Lock:
                 InputBridge.Instance.VibrateController(0.1f, 0.3f, 0.1f, ControllerHand.Left);
                 locked = !locked;
-                GM_GameDataManager.UpdateData().locked = locked;
+                GM_GameDataManager.UpdateData(gameObject).locked = locked;
                 break;
 
             case OptionType.Color:
@@ -120,10 +122,10 @@ public abstract class GM_GBEditions : MonoBehaviour
             {
                 GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Ignore Raycast");
                 moveObject(eventData.pointerCurrentRaycast);
+                GM_GameDataManager.UpdateData(gameObject).position = GM_GBManager.Instance.GetSelected.transform.localPosition;
+                GM_GameDataManager.UpdateData(gameObject).rotation = GM_GBManager.Instance.GetSelected.transform.rotation;
             }
         }
-
-
         UpdateMaterial();
     }
 
@@ -157,8 +159,6 @@ public abstract class GM_GBEditions : MonoBehaviour
         {
             GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.y / 2) + GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.y + 0.0001f) * GM_GBManager.Instance.GetSelected.transform.localScale.y));
         }
-        GM_GameDataManager.UpdateData().position = GM_GBManager.Instance.GetSelected.transform.localPosition;
-        GM_GameDataManager.UpdateData().rotation = GM_GBManager.Instance.GetSelected.transform.rotation;
     }
     public void UpdateMaterial()
     {

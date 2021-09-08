@@ -16,6 +16,6 @@ public class GM_GBSurface : GM_GBEditions
     public override void SetColor()
     {
         mr.sharedMaterial = GM_UIManager.Instance.ButtonSelected.GetComponent<GM_ChangeMaterial>().material;
-        GM_GameDataManager.UpdateData().material = mr.sharedMaterial;
+        GM_GameDataManager.UpdateData(gameObject).material = mr.sharedMaterial;
     }
 }

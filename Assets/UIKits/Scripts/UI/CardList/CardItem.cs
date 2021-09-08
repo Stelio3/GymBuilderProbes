@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-#if UIKIT_TMP
 using TMPro;
-#endif
 
 namespace VRUiKits.Utils
 {
@@ -23,7 +21,7 @@ namespace VRUiKits.Utils
         public Transform description;
         public delegate void OnCardClickedHandler(Card card);
         public event OnCardClickedHandler OnCardClicked;
-#if UIKIT_TMP
+
         public TextMeshProUGUI Title
         {
             get
@@ -53,7 +51,7 @@ namespace VRUiKits.Utils
                 return null;
             }
         }
-#else
+#if Text
         public Text Title
         {
             get

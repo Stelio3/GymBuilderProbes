@@ -93,9 +93,9 @@ public class GM_Wrapper<T>
 public class GM_GameDataManager
 {
     public static List<GM_ObjectData> gymBuilderObjects = new List<GM_ObjectData>();
-    public static GM_ObjectData UpdateData()
+    public static GM_ObjectData UpdateData(GameObject go)
     {
-        return gymBuilderObjects.Find(o => o.id == GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().id);
+        return gymBuilderObjects.Find(o => o.id == go.GetComponent<GM_GBEditions>().id);
     }
 }
 [Serializable]

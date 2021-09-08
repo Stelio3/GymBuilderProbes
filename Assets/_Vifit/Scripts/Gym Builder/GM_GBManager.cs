@@ -9,11 +9,13 @@ public enum Type { None, Object, Surface };
 public class GM_GBManager : Singleton<GM_GBManager>
 {
     public GameObject GetSelected { get; set; }
+    public CurrencyManager currencyManager;
     public Type TypeSelected { get; set; }
     int lastId;
     GameObject lastObject;
     private void Awake()
     {
+        currencyManager = FindObjectOfType<CurrencyManager>();
         GetSelected = null;
         lastId = GM_JsonData.ReadFromJSON<GM_ObjectData>().Count;
     }
@@ -45,7 +47,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
                     }
                 }
             }
-            if (!inJson)
+            if (!inJson && go.price < currencyManager.GetCoins())
             {
                 GetSelected = Instantiate(go.Object);
                 GM_ObjectData toAddJson = new GM_ObjectData();
@@ -53,7 +55,12 @@ public class GM_GBManager : Singleton<GM_GBManager>
                 lastId++;
                 toAddJson.id = lastId;
                 GetSelected.GetComponent<GM_GBEditions>().id = lastId;
+                currencyManager.RemoveCoins(go.price);
                 GM_GameDataManager.gymBuilderObjects.Add(toAddJson);
+            }
+            else
+            {
+                InputBridge.Instance.VibrateController(0.1f, 0.3f, 0.1f, ControllerHand.Left);
             }
         }
 

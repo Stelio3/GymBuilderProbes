@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GM_GBScriptableObjects scriptableObject;
-    public GameObject canvas, infoPanel;
+    public static GameObject infoPanel;
 
     private void Start()
     {
@@ -17,7 +17,6 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = scriptableObject.price.ToString();
     }
     public void ShowObject() {
-        canvas.GetComponent<GraphicRaycaster>().enabled = false;
         GM_GBManager.Instance.SpawnObject(scriptableObject);
     }
 
