@@ -19,7 +19,7 @@ public class GM_DisplayContent : MonoBehaviour
     }
     void Start()
     {
-        DisplayInventary();
+        DisplayAll();
     }
     public void DisplayAll()
     {
@@ -34,11 +34,43 @@ public class GM_DisplayContent : MonoBehaviour
             Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(i + 1);
         }
     }
+    public void DisplayObjects()
+    {
+        ResetDisplay();
+        int listLength = SerializableObjects.gb_objectList.Count;
+        for (int i = 0; i < listLength; i++)
+        {
+            if (i % rowCount == 0)
+            {
+                CreateRow();
+            }
+            if (SerializableObjects.Get(i+1).Object.GetComponent<GM_GBObject>() != null)
+            { 
+                Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(i + 1);
+            }
+        }
+    }
+    public void DisplaySurfaces()
+    {
+        ResetDisplay();
+        int listLength = SerializableObjects.gb_objectList.Count;
+        for (int i = 0; i < listLength; i++)
+        {
+            if (i % rowCount == 0)
+            {
+                CreateRow();
+            }
+            if (SerializableObjects.Get(i+1).Object.GetComponent<GM_GBSurface>() != null)
+            {
+                Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(i + 1);
+            }
+        }
+    }
     public void DisplayInventary()
     {
         ResetDisplay();
         int i = 0;
-        foreach (GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
+        foreach (GM_ObjectData o in GM_GameDataManager.gymBuilderObjects)
         {
             if(o.position == Vector3.zero && o.rotation == Quaternion.identity)
             {

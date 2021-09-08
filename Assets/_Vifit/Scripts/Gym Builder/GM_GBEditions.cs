@@ -70,6 +70,7 @@ public abstract class GM_GBEditions : MonoBehaviour
                 InputBridge.Instance.VibrateController(0.1f, 0.3f, 0.1f, ControllerHand.Left);
                 GM_GameDataManager.UpdateData(gameObject).position = Vector3.zero;
                 GM_GameDataManager.UpdateData(gameObject).rotation = Quaternion.identity;
+
                 Destroy(gameObject);
                 GM_GBManager.Instance.UpdateSelected(null, Type.None);
                 break;
@@ -122,8 +123,8 @@ public abstract class GM_GBEditions : MonoBehaviour
             {
                 GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Ignore Raycast");
                 moveObject(eventData.pointerCurrentRaycast);
-                GM_GameDataManager.UpdateData(gameObject).position = GM_GBManager.Instance.GetSelected.transform.localPosition;
-                GM_GameDataManager.UpdateData(gameObject).rotation = GM_GBManager.Instance.GetSelected.transform.rotation;
+                GM_GameDataManager.UpdateData(GM_GBManager.Instance.GetSelected).position = GM_GBManager.Instance.GetSelected.transform.localPosition;
+                GM_GameDataManager.UpdateData(GM_GBManager.Instance.GetSelected).rotation = GM_GBManager.Instance.GetSelected.transform.rotation;
             }
         }
         UpdateMaterial();

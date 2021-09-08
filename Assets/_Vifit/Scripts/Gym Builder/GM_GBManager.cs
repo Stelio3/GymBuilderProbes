@@ -29,6 +29,10 @@ public class GM_GBManager : Singleton<GM_GBManager>
                 savedObject.GetComponent<GM_GBEditions>().id = o.id;
                 savedObject.transform.position = o.position;
                 savedObject.transform.rotation = o.rotation;
+                if (savedObject.GetComponent<GM_GBSurface>() != null)
+                {
+                    savedObject.GetComponent<MeshRenderer>().material = savedObject.GetComponent<GM_GBSurface>().materials[o.materialId-1];
+                }
             }
             GM_GameDataManager.gymBuilderObjects.Add(o);
         }
@@ -38,7 +42,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
         if (go.Object)
         {
             bool inJson = false;
-            foreach(GM_ObjectData o in GM_GameDataManager.gymBuilderObjects)
+            foreach(GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
             {
                 if (GetSelected)
                 {

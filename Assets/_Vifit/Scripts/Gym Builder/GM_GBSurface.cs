@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GM_GBSurface : GM_GBEditions
 {
     MeshRenderer mr;
+    public Material[] materials;
     protected override void Start()
     {
         base.Start();
@@ -15,7 +16,8 @@ public class GM_GBSurface : GM_GBEditions
     }
     public override void SetColor()
     {
-        mr.material = GM_UIManager.Instance.ButtonSelected.GetComponent<GM_ChangeMaterial>().material;
-        GM_GameDataManager.UpdateData(gameObject).material = mr.material;
+        GM_ChangeMaterial materialData = GM_UIManager.Instance.ButtonSelected.GetComponent<GM_ChangeMaterial>();
+        mr.material = materialData.material;
+        GM_GameDataManager.UpdateData(gameObject).materialId = materialData.id;
     }
 }

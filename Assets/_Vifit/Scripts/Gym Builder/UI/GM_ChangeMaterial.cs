@@ -8,6 +8,7 @@ using BNG;
 public class GM_ChangeMaterial : GM_Options
 {
     public Material material;
+    public int id;
     public override void Selected()
     {
         SetSelected(OptionType.Color);
