@@ -23,10 +23,13 @@ public class GM_GBManager : Singleton<GM_GBManager>
     {
         foreach (GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
         {
-            GameObject savedObject = Instantiate(SerializableObjects.Get(o.objectId).Object);
-            savedObject.GetComponent<GM_GBEditions>().id = o.id;
-            savedObject.transform.position = o.position;
-            savedObject.transform.rotation = o.rotation;
+            if(o.position != Vector3.zero)
+            {
+                GameObject savedObject = Instantiate(SerializableObjects.Get(o.objectId).Object);
+                savedObject.GetComponent<GM_GBEditions>().id = o.id;
+                savedObject.transform.position = o.position;
+                savedObject.transform.rotation = o.rotation;
+            }
             GM_GameDataManager.gymBuilderObjects.Add(o);
         }
     }

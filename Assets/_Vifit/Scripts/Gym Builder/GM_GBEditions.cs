@@ -133,8 +133,11 @@ public abstract class GM_GBEditions : MonoBehaviour
     public virtual void SetInactive(PointerEventData eventData)
     {
         active = false;
-        GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Default");
-        GM_GBManager.Instance.GetSelected = null;
+        if (GM_GBManager.Instance.GetSelected)
+        {
+            GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Default");
+            GM_GBManager.Instance.GetSelected = null;
+        }
         UpdateMaterial();
     }
 

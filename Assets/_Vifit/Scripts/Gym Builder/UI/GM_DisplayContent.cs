@@ -31,8 +31,7 @@ public class GM_DisplayContent : MonoBehaviour
             {
                 CreateRow();
             }
-            Instantiate(displayGo, row.transform);
-            displayGo.GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(i + 1);
+            Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(i + 1);
         }
     }
     public void DisplayInventary()
@@ -48,8 +47,7 @@ public class GM_DisplayContent : MonoBehaviour
                     CreateRow();
                 }
                 i++;
-                Instantiate(displayGo, row.transform);
-                displayGo.GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(o.objectId);
+                Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(o.objectId);
             }
         }
     }

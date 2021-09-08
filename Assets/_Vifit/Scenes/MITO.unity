@@ -5147,8 +5147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gb_items:
-  - {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   - {fileID: 11400000, guid: 5237fa056c8933c4890a916dd10a2399, type: 2}
+  - {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   - {fileID: 11400000, guid: 5de38a83fa91bb7409c6401457a827fd, type: 2}
   - {fileID: 11400000, guid: 9f2a378bd06fd7144aa0e728f77d34a5, type: 2}
   - {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
@@ -5718,6 +5718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayGo: {fileID: 1019254673225928, guid: 595f2c4a055ca4f38871a72316e45053, type: 3}
   infoPanel: {fileID: 409431819}
+  empty: {fileID: 0}
 --- !u!1 &1703727799
 GameObject:
   m_ObjectHideFlags: 0
