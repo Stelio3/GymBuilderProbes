@@ -10,13 +10,11 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public GM_GBScriptableObjects scriptableObject;
     public static GameObject infoPanel;
-    bool canPointerDown;
 
     private void Start()
     {
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = scriptableObject.objectImage;
         gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = scriptableObject.price.ToString();
-        canPointerDown = true;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -37,15 +35,15 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (canPointerDown)
+        if (GM_UIManager.Instance.canPointerDown)
         {
             GM_GBManager.Instance.SpawnObject(scriptableObject);
-            canPointerDown = !canPointerDown;
+            GM_UIManager.Instance.canPointerDown = false;
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        canPointerDown = !canPointerDown;
+        GM_UIManager.Instance.canPointerDown = true;
     }
 }

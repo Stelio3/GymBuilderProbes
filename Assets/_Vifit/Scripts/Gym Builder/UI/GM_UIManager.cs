@@ -9,10 +9,12 @@ public class GM_UIManager : Singleton<GM_UIManager>
     public GameObject ButtonSelected { get; set; }
     public OptionType OptionSelected { get; set; }
     GameObject lastObject;
+    public bool canPointerDown { get; set; }
 
     private void Awake()
     {
         ButtonSelected = null;
+        canPointerDown = true;
     }
 
     public void UpdateSelected(GameObject go, OptionType type)
