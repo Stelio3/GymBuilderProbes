@@ -27,12 +27,9 @@ public class GM_GBManager : Singleton<GM_GBManager>
             {
                 GameObject savedObject = Instantiate(SerializableObjects.Get(o.objectId).Object);
                 savedObject.GetComponent<GM_GBEditions>().id = o.id;
+                savedObject.GetComponent<GM_GBEditions>().locked = o.locked;
                 savedObject.transform.position = o.position;
                 savedObject.transform.rotation = o.rotation;
-                if (savedObject.GetComponent<GM_GBSurface>() != null)
-                {
-                    savedObject.GetComponent<MeshRenderer>().material = savedObject.GetComponent<GM_GBSurface>().materials[o.materialId-1];
-                }
             }
             GM_GameDataManager.gymBuilderObjects.Add(o);
         }

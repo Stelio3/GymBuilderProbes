@@ -119,7 +119,7 @@ public abstract class GM_GBEditions : MonoBehaviour
             {
                 GM_GBManager.Instance.GetSelected = gameObject;
             }
-            else if(GM_GBManager.Instance.GetSelected != gameObject && GM_GBManager.Instance.GetSelected.GetComponent<GM_SurfaceTemplate>() == null)
+            else if(GM_GBManager.Instance.GetSelected != gameObject && GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().id > 0)
             {
                 GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Ignore Raycast");
                 moveObject(eventData.pointerCurrentRaycast);

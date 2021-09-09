@@ -150,25 +150,29 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
-                if (GM_GBManager.Instance.GetSelected != null && GM_GBManager.Instance.GetSelected.GetComponent<GM_SurfaceTemplate>() == null)
+                if (GM_GBManager.Instance.GetSelected != null)
                 {
-                    lineRenderer.endColor = !data.pointerCurrentRaycast.gameObject.CompareTag(
-                        GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.type.ToString()
-                        ) ? Color.red : Color.white;
-                    
-                    /*if(IsPointerOverUIElement())
+                    if (GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().id > 0)
                     {
-                        _cursor.GetComponentInChildren<Image>().sprite = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.objectImage;
-                        GM_GBManager.Instance.GetSelected.SetActive(false);
-                        _cursor.GetComponentInChildren<RectTransform>().localScale *= 6;
-                        _cursor.transform.rotation = Quaternion.LookRotation(-Vector3.forward);
-                        lineRenderer.endColor = Color.white;
+                        lineRenderer.endColor = !data.pointerCurrentRaycast.gameObject.CompareTag(
+                            GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.type.ToString()
+                            ) ? Color.red : Color.white;
+
+
+                        /*if(IsPointerOverUIElement())
+                        {
+                            _cursor.GetComponentInChildren<Image>().sprite = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.objectImage;
+                            GM_GBManager.Instance.GetSelected.SetActive(false);
+                            _cursor.GetComponentInChildren<RectTransform>().localScale *= 6;
+                            _cursor.transform.rotation = Quaternion.LookRotation(-Vector3.forward);
+                            lineRenderer.endColor = Color.white;
+                        }
+                        else
+                        {
+                            GM_GBManager.Instance.GetSelected.SetActive(true);
+                        }*/
+                        lineRenderer.startColor = lineRenderer.endColor;
                     }
-                    else
-                    {
-                        GM_GBManager.Instance.GetSelected.SetActive(true);
-                    }*/
-                    lineRenderer.startColor = lineRenderer.endColor;
                 }
             }
         }

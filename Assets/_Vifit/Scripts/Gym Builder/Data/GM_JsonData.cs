@@ -103,7 +103,6 @@ public class GM_ObjectData
 {
     public int id;
     public int objectId;
-    public int materialId;
     public bool locked;
     public Vector3 position;
     public Quaternion rotation;
