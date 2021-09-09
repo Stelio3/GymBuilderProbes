@@ -6,18 +6,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public GM_GBScriptableObjects scriptableObject;
     public static GameObject infoPanel;
+    bool canPointerDown;
 
     private void Start()
     {
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = scriptableObject.objectImage;
         gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = scriptableObject.price.ToString();
-    }
-    public void ShowObject() {
-        GM_GBManager.Instance.SpawnObject(scriptableObject);
+        canPointerDown = true;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -34,5 +33,19 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         infoPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
         infoPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
         infoPanel.transform.GetChild(2).GetComponent<Image>().sprite = null;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (canPointerDown)
+        {
+            GM_GBManager.Instance.SpawnObject(scriptableObject);
+            canPointerDown = !canPointerDown;
+        }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        canPointerDown = !canPointerDown;
     }
 }

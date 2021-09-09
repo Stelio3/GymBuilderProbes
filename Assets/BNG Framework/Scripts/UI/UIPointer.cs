@@ -12,8 +12,7 @@ namespace BNG
     /// </summary>
     public class UIPointer : MonoBehaviour
     {
-        public Material redM, whiteM;
-
+        int UILayer;
         [Tooltip("The controller side this pointer is on")]
         public ControllerHand ControllerSide = ControllerHand.Right;
 
@@ -71,6 +70,10 @@ namespace BNG
             }
 
             uiSystem = VRUISystem.Instance;
+        }
+        private void Start()
+        {
+            UILayer = LayerMask.NameToLayer("UI");
         }
 
         void OnEnable()
@@ -149,8 +152,23 @@ namespace BNG
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
                 if (GM_GBManager.Instance.GetSelected != null)
                 {
-                    lineRenderer.material = data.pointerCurrentRaycast.gameObject.CompareTag(
-                        GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.type.ToString()) ? whiteM : redM;
+                    lineRenderer.endColor = !data.pointerCurrentRaycast.gameObject.CompareTag(
+                        GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.type.ToString()
+                        ) ? Color.red : Color.white;
+                    
+                    /*if(IsPointerOverUIElement())
+                    {
+                        _cursor.GetComponentInChildren<Image>().sprite = GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.objectImage;
+                        GM_GBManager.Instance.GetSelected.SetActive(false);
+                        _cursor.GetComponentInChildren<RectTransform>().localScale *= 6;
+                        _cursor.transform.rotation = Quaternion.LookRotation(-Vector3.forward);
+                        lineRenderer.endColor = Color.white;
+                    }
+                    else
+                    {
+                        GM_GBManager.Instance.GetSelected.SetActive(true);
+                    }*/
+                    lineRenderer.startColor = lineRenderer.endColor;
                 }
             }
         }
@@ -158,6 +176,12 @@ namespace BNG
         public RaycastResult RaycastPoint()
         {
             return data.pointerCurrentRaycast;
+        }
+        public List<RaycastResult> RaycastPoints()
+        {
+            List<RaycastResult> raysastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(data, raysastResults);
+            return raysastResults;
         }
 
         public virtual void HidePointer()
@@ -185,6 +209,17 @@ namespace BNG
                     lineRenderer.enabled = true;
                 }
             }
+        }
+        private bool IsPointerOverUIElement()
+        {
+            List<RaycastResult> eventSystemRaysastResults = RaycastPoints();
+            for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+            {
+                RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+                if (curRaysastResult.gameObject.layer == UILayer)
+                    return true;
+            }
+            return false;
         }
     }
 }

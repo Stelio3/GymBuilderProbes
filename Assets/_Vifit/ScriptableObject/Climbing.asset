@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1210a26d2dfa62428311f2f61d606b1, type: 3}
   m_Name: Climbing
   m_EditorClassIdentifier: 
-  id: 3
+  id: 2
   name: Climbing wall
   description: This is the description for the climbing wall
   price: 10

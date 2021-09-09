@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 11173458}
   - component: {fileID: 11173457}
   - component: {fileID: 11173455}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GymBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 44123088}
   - component: {fileID: 44123090}
   - component: {fileID: 44123089}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,12 +427,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 46457382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &46457386
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 118925894}
   - component: {fileID: 118925892}
   - component: {fileID: 118925893}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MatWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -741,7 +741,7 @@ GameObject:
   - component: {fileID: 190860738}
   - component: {fileID: 190860740}
   - component: {fileID: 190860739}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BuyObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -950,7 +950,7 @@ GameObject:
   - component: {fileID: 305133392}
   - component: {fileID: 305133394}
   - component: {fileID: 305133393}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1028,7 @@ GameObject:
   - component: {fileID: 316079928}
   - component: {fileID: 316079930}
   - component: {fileID: 316079929}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1106,7 +1106,7 @@ GameObject:
   - component: {fileID: 354561404}
   - component: {fileID: 354561406}
   - component: {fileID: 354561405}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1259,7 +1259,7 @@ GameObject:
   - component: {fileID: 409431820}
   - component: {fileID: 409431822}
   - component: {fileID: 409431821}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ObjectInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1474,7 +1474,7 @@ GameObject:
   - component: {fileID: 467171602}
   - component: {fileID: 467171601}
   - component: {fileID: 467171600}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LockObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1615,7 +1615,7 @@ GameObject:
   - component: {fileID: 486820828}
   - component: {fileID: 486820830}
   - component: {fileID: 486820829}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ObjectImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1689,7 +1689,7 @@ GameObject:
   - component: {fileID: 491083623}
   - component: {fileID: 491083625}
   - component: {fileID: 491083624}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ObjectName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1996,7 +1996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 594376214}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2126,12 +2126,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 664466236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!1 &721359025
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,7 +2144,7 @@ GameObject:
   - component: {fileID: 721359029}
   - component: {fileID: 721359028}
   - component: {fileID: 721359027}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2268,7 +2268,7 @@ GameObject:
   - component: {fileID: 730938439}
   - component: {fileID: 730938438}
   - component: {fileID: 730938437}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GBItems
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2376,7 +2376,7 @@ GameObject:
   - component: {fileID: 749938584}
   - component: {fileID: 749938583}
   - component: {fileID: 749938582}
-  - component: {fileID: 749938587}
+  - component: {fileID: 749938586}
   m_Layer: 0
   m_Name: Wall (1)
   m_TagString: Wall
@@ -2458,7 +2458,7 @@ Transform:
   m_Father: {fileID: 962841802}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &749938587
+--- !u!114 &749938586
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2467,12 +2467,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 749938581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!1 &781644505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2549,7 +2549,7 @@ GameObject:
   - component: {fileID: 795209459}
   - component: {fileID: 795209461}
   - component: {fileID: 795209460}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2625,7 +2625,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 876490788}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2663,7 +2663,7 @@ GameObject:
   - component: {fileID: 881789332}
   - component: {fileID: 881789334}
   - component: {fileID: 881789333}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2912,7 +2912,7 @@ GameObject:
   - component: {fileID: 973659695}
   - component: {fileID: 973659697}
   - component: {fileID: 973659696}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ObjectDesc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3133,7 +3133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1017868545}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sliding Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3245,7 +3245,7 @@ GameObject:
   - component: {fileID: 1098800750}
   - component: {fileID: 1098800752}
   - component: {fileID: 1098800751}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3324,7 +3324,7 @@ GameObject:
   - component: {fileID: 1113291291}
   - component: {fileID: 1113291290}
   - component: {fileID: 1113291289}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3474,12 +3474,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1263723449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1263723453
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3551,7 +3551,7 @@ GameObject:
   - component: {fileID: 1281498121}
   - component: {fileID: 1281498123}
   - component: {fileID: 1281498122}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3661,12 +3661,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1290305378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1290305382
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3770,12 +3770,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292249368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1292249372
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3879,12 +3879,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1321797200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1321797204
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4036,12 +4036,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1357352170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1357352174
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4157,7 +4157,7 @@ GameObject:
   - component: {fileID: 1365736896}
   - component: {fileID: 1365736898}
   - component: {fileID: 1365736897}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4267,12 +4267,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1376206279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1376206283
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4376,12 +4376,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1377623814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1377623818
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4451,7 +4451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1398475676}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ContentObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4493,7 +4493,7 @@ GameObject:
   - component: {fileID: 1401066477}
   - component: {fileID: 1401066479}
   - component: {fileID: 1401066478}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4571,7 +4571,7 @@ GameObject:
   - component: {fileID: 1420471119}
   - component: {fileID: 1420471121}
   - component: {fileID: 1420471120}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4706,7 +4706,7 @@ GameObject:
   - component: {fileID: 1424864379}
   - component: {fileID: 1424864377}
   - component: {fileID: 1424864378}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DeleteObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4879,12 +4879,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462557571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1462557575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4956,7 +4956,7 @@ GameObject:
   - component: {fileID: 1469869976}
   - component: {fileID: 1469869975}
   - component: {fileID: 1469869974}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GBExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5063,12 +5063,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480451060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1480451064
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5160,7 +5160,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gb_items:
   - {fileID: 11400000, guid: 5237fa056c8933c4890a916dd10a2399, type: 2}
-  - {fileID: 11400000, guid: 75deff4cbb811744f8ba841203449110, type: 2}
   - {fileID: 11400000, guid: 5de38a83fa91bb7409c6401457a827fd, type: 2}
   - {fileID: 11400000, guid: 9f2a378bd06fd7144aa0e728f77d34a5, type: 2}
   - {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
@@ -5189,7 +5188,7 @@ GameObject:
   - component: {fileID: 1504639986}
   - component: {fileID: 1504639988}
   - component: {fileID: 1504639987}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5322,7 +5321,7 @@ GameObject:
   - component: {fileID: 1525680810}
   - component: {fileID: 1525680812}
   - component: {fileID: 1525680811}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GBOptions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5402,7 +5401,7 @@ GameObject:
   - component: {fileID: 1559364936}
   - component: {fileID: 1559364935}
   - component: {fileID: 1559364934}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GymBuilder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5591,7 +5590,7 @@ GameObject:
   - component: {fileID: 1683036066}
   - component: {fileID: 1683036068}
   - component: {fileID: 1683036067}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DisplayContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5669,7 +5668,7 @@ GameObject:
   - component: {fileID: 1703727803}
   - component: {fileID: 1703727802}
   - component: {fileID: 1703727801}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5966,7 +5965,7 @@ GameObject:
   - component: {fileID: 1720545197}
   - component: {fileID: 1720545196}
   - component: {fileID: 1720545195}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scrollbar Horizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6180,8 +6179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c617ac42a6be146adcb780250b8eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redM: {fileID: 2100000, guid: eb4f63a1c24846549b212d7c7f64a784, type: 2}
-  whiteM: {fileID: 2100000, guid: eca70ad1867acb141a7914818d64faa8, type: 2}
   ControllerSide: 1
   AutoUpdateUITransforms: 1
   cursor: {fileID: 2255670627275077591, guid: b52cdd976639a854ea60de00a42ffeb9, type: 3}
@@ -6204,7 +6201,7 @@ GameObject:
   - component: {fileID: 1840097937}
   - component: {fileID: 1840097936}
   - component: {fileID: 1840097935}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6354,12 +6351,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1863379147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!65 &1863379151
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6433,7 +6430,7 @@ GameObject:
   - component: {fileID: 1892702971}
   - component: {fileID: 1892702969}
   - component: {fileID: 1892702970}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MatRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6706,7 +6703,7 @@ GameObject:
   - component: {fileID: 1947297169}
   - component: {fileID: 1947297171}
   - component: {fileID: 1947297170}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackgroundPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6786,7 +6783,7 @@ GameObject:
   - component: {fileID: 1971433221}
   - component: {fileID: 1971433220}
   - component: {fileID: 1971433219}
-  - component: {fileID: 1971433226}
+  - component: {fileID: 1971433225}
   m_Layer: 0
   m_Name: RigidFloor
   m_TagString: Floor
@@ -6898,7 +6895,7 @@ Transform:
   m_Father: {fileID: 962841802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1971433226
+--- !u!114 &1971433225
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6907,12 +6904,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1971433218}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!1 &2053282524
 GameObject:
   m_ObjectHideFlags: 0
@@ -6924,7 +6921,7 @@ GameObject:
   - component: {fileID: 2053282525}
   - component: {fileID: 2053282527}
   - component: {fileID: 2053282526}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7094,12 +7091,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2062284644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ec7f59d257c184e8a443240ded67dc, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ae2549db2e21b4984d272efeb328bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableObject: {fileID: 11400000, guid: dd2ad6a70b2b694488b9fd78ccb83ee1, type: 2}
-  locked: 0
-  materials: []
+  materials:
+  - {fileID: 2100000, guid: ebebc0e0bf981aa4db1c671230471178, type: 2}
+  - {fileID: 2100000, guid: 7ae8064ae90549f45a2f74c4c332d7f7, type: 2}
 --- !u!1 &2101213252
 GameObject:
   m_ObjectHideFlags: 0
@@ -7275,6 +7272,21 @@ PrefabInstance:
     - target: {fileID: 3966781999270109203, guid: 4ac7df741a9c0a2418ec19477729ee3d,
         type: 3}
       propertyPath: m_Parameters.colorGradient.key1.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3966781999270109203, guid: 4ac7df741a9c0a2418ec19477729ee3d,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3966781999270109203, guid: 4ac7df741a9c0a2418ec19477729ee3d,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3966781999270109203, guid: 4ac7df741a9c0a2418ec19477729ee3d,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4095492992128682948, guid: 4ac7df741a9c0a2418ec19477729ee3d,
