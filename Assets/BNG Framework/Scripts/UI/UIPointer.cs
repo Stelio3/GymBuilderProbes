@@ -150,7 +150,7 @@ namespace BNG
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, new Vector3(0, 0, Vector3.Distance(transform.position, data.pointerCurrentRaycast.worldPosition) * LineDistanceModifier));
                 lineRenderer.enabled = data.pointerCurrentRaycast.distance > 0;
-                if (GM_GBManager.Instance.GetSelected != null)
+                if (GM_GBManager.Instance.GetSelected != null && GM_GBManager.Instance.GetSelected.GetComponent<GM_SurfaceTemplate>() == null)
                 {
                     lineRenderer.endColor = !data.pointerCurrentRaycast.gameObject.CompareTag(
                         GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().scriptableObject.type.ToString()
