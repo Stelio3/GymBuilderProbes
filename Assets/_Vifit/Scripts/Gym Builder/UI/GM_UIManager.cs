@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public enum OptionType { None, Delete, Lock, Color };
 public class GM_UIManager : Singleton<GM_UIManager>
 {
+    public GameObject canvas;
     public GameObject ButtonSelected { get; set; }
     public OptionType OptionSelected { get; set; }
     GameObject lastObject;

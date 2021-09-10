@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public enum Type { None, Object, Surface };
 public class GM_GBManager : Singleton<GM_GBManager>
@@ -18,7 +19,9 @@ public class GM_GBManager : Singleton<GM_GBManager>
         currencyManager = FindObjectOfType<CurrencyManager>();
         GetSelected = null;
         lastId = GM_JsonData.ReadFromJSON<GM_ObjectData>().Count;
-
+    }
+    private void Start()
+    {
         foreach (GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
         {
             if (o.position != Vector3.zero)
@@ -46,6 +49,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
                         GetSelected = Instantiate(go.Object);
                         GetSelected.GetComponent<GM_GBEditions>().id = o.id;
                         droped = true;
+                        GM_UIManager.Instance.canvas.GetComponent<GraphicRaycaster>().enabled = false;
                     }
                 }
             }
@@ -59,6 +63,7 @@ public class GM_GBManager : Singleton<GM_GBManager>
                 GetSelected.GetComponent<GM_GBEditions>().id = lastId;
                 currencyManager.RemoveCoins(go.price);
                 GM_GameDataManager.gymBuilderObjects.Add(toAddJson);
+                GM_UIManager.Instance.canvas.GetComponent<GraphicRaycaster>().enabled = false;
             }
             else
             {
