@@ -10,11 +10,33 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public GM_GBScriptableObjects scriptableObject;
     public static GameObject infoPanel;
+    int inInventary;
 
     private void Start()
     {
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = scriptableObject.objectImage;
         gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = scriptableObject.price.ToString();
+        inInventary = InInventary();
+        if (inInventary > 0)
+        {
+            gameObject.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "(" + inInventary + ")";
+        }
+        else
+        {
+            gameObject.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
+        }
+    }
+    public int InInventary()
+    {
+        int count = 0;
+        foreach (GM_ObjectData o in GM_GameDataManager.gymBuilderObjects)
+        {
+            if (o.position == Vector3.zero && o.rotation == Quaternion.identity && o.objectId == scriptableObject.id)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -37,7 +59,14 @@ public class GM_ItemShop : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         if (GM_UIManager.Instance.canPointerDown)
         {
-            GM_GBManager.Instance.SpawnObject(scriptableObject);
+            if(inInventary > 0)
+            {
+                GM_GBManager.Instance.SpawnObject(scriptableObject, true);
+            }
+            else
+            {
+                GM_GBManager.Instance.SpawnObject(scriptableObject, false);
+            }
             GM_UIManager.Instance.canPointerDown = false;
         }
     }

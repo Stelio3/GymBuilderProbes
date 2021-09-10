@@ -69,10 +69,11 @@ public class GM_DisplayContent : MonoBehaviour
     public void DisplayInventary()
     {
         ResetDisplay();
+        List<int> created = new List<int>();
         int i = 0;
         foreach (GM_ObjectData o in GM_GameDataManager.gymBuilderObjects)
         {
-            if(o.position == Vector3.zero && o.rotation == Quaternion.identity)
+            if(o.position == Vector3.zero && o.rotation == Quaternion.identity && !created.Contains(o.objectId))
             {
                 if (i % rowCount == 0)
                 {
@@ -80,6 +81,7 @@ public class GM_DisplayContent : MonoBehaviour
                 }
                 i++;
                 Instantiate(displayGo, row.transform).GetComponent<GM_ItemShop>().scriptableObject = SerializableObjects.Get(o.objectId);
+                created.Add(o.objectId);
             }
         }
     }

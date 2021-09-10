@@ -18,12 +18,10 @@ public class GM_GBManager : Singleton<GM_GBManager>
         currencyManager = FindObjectOfType<CurrencyManager>();
         GetSelected = null;
         lastId = GM_JsonData.ReadFromJSON<GM_ObjectData>().Count;
-    }
-    private void Start()
-    {
+
         foreach (GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
         {
-            if(o.position != Vector3.zero)
+            if (o.position != Vector3.zero)
             {
                 GameObject savedObject = Instantiate(SerializableObjects.Get(o.objectId).Object);
                 savedObject.GetComponent<GM_GBEditions>().id = o.id;
@@ -34,30 +32,30 @@ public class GM_GBManager : Singleton<GM_GBManager>
             GM_GameDataManager.gymBuilderObjects.Add(o);
         }
     }
-    public void SpawnObject(GM_GBScriptableObjects go)
+    public void SpawnObject(GM_GBScriptableObjects go, bool inInventary)
     {
         if (go.Object)
         {
-            bool inJson = false;
-            foreach(GM_ObjectData o in GM_JsonData.ReadFromJSON<GM_ObjectData>())
+            if (inInventary)
             {
-                if (GetSelected)
+                bool droped = false;
+                foreach (GM_ObjectData o in GM_GameDataManager.gymBuilderObjects)
                 {
-                    if (o.objectId == go.id)
+                    if (o.objectId == go.id && !droped)
                     {
                         GetSelected = Instantiate(go.Object);
                         GetSelected.GetComponent<GM_GBEditions>().id = o.id;
-                        inJson = true;
+                        droped = true;
                     }
                 }
             }
-            if (!inJson && go.price < currencyManager.GetCoins())
+            else if(go.price < currencyManager.GetCoins())
             {
-                GetSelected = Instantiate(go.Object);
                 GM_ObjectData toAddJson = new GM_ObjectData();
                 toAddJson.objectId = go.id;
                 lastId++;
                 toAddJson.id = lastId;
+                GetSelected = Instantiate(go.Object);
                 GetSelected.GetComponent<GM_GBEditions>().id = lastId;
                 currencyManager.RemoveCoins(go.price);
                 GM_GameDataManager.gymBuilderObjects.Add(toAddJson);
