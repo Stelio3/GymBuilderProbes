@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public abstract class GM_GBEditions : MonoBehaviour
 {
@@ -15,6 +17,10 @@ public abstract class GM_GBEditions : MonoBehaviour
     public  bool locked = false;
     bool active = false;
     bool hovering = false;
+    bool trigger = false;
+
+    Vector3 contactNormal;
+    float contactSeparation;
 
     PointerEvents pointerEvents;
 
@@ -35,6 +41,8 @@ public abstract class GM_GBEditions : MonoBehaviour
         outline = GetComponent<Outline>() == null ? gameObject.AddComponent<Outline>() : GetComponent<Outline>();
         pointerEvents = GetComponent<PointerEvents>() == null ? gameObject.AddComponent<PointerEvents>() : GetComponent<PointerEvents>();
 
+        contactNormal = Vector3.zero;
+        contactSeparation = 0;
         UpdatePointerEvents();
     }
     private void UpdatePointerEvents()
@@ -121,7 +129,16 @@ public abstract class GM_GBEditions : MonoBehaviour
             }
             else if(GM_GBManager.Instance.GetSelected != gameObject && GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().id > 0)
             {
+                if(GetComponent<GM_GBObject>() != null)
+                {
+                    GM_GBManager.Instance.GetSelected.SetActive(false);
+                }
+                else
+                {
+                    GM_GBManager.Instance.GetSelected.SetActive(true);
+                }
                 GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Ignore Raycast");
+                GM_GBManager.Instance.GetSelected.GetComponent<Rigidbody>().isKinematic = false;
                 moveObject(eventData.pointerCurrentRaycast);
                 GM_GameDataManager.UpdateData(GM_GBManager.Instance.GetSelected).position = GM_GBManager.Instance.GetSelected.transform.localPosition;
                 GM_GameDataManager.UpdateData(GM_GBManager.Instance.GetSelected).rotation = GM_GBManager.Instance.GetSelected.transform.rotation;
@@ -136,7 +153,19 @@ public abstract class GM_GBEditions : MonoBehaviour
         active = false;
         if (GM_GBManager.Instance.GetSelected)
         {
+            if (GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal != GM_GBManager.Instance.GetSelected.transform.forward)
+            {
+                GM_GBManager.Instance.GetSelected.transform.localPosition +=
+                    GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal *
+                    -GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactSeparation;
+            }
+            GM_GBManager.Instance.GetSelected.GetComponent<Rigidbody>().isKinematic = true;
+            GM_UIManager.Instance.canvas.GetComponent<GraphicRaycaster>().enabled = true;
             GM_GBManager.Instance.GetSelected.layer = LayerMask.NameToLayer("Default");
+            if (!GM_GBManager.Instance.GetSelected.activeSelf)
+            {
+                Destroy(GM_GBManager.Instance.GetSelected);
+            }
             GM_GBManager.Instance.GetSelected = null;
         }
         UpdateMaterial();
@@ -147,21 +176,53 @@ public abstract class GM_GBEditions : MonoBehaviour
     {
         if (rayResult.gameObject.transform.gameObject.CompareTag("Wall"))
         {
-            GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.z / 2) + GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.z + 0.01f) * GM_GBManager.Instance.GetSelected.transform.localScale.z));
+            GM_GBManager.Instance.GetSelected.transform.localPosition =
+               rayResult.worldPosition + (rayResult.worldNormal *
+               (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.z / 2) +
+               GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.z) *
+               GM_GBManager.Instance.GetSelected.transform.localScale.z));
+
             GM_GBManager.Instance.GetSelected.transform.rotation = Quaternion.FromToRotation(Vector3.forward, rayResult.worldNormal);
             if (rayResult.worldNormal == -Vector3.forward)
             {
                 GM_GBManager.Instance.GetSelected.transform.up = Vector3.up;
                 GM_GBManager.Instance.GetSelected.transform.forward = rayResult.worldNormal;
             }
+            
         }
         else if (rayResult.gameObject.transform.gameObject.CompareTag("Floor"))
         {
-            GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.y / 2) - GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.y - 0.0001f) * GM_GBManager.Instance.GetSelected.transform.localScale.y));
+            Vector3 position = GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.y / 2) - GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.y - 0.01f) * GM_GBManager.Instance.GetSelected.transform.localScale.y));
+            if (GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal != GM_GBManager.Instance.GetSelected.transform.up)
+            {
+                GM_GBManager.Instance.GetSelected.transform.localPosition = position + GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal * -GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactSeparation;
+            }
         }
         else if (rayResult.gameObject.transform.gameObject.CompareTag("Roof"))
         {
-            GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.y / 2) + GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.y + 0.0001f) * GM_GBManager.Instance.GetSelected.transform.localScale.y));
+            Vector3 position = GM_GBManager.Instance.GetSelected.transform.localPosition = rayResult.worldPosition + (rayResult.worldNormal * (((GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().size.y / 2) + GM_GBManager.Instance.GetSelected.GetComponent<BoxCollider>().center.y + 0.01f) * GM_GBManager.Instance.GetSelected.transform.localScale.y));
+            if (GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal != -GM_GBManager.Instance.GetSelected.transform.up)
+            {
+                GM_GBManager.Instance.GetSelected.transform.localPosition = position + GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactNormal * -GM_GBManager.Instance.GetSelected.GetComponent<GM_GBEditions>().contactSeparation;
+            }
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if(GM_GBManager.Instance.GetSelected == gameObject)
+        {
+            int i = 0;
+            bool done = false;
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                if (!done)
+                {
+                    contactNormal = contact.normal;
+                    contactSeparation = contact.separation;
+                    done = true;
+                }
+                i++;
+            }
         }
     }
     public void UpdateMaterial()
